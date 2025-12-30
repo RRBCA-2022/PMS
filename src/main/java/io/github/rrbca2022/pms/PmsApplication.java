@@ -1,4 +1,4 @@
-package com.ishan.pms;
+package io.github.rrbca2022.pms;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
