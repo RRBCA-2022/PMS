@@ -9,6 +9,64 @@
 </head>
 <body>
 <section>
+	<h5 class="mb-0">Dashboard Overview</h5>
+	<!-- Content -->
+	<div class="p-4">
+
+		<!-- Stats -->
+		<div class="row g-4 mb-4">
+			<div class="col-md-3 col-sm-6" th:each="stat : ${stats}">
+				<div class="card p-3">
+					<div class="d-flex justify-content-between">
+						<div>
+							<small class="text-muted" th:text="${stat.label}"></small>
+							<h4 class="fw-bold" th:text="${stat.value}"></h4>
+							<small th:text="${stat.sub}"></small>
+						</div>
+						<div class="icon-box" th:classappend="${stat.bg}">
+							<i th:class="${stat.icon}"></i>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Panels -->
+		<div class="row g-4">
+			<div class="col-md-4">
+				<div class="card p-3">
+					<h6 class="fw-bold">Low Stock Alert</h6>
+					<div class="alert alert-danger mt-3" th:each="item : ${lowStock}">
+						<strong th:text="${item.name}"></strong><br>
+						<small th:text="${item.qty + ' units remaining'}"></small>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-md-4">
+				<div class="card p-3">
+					<h6 class="fw-bold">Expiring Soon</h6>
+					<div class="alert alert-warning mt-3" th:each="item : ${expiring}">
+						<strong th:text="${item.name}"></strong><br>
+						<small th:text="${item.date}"></small>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-md-4">
+				<div class="card p-3">
+					<h6 class="fw-bold">Recent Activity</h6>
+					<div class="mt-3" th:each="log : ${activities}">
+						<strong th:text="${log.title}"></strong>
+						<span class="float-end text-success" th:text="${log.amount}"></span>
+						<small class="text-muted d-block" th:text="${log.time}"></small>
+						<hr>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
 
 </section>
 </body>
