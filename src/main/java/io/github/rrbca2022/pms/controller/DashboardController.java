@@ -6,9 +6,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class DashboardController {
 
-	@RequestMapping("/dashboard")
+	@RequestMapping("/")
 	public String dashboard() {
-		return "dashboard.html";
+		return "dashboard";
+	}
+
+	@RequestMapping("/medicine")
+	public String medicine () {
+		return "medicine";
 	}
 
 }
