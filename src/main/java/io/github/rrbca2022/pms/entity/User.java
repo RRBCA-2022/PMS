@@ -1,7 +1,13 @@
 package io.github.rrbca2022.pms.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "user")
 public class User {
@@ -19,4 +25,5 @@ public class User {
 	@Enumerated(EnumType.STRING)
 	@Column(name = "account_type", nullable = false)
 	private AccountType accountType;
+
 }

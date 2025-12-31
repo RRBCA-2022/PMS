@@ -1,5 +1,6 @@
 package io.github.rrbca2022.pms.repository;
 
+import io.github.rrbca2022.pms.entity.AccountType;
 import io.github.rrbca2022.pms.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -9,5 +10,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findByUsername(String username);
 
-    boolean existsByAccountType(io.github.rrbca2022.pms.entity.AccountType accountType);
+    boolean findByAccountType(AccountType accountType);
+
+    boolean find
 }

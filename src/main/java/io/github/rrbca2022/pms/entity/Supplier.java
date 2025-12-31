@@ -1,10 +1,16 @@
 package io.github.rrbca2022.pms.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "supplier")
 public class Supplier {
@@ -21,5 +27,4 @@ public class Supplier {
 	@OneToMany(mappedBy = "supplier", cascade = CascadeType.ALL)
 	private List<Purchase> purchases = new ArrayList<>();
 
-	// getters and setters
 }

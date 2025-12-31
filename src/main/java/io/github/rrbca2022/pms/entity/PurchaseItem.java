@@ -1,7 +1,13 @@
 package io.github.rrbca2022.pms.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "purchase_item")
 public class PurchaseItem {
@@ -22,5 +28,4 @@ public class PurchaseItem {
 	@JoinColumn(name = "med_id", nullable = false)
 	private Medicine medicine;
 
-	// getters and setters
 }
