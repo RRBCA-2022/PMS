@@ -1,5 +1,6 @@
 package io.github.rrbca2022.pms.configuration;
 
+import io.github.rrbca2022.pms.utils.PMSLogger;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,9 +31,9 @@ public class DataInitializer {
 
 				userRepository.save(rootUser);
 
-				System.out.println("Root admin user created!");
+				PMSLogger.debug("Root User created");
 			} else {
-				System.out.println("Root admin already exists.");
+				PMSLogger.debug("Root User already exists");
 			}
 		};
 	}
