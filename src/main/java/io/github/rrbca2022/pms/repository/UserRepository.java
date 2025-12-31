@@ -12,5 +12,4 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     boolean findByAccountType(AccountType accountType);
 
-    boolean find
 }
