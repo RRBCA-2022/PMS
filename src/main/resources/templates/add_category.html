@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      th:replace="base::layout(~{::section})">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Add Category</title>
+</head>
+
+<body>
+<section>
+
+    <div class="container mt-4">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">➕ Add Category</h5>
+            </div>
+
+            <div class="card-body">
+                <!-- UI ONLY FORM -->
+                <form action="/category" method="get">
+
+                    <div class="mb-3">
+                        <label class="form-label">Category Name</label>
+                        <input type="text" class="form-control" placeholder="Enter category name" required>
+                    </div>
+
+                    <div class="d-flex justify-content-end">
+                        <a href="/category" class="btn btn-secondary me-2">
+                            Cancel
+                        </a>
+                        <button type="submit" class="btn btn-success">
+                            Save Category
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+</section>
+</body>
+</html>

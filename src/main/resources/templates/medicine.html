@@ -1,13 +1,124 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://thymeleaf.org" th:replace="base::layout(~{::section})">
+<html lang="en"
+	  xmlns:th="http://www.thymeleaf.org"
+	  th:replace="base::layout(~{::section})">
+
 <head>
 	<meta charset="UTF-8">
-	<title>Title</title>
+	<title>Medicine Management</title>
 </head>
+
 <body>
 <section>
- <h1>haaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</h1>
-</section>
 
+	<div class="container-fluid px-4 mt-3">
+
+		<!-- Header -->
+		<div class="d-flex justify-content-between align-items-center mb-3">
+			<h4 class="mb-0">💊 Medicine Management</h4>
+
+			<!-- Add Medicine Button (Right Side) -->
+			<a th:href="@{/add_medicine}" class="btn btn-primary">
+				+ Add Medicine
+			</a>
+		</div>
+
+		<!-- Search Bar -->
+		<div class="row mb-3">
+			<div class="col-md-4 ms-auto">
+				<input type="text"
+					   class="form-control"
+					   placeholder="🔍 Search medicine..."
+					   id="medicineSearch">
+			</div>
+		</div>
+
+		<!-- Table -->
+		<div class="card shadow-sm">
+			<div class="card-body table-responsive">
+				<table class="table table-bordered table-hover align-middle" id="medicineTable">
+					<thead class="table-dark">
+					<tr>
+						<th>#</th>
+						<th>Medicine Name</th>
+						<th>Category</th>
+						<th>Price</th>
+						<th>Stock</th>
+						<th class="text-center">Actions</th>
+					</tr>
+					</thead>
+
+					<tbody>
+
+					<!-- REAL DATA (from DB) -->
+					<tr th:each="medicine, stat : ${medicines}">
+						<td th:text="${stat.count}"></td>
+						<td th:text="${medicine.name}"></td>
+						<td th:text="${medicine.category.name}"></td>
+						<td th:text="${medicine.price}"></td>
+						<td th:text="${medicine.stock}"></td>
+						<td class="text-center">
+							<a th:href="@{/medicines/edit/{id}(id=${medicine.id})}"
+							   class="btn btn-sm btn-warning me-1">
+								Edit
+							</a>
+							<a th:href="@{/medicines/delete/{id}(id=${medicine.id})}"
+							   class="btn btn-sm btn-danger"
+							   onclick="return confirm('Are you sure?')">
+								Delete
+							</a>
+						</td>
+					</tr>
+
+					<!-- DUMMY DATA (UI ONLY) -->
+					<tr th:if="${#lists.isEmpty(medicines)}">
+						<td>1</td>
+						<td>Paracetamol</td>
+						<td>Tablet</td>
+						<td>30</td>
+						<td>120</td>
+						<td class="text-center">
+							<a href="#" class="btn btn-sm btn-warning me-1">Edit</a>
+							<a href="#" class="btn btn-sm btn-danger">Delete</a>
+						</td>
+					</tr>
+
+					<tr th:if="${#lists.isEmpty(medicines)}">
+						<td>2</td>
+						<td>Cough Syrup</td>
+						<td>Syrup</td>
+						<td>110</td>
+						<td>40</td>
+						<td class="text-center">
+							<a href="#" class="btn btn-sm btn-warning me-1">Edit</a>
+							<a href="#" class="btn btn-sm btn-danger">Delete</a>
+						</td>
+					</tr>
+
+					</tbody>
+
+					<!-- Dynamic Data -->
+
+				</table>
+			</div>
+		</div>
+
+	</div>
+
+	<!-- Simple Client-Side Search -->
+	<script>
+		document.getElementById("medicineSearch").addEventListener("keyup", function () {
+			let filter = this.value.toLowerCase();
+			let rows = document.querySelectorAll("#medicineTable tbody tr");
+
+			rows.forEach(row => {
+				row.style.display = row.textContent.toLowerCase().includes(filter)
+						? ""
+						: "none";
+			});
+		});
+	</script>
+
+</section>
 </body>
 </html>
