@@ -18,13 +18,22 @@ public class Medicine {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@Column(unique = true, nullable = false)
 	private String name;
 
+	private String description;
+
 	private int qty;
+
+	@Enumerated(EnumType.STRING)
+	@Column(name = "qty_unit", nullable = false)
+	private MedicineUnitType qtyUnit;
 
 	private double price;
 
 	private String location; // e.g., "Shelf A3"
+
+	private String manufacturer;
 
 	private LocalDate mfgDate;  // Manufacturing date
 
