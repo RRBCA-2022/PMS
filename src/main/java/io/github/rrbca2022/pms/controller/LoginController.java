@@ -1,7 +1,9 @@
 package io.github.rrbca2022.pms.controller;
 
 import io.github.rrbca2022.pms.services.LoginService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,7 +27,9 @@ public class LoginController {
     public String login(
             @RequestParam String username,
             @RequestParam String password,
-            RedirectAttributes redirectAttributes
+            RedirectAttributes redirectAttributes,
+            HttpSession session
+
     ) {
         boolean authenticated = loginService.authenticate(username, password);
 
@@ -33,8 +37,16 @@ public class LoginController {
             redirectAttributes.addFlashAttribute("loginStatusFail", "Invalid username or password");
             return "redirect:/"; // back to login
         }
-
+        session.setAttribute("loggedInUser", username);
         redirectAttributes.addFlashAttribute("loginStatusSuccess", "Successfully logged in as '" + username + "'");
         return "redirect:/dashboard";
     }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session){
+        session.invalidate();
+        return "redirect:/";
+    }
+
+
 }

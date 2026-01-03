@@ -5,6 +5,7 @@
   <title>Index</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
   <link rel="stylesheet" th:href="@{/css/base.css}">
   <link rel="stylesheet" th:href="@{/css/toast.css}">
 </head>
@@ -77,9 +78,18 @@
     <div class="d-flex align-items-center gap-3">
       <span class="text-muted" th:text="${todayDate}">Wednesday, Dec 31, 2025</span>
       <i class="bi bi-bell"></i>
-      <div>
-        <strong th:text="${username}">Admin User</strong><br>
-        <small class="text-muted">Admin</small>
+      <div class="admin-dropdown">
+        <button class="admin-btn" onclick="toggleDropdown()" aria-haspopup="true">
+          <i class="fas fa-user-circle"></i><span th:text="${session.loggedInUser}">Admin</span>
+        </button>
+        <div id="adminMenu" class="dropdown-menu">
+          <a th:href="@{/profile}">
+            <i class="fas fa-user-circle"></i>
+            Profile</a>
+          <a th:href="@{/logout}">
+            <i class="fas fa-sign-out-alt"></i>
+            Logout</a>
+        </div>
       </div>
     </div>
   </div>
@@ -93,12 +103,22 @@
   </div>
 
 </div>
+<script>
+  function toggleDropdown() {
+    document.getElementById("adminMenu").classList.toggle("show");
+  }
 
+  window.onclick = function(event) {
+    if (!event.target.closest('.admin-dropdown')) {
+      document.getElementById("adminMenu").classList.remove("show");
+    }
+  }
+</script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script th:src="@{/js/toast.js}"></script>
 
 <script th:if="${loginStatusSuccess}" th:inline="javascript">
-  showToast([[${loginStatusSuccess}]], 'success', 7000);
+  showToast([[${loginStatusSuccess}]] ,'success', 7000);
 </script>
 
 </body>

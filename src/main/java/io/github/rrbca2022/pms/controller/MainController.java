@@ -1,8 +1,10 @@
 package io.github.rrbca2022.pms.controller;
 
 import io.github.rrbca2022.pms.services.PMSConfigService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -22,6 +24,14 @@ public class MainController {
 
 	@RequestMapping("/dashboard")
 	public String dashboard() {
+		return "dashboard";
+	}
+
+	@GetMapping("/dashboard")
+	public String dashboard(HttpSession session) {
+		if(session.getAttribute("loggedInUser")==null){
+			return "redirect:/";
+		}
 		return "dashboard";
 	}
 
