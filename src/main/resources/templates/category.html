@@ -8,14 +8,14 @@
 <section>
     <div class="container mt-5">
         <div class="d-flex justify-content-between mb-3">
-            <h2>Todo List</h2>
+            <h2>Category List</h2>
             <a th:href="@{/category/new}" class="btn btn-primary">+ Add Category</a>
         </div>
         <div class="row mb-3">
             <div class="col-md-4 ms-auto">
                 <input type="text"
                        class="form-control"
-                       placeholder="🔍 Search todo..."
+                       placeholder="🔍 Search Category..."
                        id="categorysearch">
             </div>
         </div>
@@ -30,7 +30,6 @@
             </tr>
             </thead>
             <tbody>
-            <-- Category here represent the multiple data accessing here -->
             <tr th:each="category : ${categories}">
                 <td th:text="${category.id}"></td>
                 <td th:text="${category.name}"></td>

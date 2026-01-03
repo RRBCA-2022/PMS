@@ -1,13 +1,30 @@
 package io.github.rrbca2022.pms.services;
 
 import io.github.rrbca2022.pms.entity.Category;
+import io.github.rrbca2022.pms.repository.CategoryRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 @Service
-public interface CategoryService {
-    List<Category> getAllcategories();
-    Category getcategoryById(Long id);
-    Category saveCategroy(Category category);
-    void deleteCategroy(Long id);
+public class CategoryService {
+
+    private final CategoryRepository categoryRepository;
+    public CategoryService(CategoryRepository categoryRepository){this.categoryRepository=categoryRepository;}
+
+    public List<Category> getAllCategories() {
+        return categoryRepository.findAll();
+    }
+
+    public Category getCategoryById(Long id) {
+        return  categoryRepository.findById(id).orElse(null);
+    }
+
+    public void saveCategory(Category category) {
+        categoryRepository.save(category);
+    }
+
+    public void deleteCategory(Long id) {
+        categoryRepository.deleteById(id);
+    }
 }

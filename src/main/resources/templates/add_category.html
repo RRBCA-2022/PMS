@@ -12,7 +12,7 @@
     <div class="container mt-4">
         <div class="card shadow-sm">
             <div class="card-header bg-primary text-white">
-                <h4 th:text="${ctg_id == null ? 'Add Category' : 'Edit Category'}"></h4>
+                <h4 th:text="${mode != null && mode == 'Add'  ? 'Add Category' : 'Edit Category'}"></h4>
             </div>
             <div class="card-body">
 
