@@ -33,13 +33,6 @@ public class MainController {
 		return "add_medicine";
 	}
 
-	@GetMapping("/category")
-	public String category () {
-		return "category";
-	}
-
-	@GetMapping("/add_category")
-	public String add_category () {return "add_category";}
 
 	@GetMapping("/purchase")
 	public String purchase () {

@@ -1,98 +1,64 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{base::layout(~{::section})}">
-
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="base::layout(~{::section})" >
 <head>
     <meta charset="UTF-8">
-    <title>Category Management</title>
+    <title>Title</title>
 </head>
-
 <body>
 <section>
-
-    <div class="container-fluid px-4 mt-3">
-
-        <!-- Header -->
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h4 class="mb-0">🗂️ Category Management</h4>
-
-            <!-- Add Category Button -->
-            <a href="/add_category" class="btn btn-primary">
-                + Add Category
-            </a>
+    <div class="container mt-5">
+        <div class="d-flex justify-content-between mb-3">
+            <h2>Todo List</h2>
+            <a th:href="@{/category/new}" class="btn btn-primary">+ Add Category</a>
         </div>
-
-        <!-- Search Bar -->
         <div class="row mb-3">
             <div class="col-md-4 ms-auto">
-                <input type="text" class="form-control"
-                       placeholder="🔍 Search category..." id="categorySearch">
+                <input type="text"
+                       class="form-control"
+                       placeholder="🔍 Search todo..."
+                       id="categorysearch">
             </div>
         </div>
 
-        <!-- Table -->
-        <div class="card shadow-sm">
-            <div class="card-body table-responsive">
-                <table class="table table-bordered table-hover align-middle" id="categoryTable">
-                    <thead class="table-dark">
-                    <tr>
-                        <th>#</th>
-                        <th>Category Name</th>
-                        <th class="text-center">Actions</th>
-                    </tr>
-                    </thead>
+        <table class="table table-bordered table-hover bg-white" id="categorytable" >
+            <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <-- Category here represent the multiple data accessing here -->
+            <tr th:each="category : ${categories}">
+                <td th:text="${category.id}"></td>
+                <td th:text="${category.name}"></td>
+                <td th:text="${category.description}"></td>
 
-                    <tbody>
-                    <!-- Dummy Data -->
-                    <tr>
-                        <td>1</td>
-                        <td>Tablet</td>
-                        <td class="text-center">
-                            <a href="/add_category" class="btn btn-sm btn-warning me-1">Edit</a>
-                            <button class="btn btn-sm btn-danger"
-                                    onclick="alert('Delete UI only')">Delete</button>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>2</td>
-                        <td>Syrup</td>
-                        <td class="text-center">
-                            <a href="/add_category" class="btn btn-sm btn-warning me-1">Edit</a>
-                            <button class="btn btn-sm btn-danger"
-                                    onclick="alert('Delete UI only')">Delete</button>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>3</td>
-                        <td>Capsule</td>
-                        <td class="text-center">
-                            <a href="/add_category" class="btn btn-sm btn-warning me-1">Edit</a>
-                            <button class="btn btn-sm btn-danger"
-                                    onclick="alert('Delete UI only')">Delete</button>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
+                <td>
+                    <a th:href="@{/category/edit/{id}(id=${category.id})}" class="btn btn-sm btn-warning">Edit</a>
+                    <a th:href="@{/category/delete/{id}(id=${category.id})}"
+                       class="btn btn-sm btn-danger"
+                       onclick="return confirm('Delete this category?')">Delete</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
     </div>
-
-    <!-- Simple Client-Side Search -->
     <script>
-        document.getElementById("categorySearch").addEventListener("keyup", function () {
+        document.getElementById("categorysearch").addEventListener("keyup", function () {
             let filter = this.value.toLowerCase();
-            let rows = document.querySelectorAll("#categoryTable tbody tr");
+            let rows = document.querySelectorAll("#categorytable tbody tr");
 
             rows.forEach(row => {
                 row.style.display = row.textContent.toLowerCase().includes(filter)
                     ? ""
                     : "none";
+
             });
         });
     </script>
-
 </section>
 </body>
 </html>

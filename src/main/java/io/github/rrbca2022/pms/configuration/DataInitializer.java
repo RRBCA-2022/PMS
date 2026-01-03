@@ -25,7 +25,7 @@ public class DataInitializer {
 	public CommandLineRunner initRootUserAndConfig() {
 		return args -> {
 			// ===== ROOT USER =====
-			if (userRepository.findByUsername("root").isEmpty()) {
+			if (userRepository.findByUsername("PMS").isEmpty()) {
 				User rootUser = new User();
 				rootUser.setName("PMS Root");
 				rootUser.setEmail("root@example.com");

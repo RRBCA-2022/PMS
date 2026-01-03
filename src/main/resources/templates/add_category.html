@@ -12,20 +12,25 @@
     <div class="container mt-4">
         <div class="card shadow-sm">
             <div class="card-header bg-primary text-white">
-                <h5 class="mb-0">➕ Add Category</h5>
+                <h4 th:text="${ctg_id == null ? 'Add Category' : 'Edit Category'}"></h4>
             </div>
-
             <div class="card-body">
-                <!-- UI ONLY FORM -->
-                <form action="/category" method="get">
 
+                <form th:action="@{/category/save}" th:object="${category}" method="post">
+                    <input type="hidden" th:field="*{id}" />
                     <div class="mb-3">
-                        <label class="form-label">Category Name</label>
-                        <input type="text" class="form-control" placeholder="Enter category name" required>
+                        <label class="form-label">Name</label>
+                        <input type="text" th:field="*{name}" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Description</label>
+                        <textarea th:field="*{description}" class="form-control" rows="3" required></textarea>
+
                     </div>
 
+                    <!-- Action Buttons -->
                     <div class="d-flex justify-content-end">
-                        <a href="/category" class="btn btn-secondary me-2">
+                        <a th:href="@{/category}" class="btn btn-secondary me-2">
                             Cancel
                         </a>
                         <button type="submit" class="btn btn-success">
