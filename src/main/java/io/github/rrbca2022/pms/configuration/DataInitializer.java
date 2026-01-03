@@ -46,7 +46,7 @@ public class DataInitializer {
 				config.setId(1L); // fixed single-row ID
 				config.setPharmacyName("My Pharmacy");
 				config.setPharmacyEmail("email@example.com");
-				config.setPharmacyLocation("Example Location");
+				config.setPharmacyAddress("Example Location");
 
 				configRepository.save(config);
 

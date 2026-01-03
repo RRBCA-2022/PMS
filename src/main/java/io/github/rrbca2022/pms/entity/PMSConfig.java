@@ -22,5 +22,5 @@ public class PMSConfig {
 	private String pharmacyEmail;
 
 	@Column(nullable = false)
-	private String pharmacyLocation;
+	private String pharmacyAddress;
 }

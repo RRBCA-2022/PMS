@@ -9,4 +9,5 @@ public interface PMSConfigRepository extends JpaRepository<PMSConfig, Long> {
 				() -> new RuntimeException("Pharmacy configuration not initialized")
 		);
 	}
+
 }
