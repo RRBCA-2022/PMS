@@ -27,17 +27,17 @@ public class DataInitializer {
 			// ===== ROOT USER =====
 			if (userRepository.findByUsername("root").isEmpty()) {
 				User rootUser = new User();
-				rootUser.setName("Root User");
+				rootUser.setName("PMS Root");
 				rootUser.setEmail("root@example.com");
-				rootUser.setUsername("root");
+				rootUser.setUsername("PMS");
 				rootUser.setPassword("PMS2026");
 				rootUser.setAccountType(AccountType.ADMIN);
 
 				userRepository.save(rootUser);
 
-				PMSLogger.debug("Root User created");
+				PMSLogger.debug("PMS Root User created");
 			} else {
-				PMSLogger.debug("Root User already exists");
+				PMSLogger.debug("PMS Root User already exists");
 			}
 
 			// ===== PHARMACY CONFIG =====

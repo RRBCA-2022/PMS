@@ -1,12 +1,10 @@
 package io.github.rrbca2022.pms.controller;
 
 import io.github.rrbca2022.pms.services.PMSConfigService;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class MainController {
@@ -22,53 +20,43 @@ public class MainController {
 		model.addAttribute("pharmacyName", pmsConfigService.getPharmacyName());
 	}
 
-	@RequestMapping("/dashboard")
-	public String dashboard() {
-		return "dashboard";
-	}
-
 	@GetMapping("/dashboard")
-	public String dashboard(HttpSession session) {
-		if(session.getAttribute("loggedInUser")==null){
-			return "redirect:/";
-		}
-		return "dashboard";
-	}
+	public String dashboard() { return "dashboard"; }
 
-	@RequestMapping("/medicine")
+	@GetMapping("/medicine")
 	public String medicine () {
 		return "medicine";
 	}
 
-	@RequestMapping("/add_medicine")
+	@GetMapping("/add_medicine")
 	public String add_medicine () {
 		return "add_medicine";
 	}
 
-	@RequestMapping("/category")
+	@GetMapping("/category")
 	public String category () {
 		return "category";
 	}
 
-	@RequestMapping("/add_category")
+	@GetMapping("/add_category")
 	public String add_category () {return "add_category";}
 
-	@RequestMapping("/purchase")
+	@GetMapping("/purchase")
 	public String purchase () {
 		return "purchase";
 	}
 
-	@RequestMapping("/sales")
+	@GetMapping("/sales")
 	public String sales () {
 		return "sales";
 	}
 
-	@RequestMapping("/user")
+	@GetMapping("/user")
 	public String user () {
 		return "user";
 	}
 
-	@RequestMapping("/supplier")
+	@GetMapping("/supplier")
 	public String supplier(){
 		return "supplier";
 	}
