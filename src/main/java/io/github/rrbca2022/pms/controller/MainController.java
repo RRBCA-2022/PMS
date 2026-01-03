@@ -3,6 +3,7 @@ package io.github.rrbca2022.pms.controller;
 import io.github.rrbca2022.pms.services.PMSConfigService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -14,9 +15,13 @@ public class MainController {
 		this.pmsConfigService = pmsConfigService;
 	}
 
-	@RequestMapping("/dashboard")
-	public String dashboard(Model model) {
+	@ModelAttribute
+	public void addPharmacyName(Model model) {
 		model.addAttribute("pharmacyName", pmsConfigService.getPharmacyName());
+	}
+
+	@RequestMapping("/dashboard")
+	public String dashboard() {
 		return "dashboard";
 	}
 

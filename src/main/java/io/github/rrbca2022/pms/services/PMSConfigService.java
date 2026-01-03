@@ -1,5 +1,6 @@
 package io.github.rrbca2022.pms.services;
 
+import io.github.rrbca2022.pms.entity.PMSConfig;
 import io.github.rrbca2022.pms.repository.PMSConfigRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,33 +10,48 @@ import org.springframework.transaction.annotation.Transactional;
 public class PMSConfigService {
 
 	private final PMSConfigRepository pmsConfigRepository;
+	private PMSConfig cachedConfig;
 
 	public PMSConfigService(PMSConfigRepository pmsConfigRepository) {
 		this.pmsConfigRepository = pmsConfigRepository;
 	}
 
+	// Cached method
+	public PMSConfig getConfig() {
+		if (cachedConfig == null) {
+			cachedConfig = pmsConfigRepository.getConfig();
+		}
+		return cachedConfig;
+	}
+
+	public PMSConfig saveConfig(PMSConfig config) {
+		cachedConfig = pmsConfigRepository.save(config); // update cache manually
+		return cachedConfig;
+	}
+
 	public String getPharmacyName() {
-		return pmsConfigRepository.getConfig().getPharmacyName();
+		System.out.println(getConfig().getPharmacyName());
+		return getConfig().getPharmacyName();
 	}
 
 	public void setPharmacyName(String pharmacyName) {
-		pmsConfigRepository.getConfig().setPharmacyName(pharmacyName);
+		getConfig().setPharmacyName(pharmacyName);
 	}
 
 	public String getPharmacyEmail() {
-		return pmsConfigRepository.getConfig().getPharmacyEmail();
+		return getConfig().getPharmacyEmail();
 	}
 
 	public void setPharmacyEmail(String pharmacyEmail) {
-		pmsConfigRepository.getConfig().setPharmacyEmail(pharmacyEmail);
+		getConfig().setPharmacyEmail(pharmacyEmail);
 	}
 
 	public String getPharmacyAddress() {
-		return pmsConfigRepository.getConfig().getPharmacyAddress();
+		return getConfig().getPharmacyAddress();
 	}
 
 	public void setPharmacyAddress(String pharmacyAddress) {
-		pmsConfigRepository.getConfig().setPharmacyAddress(pharmacyAddress);
+		getConfig().setPharmacyAddress(pharmacyAddress);
 	}
 
 
