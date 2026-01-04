@@ -37,22 +37,24 @@
             <label class="form-label">Category</label>
 
             <!-- Hidden field for backend -->
-            <input type="hidden" th:field="*{category.id}" id="categoryId"/>
+            <input type="hidden" th:field="*{category.id}" id="categoryId">
 
-            <!-- Visible input -->
-            <input type="text"
-                   id="categoryInput"
-                   class="form-control"
-                   placeholder="-- Select Category --"
-                   readonly
-                   onclick="showDropdown()"
-                   required>
+            <!-- Visible selector -->
+            <div class="category-select" onclick="toggleCategoryDropdown()">
+              <input type="text"
+                     id="categoryInput"
+                     class="form-control"
+                     value="-- Choose category --"
+                     readonly>
+              <span class="dropdown-arrow">▾</span>
+            </div>
 
             <!-- Dropdown -->
-            <ul class="dropdown-list" id="categoryDropdown">
+            <ul class="category-dropdown" id="categoryDropdown">
               <li th:each="cat : ${categories}"
                   th:text="${cat.name}"
-                  th:onclick="|selectCategory(${cat.id}, '${cat.name}')|">
+                  th:attr="data-id=${cat.id}, data-name=${cat.name}"
+                  onclick="selectCategory(this)">
               </li>
             </ul>
           </div>
@@ -84,24 +86,17 @@
               Cancel
             </a>
             <button type="submit" class="btn btn-success">
-              Save Category
+              Save Medicine
             </button>
           </div>
+
         </form>
       </div>
     </div>
   </div>
-  <script>
-    function showDropdown() {
-      document.getElementById("categoryDropdown").style.display = "block";
-    }
-      function selectCategory(id, name) {
-      document.getElementById("categoryId").value = id;
-      document.getElementById("categoryInput").value = name;
-      document.getElementById("categoryDropdown").style.display = "none";
-    }
 
-  </script>
+  <script th:src="@{/js/dropdown.js}"></script>
+
 </section>
 </body>
 </html>
