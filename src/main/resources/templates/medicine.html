@@ -16,7 +16,7 @@
 			<h4 class="mb-0">💊 Medicine Management</h4>
 
 			<!-- Add Medicine Button (Right Side) -->
-			<a th:href="@{/add_medicine}" class="btn btn-primary">
+			<a th:href="@{/medicine/new}" class="btn btn-primary">
 				+ Add Medicine
 			</a>
 		</div>
@@ -37,11 +37,17 @@
 				<table class="table table-bordered table-hover align-middle" id="medicineTable">
 					<thead class="table-dark">
 					<tr>
-						<th>#</th>
-						<th>Medicine Name</th>
+						<th>ID</th>
+						<th>Name</th>
+						<th>Description</th>
+						<th>Quantity</th>
+						<th>Unit</th>
 						<th>Category</th>
 						<th>Price</th>
-						<th>Stock</th>
+						<th>Location</th>
+						<th>Manufacturer</th>
+						<th>MFG Date</th>
+						<th>EXP Date</th>
 						<th class="text-center">Actions</th>
 					</tr>
 					</thead>
@@ -49,54 +55,33 @@
 					<tbody>
 
 					<!-- REAL DATA (from DB) -->
-					<tr th:each="medicine, stat : ${medicines}">
-						<td th:text="${stat.count}"></td>
+					<tr th:each="medicine : ${medicines}">
+						<td th:text="${medicine.id}"></td>
 						<td th:text="${medicine.name}"></td>
+						<td th:text="${medicine.description}"></td>
+						<td th:text="${medicine.qty}"></td>
+						<td th:text="${medicine.qtyUnit}"></td>
 						<td th:text="${medicine.category.name}"></td>
 						<td th:text="${medicine.price}"></td>
-						<td th:text="${medicine.stock}"></td>
+						<td th:text="${medicine.location}"></td>
+						<td th:text="${medicine.manufacturer}"></td>
+						<td th:text="${medicine.mfgDate}"></td>
+						<td th:text="${medicine.expDate}"></td>
+
 						<td class="text-center">
-							<a th:href="@{/medicines/edit/{id}(id=${medicine.id})}"
+							<a th:href="@{/medicine/edit/{id}(id=${medicine.id})}"
 							   class="btn btn-sm btn-warning me-1">
 								Edit
 							</a>
-							<a th:href="@{/medicines/delete/{id}(id=${medicine.id})}"
+							<a th:href="@{/medicine/delete/{id}(id=${medicine.id})}"
 							   class="btn btn-sm btn-danger"
-							   onclick="return confirm('Are you sure?')">
+							   onclick="return confirm('Delete this medicine?')">
 								Delete
 							</a>
 						</td>
 					</tr>
 
-					<!-- DUMMY DATA (UI ONLY) -->
-					<tr th:if="${#lists.isEmpty(medicines)}">
-						<td>1</td>
-						<td>Paracetamol</td>
-						<td>Tablet</td>
-						<td>30</td>
-						<td>120</td>
-						<td class="text-center">
-							<a href="#" class="btn btn-sm btn-warning me-1">Edit</a>
-							<a href="#" class="btn btn-sm btn-danger">Delete</a>
-						</td>
-					</tr>
-
-					<tr th:if="${#lists.isEmpty(medicines)}">
-						<td>2</td>
-						<td>Cough Syrup</td>
-						<td>Syrup</td>
-						<td>110</td>
-						<td>40</td>
-						<td class="text-center">
-							<a href="#" class="btn btn-sm btn-warning me-1">Edit</a>
-							<a href="#" class="btn btn-sm btn-danger">Delete</a>
-						</td>
-					</tr>
-
 					</tbody>
-
-					<!-- Dynamic Data -->
-
 				</table>
 			</div>
 		</div>

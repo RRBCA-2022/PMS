@@ -23,17 +23,6 @@ public class MainController {
 	@GetMapping("/dashboard")
 	public String dashboard() { return "dashboard"; }
 
-	@GetMapping("/medicine")
-	public String medicine () {
-		return "medicine";
-	}
-
-	@GetMapping("/add_medicine")
-	public String add_medicine () {
-		return "add_medicine";
-	}
-
-
 	@GetMapping("/purchase")
 	public String purchase () {
 		return "purchase";

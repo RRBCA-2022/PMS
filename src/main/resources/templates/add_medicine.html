@@ -8,48 +8,83 @@
 
 <body>
 <section>
-
   <div class="container mt-4">
     <div class="card shadow-sm">
       <div class="card-header bg-primary text-white">
-        <h5 class="mb-0">➕ Add Medicine</h5>
+        <h4 th:text="${mode != null && mode == 'add'  ? 'Add Medicine' : 'Edit Medicine'}"></h4>
       </div>
-
       <div class="card-body">
-        <!-- UI ONLY FORM -->
-        <form action="/medicine" method="get">
 
+        <form th:action="@{/medicine/save}" th:object="${medicine}" method="post">
+          <input type="hidden" th:field="*{id}" />
           <div class="mb-3">
-            <label class="form-label">Medicine Name</label>
-            <input type="text" class="form-control" required>
+            <label class="form-label">Name</label>
+            <input type="text" th:field="*{name}" class="form-control" required>
           </div>
-
           <div class="mb-3">
+            <label class="form-label">Description</label>
+            <textarea th:field="*{description}" class="form-control" rows="3" required></textarea>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Quantity</label>
+            <input type="text" th:field="*{qty}" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Unit</label>
+            <input type="text" th:field="*{qtyUnit}" class="form-control" required>
+          </div>
+          <div class="mb-3 position-relative">
             <label class="form-label">Category</label>
-            <select class="form-select" required>
-              <option>Tablet</option>
-              <option>Capsule</option>
-              <option>Syrup</option>
-              <option>Injection</option>
-            </select>
+
+            <!-- Hidden field for backend -->
+            <input type="hidden" th:field="*{category.id}" id="categoryId"/>
+
+            <!-- Visible input -->
+            <input type="text"
+                   id="categoryInput"
+                   class="form-control"
+                   placeholder="-- Select Category --"
+                   readonly
+                   onclick="showDropdown()"
+                   required>
+
+            <!-- Dropdown -->
+            <ul class="dropdown-list" id="categoryDropdown">
+              <li th:each="cat : ${categories}"
+                  th:text="${cat.name}"
+                  th:onclick="|selectCategory(${cat.id}, '${cat.name}')|">
+              </li>
+            </ul>
           </div>
 
           <div class="mb-3">
             <label class="form-label">Price</label>
-            <input type="number" class="form-control" required>
+            <input type="text" th:field="*{price}" class="form-control" required>
           </div>
-
           <div class="mb-3">
-            <label class="form-label">Stock</label>
-            <input type="number" class="form-control" required>
+            <label class="form-label">Location</label>
+            <input type="text" th:field="*{location}" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Manufacturer</label>
+            <input type="text" th:field="*{manufacturer}" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">MFG Date</label>
+            <input type="text" th:field="*{mfgDate}" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">EXP Date</label>
+            <input type="text" th:field="*{expDate}" class="form-control" required>
           </div>
 
+          <!-- Action Buttons -->
           <div class="d-flex justify-content-end">
-            <a href="/medicine" class="btn btn-secondary me-2">
+            <a th:href="@{/medicine}" class="btn btn-secondary me-2">
               Cancel
             </a>
             <button type="submit" class="btn btn-success">
-              Save Medicine
+              Save Category
             </button>
           </div>
 
@@ -57,6 +92,20 @@
       </div>
     </div>
   </div>
+  <script>
+    function showDropdown() {
+      document.getElementById("categoryDropdown").style.display = "block";
+    }
+
+
+      function selectCategory(id, name) {
+      document.getElementById("categoryId").value = id;
+      document.getElementById("categoryInput").value = name;
+      document.getElementById("categoryDropdown").style.display = "none";
+    }
+
+  </script>
+
 
 </section>
 </body>
