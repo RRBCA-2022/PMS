@@ -19,7 +19,6 @@
                        id="categorysearch">
             </div>
         </div>
-
         <table class="table table-bordered table-hover bg-white" id="categorytable" >
             <thead class="table-dark">
             <tr>
@@ -40,6 +39,7 @@
                     <a th:href="@{/category/delete/{id}(id=${category.id})}"
                        class="btn btn-sm btn-danger"
                        onclick="return confirm('Delete this category?')">Delete</a>
+
                 </td>
             </tr>
             </tbody>
@@ -54,7 +54,6 @@
                 row.style.display = row.textContent.toLowerCase().includes(filter)
                     ? ""
                     : "none";
-
             });
         });
     </script>

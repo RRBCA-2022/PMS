@@ -22,7 +22,7 @@ public class MedicineController {
     @GetMapping
     public String ListMedicines(Model model){
         model.addAttribute("medicines", medicineService.getAllMedicines());
-        return "/medicine";
+        return "medicine";
     }
 
     @GetMapping("/new")

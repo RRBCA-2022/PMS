@@ -13,7 +13,6 @@ import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 @Service
 public class MedicineService {
 
-    @Autowired
     private CategoryService categoryService;
     private MedicineRepository medicineRepository;
 
