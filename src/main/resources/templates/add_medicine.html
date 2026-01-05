@@ -8,10 +8,13 @@
 
 <body>
 <section>
+  <link rel="stylesheet" th:href="@{/css/dropdown.css}">
+
+
   <div class="container mt-4">
     <div class="card shadow-sm">
       <div class="card-header bg-primary text-white">
-        <h4 th:text="${mode != null && mode == 'add'  ? 'Add Medicine' : 'Edit Medicine'}"></h4>
+        <h4 th:text="${mode != null && mode == 'Add'  ? 'Add Medicine' : 'Edit Medicine'}"></h4>
       </div>
       <div class="card-body">
 
@@ -94,8 +97,6 @@
       </div>
     </div>
   </div>
-
-  <script th:src="@{/js/dropdown.js}"></script>
 
 </section>
 </body>

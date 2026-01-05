@@ -29,6 +29,11 @@ public class PMSConfigService {
 		return cachedConfig;
 	}
 
+	public PMSConfig saveConfig() {
+		pmsConfigRepository.save(cachedConfig); // update cache manually
+		return cachedConfig;
+	}
+
 	public String getPharmacyName() {
 		System.out.println(getConfig().getPharmacyName());
 		return getConfig().getPharmacyName();
@@ -36,6 +41,7 @@ public class PMSConfigService {
 
 	public void setPharmacyName(String pharmacyName) {
 		getConfig().setPharmacyName(pharmacyName);
+		saveConfig();
 	}
 
 	public String getPharmacyEmail() {
@@ -44,6 +50,7 @@ public class PMSConfigService {
 
 	public void setPharmacyEmail(String pharmacyEmail) {
 		getConfig().setPharmacyEmail(pharmacyEmail);
+		saveConfig();
 	}
 
 	public String getPharmacyAddress() {
@@ -52,7 +59,16 @@ public class PMSConfigService {
 
 	public void setPharmacyAddress(String pharmacyAddress) {
 		getConfig().setPharmacyAddress(pharmacyAddress);
+		saveConfig();
 	}
 
+	public String getCurrencySymbol() {
+		return getConfig().getCurrencySymbol();
+	}
+
+	public void setCurrencySymbol(String currencySymbol) {
+		getConfig().setCurrencySymbol(currencySymbol);
+		saveConfig();
+	}
 
 }

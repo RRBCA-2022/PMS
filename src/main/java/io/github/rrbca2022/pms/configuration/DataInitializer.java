@@ -47,6 +47,7 @@ public class DataInitializer {
 				config.setPharmacyName("My Pharmacy");
 				config.setPharmacyEmail("email@example.com");
 				config.setPharmacyAddress("Example Location");
+				config.setCurrencySymbol("$");
 
 				configRepository.save(config);
 

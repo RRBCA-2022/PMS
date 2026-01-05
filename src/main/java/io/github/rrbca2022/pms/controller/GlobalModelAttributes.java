@@ -27,4 +27,9 @@ public class GlobalModelAttributes {
 	public void addPMSVersion(ModelMap model) {
 		model.addAttribute("version", appVersion);
 	}
+
+	@ModelAttribute
+	public void addCurrencySymbol(ModelMap model) {
+		model.addAttribute("currencySymbol", pmsConfigService.getCurrencySymbol());
+	}
 }

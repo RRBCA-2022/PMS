@@ -23,4 +23,7 @@ public class PMSConfig {
 
 	@Column(nullable = false)
 	private String pharmacyAddress;
+
+	@Column(nullable = false)
+	private String currencySymbol;
 }
