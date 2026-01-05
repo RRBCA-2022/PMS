@@ -1,5 +1,6 @@
 package io.github.rrbca2022.pms.controller;
 
+import io.github.rrbca2022.pms.entity.Medicine;
 import io.github.rrbca2022.pms.services.PMSConfigService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.ui.ModelMap;
@@ -31,5 +32,10 @@ public class GlobalModelAttributes {
 	@ModelAttribute
 	public void addCurrencySymbol(ModelMap model) {
 		model.addAttribute("currencySymbol", pmsConfigService.getCurrencySymbol());
+	}
+
+	@ModelAttribute("medicine")
+	public Medicine medicine() {
+		return new Medicine();
 	}
 }

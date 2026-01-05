@@ -14,6 +14,32 @@ function openMedicineModal() {
     if (categoryId) categoryId.value = "";
 }
 
+function openEditMedicineModal(id) {
+    fetch(`/medicine/edit/${id}`)
+        .then(res => res.json())
+        .then(med => {
+
+            document.querySelector('[name="id"]').value = med.id
+            document.querySelector('[name="name"]').value = med.name
+            document.querySelector('[name="description"]').value = med.description
+            document.querySelector('[name="price"]').value = med.price
+            document.querySelector('[name="qty"]').value = med.qty
+            document.querySelector('[name="qtyUnit"]').value = med.qtyUnit
+            document.querySelector('[name="location"]').value = med.location
+            document.querySelector('[name="mfgDate"]').value = med.mfgDate
+            document.querySelector('[name="expDate"]').value = med.expDate
+
+            // category
+            document.getElementById("categoryId").value = med.category.id
+            document.getElementById("categoryInput").value = med.category.name
+
+            // title
+            document.querySelector("#medicineModal h5").textContent = "Edit Medicine"
+
+            openMedicineModal()
+        })
+}
+
 function closeMedicineModal() {
     closeModal("medicineModal", "medicineBackdrop");
 
@@ -27,6 +53,7 @@ function closeMedicineModal() {
 }
 
 // ----------------------------------
+
 let activeIndex = -1;
 
 function clearCategoryInput() {
@@ -97,6 +124,9 @@ function updateActiveItem(items) {
     });
 }
 
+
+// ------------------------------------------
+
 // Close dropdown when clicking outside
 document.addEventListener("click", function(event) {
     const selectBox = document.querySelector(".category-select");
@@ -105,3 +135,68 @@ document.addEventListener("click", function(event) {
         dropdown.style.display = "none";
     }
 });
+
+document.querySelector("#medicineModal form")
+    .addEventListener("submit", function (e) {
+        e.preventDefault()
+        saveMedicine()
+    })
+
+function saveMedicine() {
+
+    const form = document.querySelector("#medicineModal form")
+    const formData = new FormData(form)
+    const categoryId = document.getElementById("categoryId").value;
+
+    const data = Object.fromEntries(formData.entries())
+    data.qtyUnit = data.qtyUnit.toUpperCase();
+    data.category = { id: categoryId };  // <-- IMPORTANT
+    delete data["category.id"];          // remove the old key
+
+    console.log(data)
+
+    fetch("/medicine/save", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+    })
+        .then(res => res.json())
+        .then(saved => {
+
+            console.log(saved);
+
+            // 1️⃣ close add medicine modal
+            closeMedicineModal()
+
+            // 2️⃣ add to purchase available products
+            appendMedicineToPurchaseList(saved)
+
+        })
+}
+
+function appendMedicineToPurchaseList(m) {
+
+    const currencySymbol =
+        document.getElementById("grandTotal")?.dataset.currSymbol || ""
+
+    const list = document.getElementById("availableProducts")
+
+    const div = document.createElement("div")
+    div.className = "list-group-item d-flex justify-content-between"
+
+    div.innerHTML = `
+		<div>
+            <strong th:text="${m.name}"></strong><br>
+            <small th:text="'Cost: ' + ${currencySymbol} + ${m.price}"></small>
+        </div>
+        <button class="btn btn-sm btn-primary" type="button"
+                onclick="addMedicineToPurchase(this)">
+            Add
+        </button>
+	`
+
+    list.prepend(div)
+}
+

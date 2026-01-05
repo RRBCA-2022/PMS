@@ -15,10 +15,6 @@
 		<div class="d-flex justify-content-between align-items-center mb-3">
 			<h4 class="mb-0">💊 Medicine Management</h4>
 
-			<!-- Add Medicine Button (Right Side) -->
-			<a th:href="@{/medicine/new}" class="btn btn-primary">
-				+ Add Medicine
-			</a>
 		</div>
 
 		<!-- Search Bar -->
@@ -69,10 +65,11 @@
 						<td th:text="${medicine.expDate}"></td>
 
 						<td class="text-center">
-							<a th:href="@{/medicine/edit/{id}(id=${medicine.id})}"
-							   class="btn btn-sm btn-warning me-1">
+							<button type="button"
+							        class="btn btn-sm btn-warning me-1"
+							        th:onclick="|openEditMedicineModal(${medicine.id})|">
 								Edit
-							</a>
+							</button>
 							<a th:href="@{/medicine/delete/{id}(id=${medicine.id})}"
 							   class="btn btn-sm btn-danger"
 							   onclick="return confirm('Delete this medicine?')">
@@ -101,6 +98,14 @@
 			});
 		});
 	</script>
+
+	<div th:replace="~{modal/add-medicine-modal :: modal}"></div>
+
+	<!-- Common modal utilities -->
+	<script th:src="@{/js/modal/modalUtils.js}"></script>
+
+	<!-- Modal specific handlers -->
+	<script th:src="@{/js/modal/medicineHandler.js}"></script>
 
 </section>
 </body>

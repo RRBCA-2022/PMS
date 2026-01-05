@@ -1,8 +1,7 @@
 package io.github.rrbca2022.pms.controller;
 
-import io.github.rrbca2022.pms.entity.Medicine;
 import io.github.rrbca2022.pms.services.CategoryService;
-import io.github.rrbca2022.pms.services.PMSConfigService;
+import io.github.rrbca2022.pms.services.MedicineService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,11 +9,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class MainController {
 
-	private final PMSConfigService pmsConfigService;
+	private final MedicineService medicineService;
 	private final CategoryService categoryService;
 
-	public MainController(PMSConfigService pmsConfigService, CategoryService categoryService) {
-		this.pmsConfigService = pmsConfigService;
+	public MainController(MedicineService medicineService, CategoryService categoryService) {
+		this.medicineService = medicineService;
 		this.categoryService = categoryService;
 	}
 
@@ -23,8 +22,8 @@ public class MainController {
 
 	@GetMapping("/purchase")
 	public String purchase (ModelMap model) {
-		model.addAttribute("medicine", new Medicine());
 		model.addAttribute("mode","Add");
+		model.addAttribute("medicines", medicineService.getAllMedicines());
 		model.addAttribute("categories", categoryService.getAllCategories());
 		return "purchase";
 	}

@@ -1,13 +1,12 @@
 package io.github.rrbca2022.pms.controller;
 
+import io.github.rrbca2022.pms.entity.Category;
 import io.github.rrbca2022.pms.entity.Medicine;
 import io.github.rrbca2022.pms.services.CategoryService;
 import io.github.rrbca2022.pms.services.MedicineService;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -28,34 +27,28 @@ public class MedicineController {
         return "medicine";
     }
 
-    @GetMapping("/new")
-    public String newMedicine(Model model){
-        model.addAttribute("medicine", new Medicine());
-        model.addAttribute("mode","Add");
-        model.addAttribute("categories", categoryService.getAllCategories());
-        return "add_medicine";
-    }
-
     @PostMapping("/save")
-    public String saveMedicine(@Valid @ModelAttribute Medicine medicine,
-                               BindingResult bindingResult,
-                               Model model
-                              ){
-        if(bindingResult.hasErrors()){
-            model.addAttribute("categories", categoryService.getAllCategories());
-            model.addAttribute("mode", medicine.getId() == null ? "Add" : "Edit");
-            return "add_medicine";
+    @ResponseBody
+    public Medicine saveMedicine(
+            @Valid @RequestBody Medicine medicine
+    ) {
+
+        System.out.println("Medicine Info");
+        System.out.println(medicine.toString());
+
+        if (medicine.getCategory() != null && medicine.getCategory().getName() != null) {
+            Category cat = categoryService.getCategoryById(medicine.getCategory().getId());
+            medicine.setCategory(cat);
         }
+
         medicineService.savaMedicine(medicine);
-        return "redirect:/medicine";
+        return medicine;
     }
 
     @GetMapping("/edit/{id}")
-    public String editMedicine(@PathVariable Long id, ModelMap model){
-        Medicine med=medicineService.getMedicineById(id);
-        model.addAttribute("medicine",med);
-        model.addAttribute("mode","Edit");
-        return "add_medicine";
+    @ResponseBody
+    public Medicine editMedicine(@PathVariable Long id){
+        return medicineService.getMedicineById(id);
     }
 
     @GetMapping("/delete/{id}")

@@ -1,5 +1,6 @@
 package io.github.rrbca2022.pms.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.AssertTrue;
 import lombok.AllArgsConstructor;
@@ -36,15 +37,21 @@ public class Medicine {
 	private String location; // e.g., "Shelf A3"
 
 	private String manufacturer;
+
 	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	private LocalDate mfgDate;  // Manufacturing date
+
 	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	private LocalDate expDate;  // Expiry date
+
 	@AssertTrue(message = "Expiry date must be after manufacturing date")
 	public boolean isValidDates() {
 		if (mfgDate == null || expDate == null) return true;
 		return expDate.isAfter(mfgDate);
 	}
+
 	@ManyToOne
 	@JoinColumn(name = "category_id", nullable = false)
 	private Category category;

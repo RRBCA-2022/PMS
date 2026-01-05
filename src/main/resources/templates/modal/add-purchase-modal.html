@@ -1,5 +1,6 @@
 <div th:fragment="modal">
-	<link rel="stylesheet" th:href="@{/css/modal.css}">
+	<link rel="stylesheet" th:href="@{/css/modal/modalMain.css}">
+	<link rel="stylesheet" th:href="@{/css/modal/purchaseModal.css}">
 
 	<div id="purchaseBackdrop" class="modal-backdrop-custom" onclick="closePurchaseModal()"></div>
 
@@ -62,8 +63,7 @@
 							<input type="text"
 							       class="form-control"
 							       placeholder="Search medicine"
-							       id="medicineSearch"
-							       oninput="filterMedicines()">
+							       id="medicineSearch">
 						</div>
 
 						<div class="list-group product-list" id="availableProducts">
@@ -71,13 +71,15 @@
 							     th:each="m : ${medicines}">
 								<div>
 									<strong th:text="${m.name}"></strong><br>
-									<small th:text="'Cost: ' + ${currencySymbol} + ${m.cost}"></small>
+									<small th:text="${currencySymbol + ' ' + m.price}"></small>
 								</div>
+								<!-- Use th:attr to safely pass price as a number -->
 								<button class="btn btn-sm btn-primary" type="button"
-								        onclick="addMedicineToPurchase(this)">
+								        th:attr="onclick=${'addMedicineToPurchase(this,' + m.price + ')'}">
 									Add
 								</button>
 							</div>
+
 						</div>
 					</div>
 
@@ -100,16 +102,17 @@
 
 			</div>
 
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" onclick="closePurchaseModal()">
+					Cancel
+				</button>
+				<button type="submit" class="btn btn-primary">
+					Create Purchase Order
+				</button>
+			</div>
+
 		</form>
 
-		<div class="modal-footer">
-			<button type="button" class="btn btn-secondary" onclick="closePurchaseModal()">
-				Cancel
-			</button>
-			<button type="submit" class="btn btn-primary">
-				Create Purchase Order
-			</button>
-		</div>
 
 	</div>
 

@@ -22,14 +22,14 @@ public class MedicineService {
 
     public Medicine getMedicineById(Long id){return medicineRepository.findById(id).orElse(null);}
 
-    public  void savaMedicine(Medicine medicine)
+    public void savaMedicine(Medicine medicine)
     {   Long catId=medicine.getCategory().getId();
         Category category=categoryService.getCategoryById(catId);
         medicine.setCategory(category);
         medicineRepository.save(medicine);
     }
 
-    public void  deleteMedicine(Long id){ medicineRepository.deleteById(id);}
+    public void deleteMedicine(Long id){ medicineRepository.deleteById(id);}
 
 
 
