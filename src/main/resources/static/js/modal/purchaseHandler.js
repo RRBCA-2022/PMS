@@ -43,6 +43,8 @@ function renderPurchaseItems() {
     list.innerHTML = "";
 
     let grandTotal = 0;
+    const grandTotalEl = document.getElementById("grandTotal");
+    const currency = grandTotalEl.dataset.currSymbol || "$";
 
     purchaseItems.forEach((item, index) => {
         grandTotal += item.total;
@@ -53,25 +55,24 @@ function renderPurchaseItems() {
         div.innerHTML = `
             <div>
                 <strong>${item.name}</strong><br>
-                <small>$${item.price.toFixed(2)} each</small>
+                <small>${currency}${item.price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} each</small>
             </div>
             <div class="d-flex align-items-center gap-2">
                 <button type="button" class="btn btn-sm btn-light" onclick="decreaseQty(${index})">−</button>
                 <span>${item.qty}</span>
                 <button type="button" class="btn btn-sm btn-light" onclick="increaseQty(${index})">+</button>
-                <strong>$${item.total.toFixed(2)}</strong>
+                <strong>${currency}${item.total.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong>
                 <input type="hidden" name="items[${index}].name" value="${item.name}">
                 <input type="hidden" name="items[${index}].price" value="${item.price}">
                 <input type="hidden" name="items[${index}].qty" value="${item.qty}">
             </div>
         `;
 
+
         list.appendChild(div);
     });
 
-    const grandTotalEl = document.getElementById("grandTotal");
-    const currency = grandTotalEl.dataset.currSymbol || "$";
-    grandTotalEl.innerText = currency + " " + grandTotal.toFixed(2);
+    grandTotalEl.innerText = currency + ' ' + grandTotal.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
 }
 
