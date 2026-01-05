@@ -3,9 +3,11 @@ package io.github.rrbca2022.pms.controller;
 import io.github.rrbca2022.pms.entity.Medicine;
 import io.github.rrbca2022.pms.services.CategoryService;
 import io.github.rrbca2022.pms.services.MedicineService;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -35,9 +37,16 @@ public class MedicineController {
     }
 
     @PostMapping("/save")
-    public String saveMedicine(@ModelAttribute Medicine medicine,
-                               @RequestParam("id") Long id){
-        medicineService.savaMedicine(medicine,id);
+    public String saveMedicine(@Valid @ModelAttribute Medicine medicine,
+                               BindingResult bindingResult,
+                               Model model
+                              ){
+        if(bindingResult.hasErrors()){
+            model.addAttribute("categories", categoryService.getAllCategories());
+            model.addAttribute("mode", medicine.getId() == null ? "Add" : "Edit");
+            return "add_medicine";
+        }
+        medicineService.savaMedicine(medicine);
         return "redirect:/medicine";
     }
 
@@ -54,5 +63,6 @@ public class MedicineController {
         medicineService.deleteMedicine(id);
         return "redirect:/medicine";
     }
+
 
 }

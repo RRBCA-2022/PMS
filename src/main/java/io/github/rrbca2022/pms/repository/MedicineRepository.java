@@ -2,12 +2,14 @@ package io.github.rrbca2022.pms.repository;
 
 import io.github.rrbca2022.pms.entity.Medicine;
 import io.github.rrbca2022.pms.entity.MedicineUnitType;
+import jakarta.validation.constraints.AssertTrue;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-
+@Repository
 public interface MedicineRepository extends JpaRepository<Medicine, Long> {
 
 	/* =========================
@@ -117,5 +119,7 @@ public interface MedicineRepository extends JpaRepository<Medicine, Long> {
 
     // Useful for validation before insert
     boolean existsByName(String name);
+
+
 
 }

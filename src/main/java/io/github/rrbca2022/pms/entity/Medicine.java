@@ -1,9 +1,11 @@
 package io.github.rrbca2022.pms.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.AssertTrue;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 
@@ -34,11 +36,15 @@ public class Medicine {
 	private String location; // e.g., "Shelf A3"
 
 	private String manufacturer;
-
+	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
 	private LocalDate mfgDate;  // Manufacturing date
-
+	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
 	private LocalDate expDate;  // Expiry date
-
+	@AssertTrue(message = "Expiry date must be after manufacturing date")
+	public boolean isValidDates() {
+		if (mfgDate == null || expDate == null) return true;
+		return expDate.isAfter(mfgDate);
+	}
 	@ManyToOne
 	@JoinColumn(name = "category_id", nullable = false)
 	private Category category;

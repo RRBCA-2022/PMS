@@ -31,9 +31,5 @@ public class MainController {
 		return "user";
 	}
 
-	@GetMapping("/supplier")
-	public String supplier(){
-		return "supplier";
-	}
 
 }
