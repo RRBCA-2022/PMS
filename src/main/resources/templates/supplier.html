@@ -1,14 +1,66 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{base::layout(~{::section})}">
-
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="base::layout(~{::section})" >
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
 <section>
+    <div class="container mt-5">
+        <div class="d-flex justify-content-between mb-3">
+            <h2>Supplier List</h2>
+            <a th:href="@{/supplier/new}" class="btn btn-primary">+ Add Supplier</a>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-4 ms-auto">
+                <input type="text"
+                       class="form-control"
+                       placeholder="🔍 Search supplier..."
+                       id="suppliersearch">
+            </div>
+        </div>
+        <table class="table table-bordered table-hover bg-white" id="suppliertable" >
+            <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Address</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="supplier : ${suppliers}">
+                <td th:text="${supplier.id}"></td>
+                <td th:text="${supplier.name}"></td>
+                <td th:text="${supplier.address}"></td>
+                <td th:text="${supplier.phone}"></td>
+                <td th:text="${supplier.email}"></td>
 
+                <td>
+                    <a th:href="@{/supplier/edit/{id}(id=${supplier.id})}" class="btn btn-sm btn-warning">Edit</a>
+                    <a th:href="@{/supplier/delete/{id}(id=${supplier.id})}"
+                       class="btn btn-sm btn-danger"
+                       onclick="return confirm('Delete this category?')">Delete</a>
+
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <script>
+        document.getElementById("suppliersearch").addEventListener("keyup", function () {
+            let filter = this.value.toLowerCase();
+            let rows = document.querySelectorAll("#suppliertable tbody tr");
+
+            rows.forEach(row => {
+                row.style.display = row.textContent.toLowerCase().includes(filter)
+                    ? ""
+                    : "none";
+            });
+        });
+    </script>
 </section>
-
 </body>
 </html>

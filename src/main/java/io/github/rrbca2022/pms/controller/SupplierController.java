@@ -26,7 +26,7 @@ public class SupplierController {
     public String newSupplier(Model model){
         model.addAttribute("supplier", new Supplier());
         model.addAttribute("mode","Add");
-        return "add_supplier";
+        return "edit_supplier";
     }
 
     @PostMapping("/save")
@@ -36,10 +36,10 @@ public class SupplierController {
     }
     @GetMapping("/edit/{id}")
     public String editSupplier(@PathVariable Long id, ModelMap model){
-        Supplier supplier = supplierService.getSupplierById(id);
-        model.addAttribute("medicine",supplier);
+        Supplier sup = supplierService.getSupplierById(id);
+        model.addAttribute("supplier",sup);
         model.addAttribute("mode","Edit");
-        return "add_supplier";
+        return "edit_supplier";
 
     }
 
