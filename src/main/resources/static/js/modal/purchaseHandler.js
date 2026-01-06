@@ -64,6 +64,13 @@ function renderPurchaseItems() {
                         onchange="updateQty(${index}, this.value)">
                 <button type="button" class="btn btn-sm btn-light" onclick="increaseQty(${index})">+</button>
                 <strong>${currency} ${item.total.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong>
+
+                <button type="button"
+                        class="btn btn-sm btn-link text-danger remove-item"
+                        onclick="removePurchaseItem(${index})">
+                    &times;
+                </button>
+                
                 <input type="hidden" name="items[${index}].name" value="${item.name}">
                 <input type="hidden" name="items[${index}].price" value="${item.price}">
                 <input type="hidden" name="items[${index}].qty" value="${item.qty}">
@@ -74,6 +81,11 @@ function renderPurchaseItems() {
     });
 
     grandTotalEl.innerText = currency + ' ' + grandTotal.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+function removePurchaseItem(index) {
+    purchaseItems.splice(index, 1);
+    renderPurchaseItems();
 }
 
 /* ---------- Quantity Control ---------- */

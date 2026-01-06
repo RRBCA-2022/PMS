@@ -5,146 +5,149 @@
 	<div id="medicineBackdrop" class="modal-backdrop-custom" onclick="closeMedicineModal()"></div>
 
 	<div id="medicineModal" class="modal-custom">
-
-		<div class="modal-header">
-			<h5 th:text="${mode != null && mode == 'Add' ? 'Add Medicine' : 'Edit Medicine'}"></h5>
-			<button class="btn-close" onclick="closeMedicineModal()"></button>
-		</div>
-
-		<div class="modal-body">
-			<div class="container-fluid">
-				<form th:action="@{/medicine/save}"
-				      th:object="${medicine}"
-				      method="post">
-
-					<input type="hidden" th:field="*{id}"/>
-
-					<div class="mb-3">
-						<label class="form-label">Name</label>
-						<input type="text" th:field="*{name}"
-						       class="form-control"
-						       placeholder="Enter name"
-						       required>
-					</div>
-
-					<div class="mb-3">
-						<label class="form-label">Description</label>
-						<textarea th:field="*{description}"
-						          class="form-control"
-						          rows="3"
-						          placeholder="Enter description"
-						          required>
-						</textarea>
-					</div>
-
-					<!-- Price, Quantity & Unit Row -->
-					<div class="row">
-						<div class="col-md-4 mb-3">
-							<label class="form-label">Price</label>
-							<div class="input-group">
-								<span class="input-group-text" th:text="${currencySymbol}"></span>
-								<input type="text" th:field="*{price}" class="form-control" required>
-							</div>
-						</div>
-						<div class="col-md-4 mb-3">
-							<label class="form-label">Quantity</label>
-							<input type="text" th:field="*{qty}" class="form-control" required>
-						</div>
-						<div class="col-md-4 mb-3">
-							<label class="form-label">Unit</label>
-							<select th:field="*{qtyUnit}" class="form-select" required>
-								<option th:each="unit : ${T(io.github.rrbca2022.pms.entity.MedicineUnitType).values()}"
-								        th:value="${unit.toString().toLowerCase()}"
-								        th:text="${unit.toString().toLowerCase()}"></option>
-							</select>
-						</div>
-					</div>
-
-					<!-- Category & Location Row -->
-					<!-- Category, Manufacturer & Location Row -->
-					<div class="row">
-						<!-- Category -->
-						<div class="col-md-4 mb-3">
-							<label class="form-label">Category</label>
-							<input type="hidden" th:field="*{category.id}" id="categoryId">
-
-							<div class="category-select form-select">
-								<input type="text" id="categoryInput"
-								       class="category-input"
-								       placeholder="Choose category"
-								       onclick="clearCategoryInput()"
-								       oninput="filterCategoryDropdown()"
-								       onkeydown="handleCategoryKey(event)"
-								       required>
-
-								<ul class="category-dropdown" id="categoryDropdown">
-									<li th:each="cat : ${categories}"
-									    th:text="${cat.name}"
-									    th:attr="data-id=${cat.id}, data-name=${cat.name}"
-									    onclick="selectCategory(this)">
-									</li>
-								</ul>
-							</div>
-						</div>
-
-						<!-- Manufacturer -->
-						<div class="col-md-4 mb-3">
-							<label class="form-label">Manufacturer</label>
-							<input type="text" th:field="*{manufacturer}"
-							       class="form-control"
-							       placeholder="Enter manufacturer"
-							       required>
-						</div>
-
-						<!-- Location -->
-						<div class="col-md-4 mb-3">
-							<label class="form-label">Location (eg : shelf, rack)</label>
-							<input type="text" th:field="*{location}"
-							       class="form-control"
-							       placeholder="Enter location"
-							       required>
-						</div>
-					</div>
-
-
-					<!-- Mfg. Date & Exp. Date Row -->
-					<div class="row">
-						<div class="col-md-6 mb-3">
-							<label class="form-label">Mfg. Date</label>
-							<input type="date"
-							       class="form-control"
-							       name="mfgDate"
-							       th:field="*{mfgDate}"
-							       required>
-						</div>
-						<div class="col-md-6 mb-3">
-							<label class="form-label">Exp. Date</label>
-							<input type="date"
-							       class="form-control"
-							       name="expDate"
-							       th:field="*{expDate}"
-							       required>
-						</div>
-					</div>
-
-					<div class="modal-footer">
-						<button type="button"
-						        class="btn btn-secondary"
-						        onclick="closeMedicineModal()">
-							Cancel
-						</button>
-
-						<button type="submit"
-						        class="btn btn-primary">
-							Save Medicine
-						</button>
-					</div>
-
-				</form>
+			<div class="modal-header">
+				<h5 th:text="${mode != null && mode == 'Add' ? 'Add Medicine' : 'Edit Medicine'}"></h5>
+				<button class="btn-close" onclick="closeMedicineModal()"></button>
 			</div>
-		</div>
+
+			<div class="modal-body">
+				<div class="container-fluid">
+					<form th:action="@{/medicine/save}"
+					      th:object="${medicine}"
+					      method="post">
+
+						<input type="hidden" th:field="*{id}"/>
+
+						<div class="mb-3">
+							<label class="form-label">Name</label>
+							<input type="text" th:field="*{name}"
+							       class="form-control"
+							       placeholder="Enter name"
+							       required>
+						</div>
+
+						<div class="mb-3">
+							<label class="form-label">Description</label>
+							<textarea th:field="*{description}"
+							          class="form-control"
+							          rows="3"
+							          placeholder="Enter description"
+							          required>
+							</textarea>
+						</div>
+
+						<!-- Price, Quantity & Unit Row -->
+						<div class="row">
+							<div class="col-md-4 mb-3">
+								<label class="form-label">Price</label>
+								<div class="input-group">
+									<span class="input-group-text" th:text="${currencySymbol}"></span>
+									<input type="text" th:field="*{price}"
+									       class="form-control"
+									       placeholder="Enter price"
+									       required>
+								</div>
+							</div>
+							<div class="col-md-4 mb-3">
+								<label class="form-label">Quantity</label>
+								<input type="text" th:field="*{qty}"
+								       class="form-control"
+								       placeholder="Enter quantity"
+								       required>
+							</div>
+							<div class="col-md-4 mb-3">
+								<label class="form-label">Unit</label>
+								<select th:field="*{qtyUnit}" class="form-select" required>
+									<option th:each="unit : ${T(io.github.rrbca2022.pms.entity.MedicineUnitType).values()}"
+									        th:value="${unit.toString().toLowerCase()}"
+									        th:text="${unit.toString().toLowerCase()}"></option>
+								</select>
+							</div>
+						</div>
+
+						<!-- Category & Location Row -->
+						<!-- Category, Manufacturer & Location Row -->
+						<div class="row">
+							<!-- Category -->
+							<div class="col-md-4 mb-3">
+								<label class="form-label">Category</label>
+								<input type="hidden" th:field="*{category.id}" id="categoryId">
+
+								<div class="category-select form-select">
+									<input type="text" id="categoryInput"
+									       class="category-input"
+									       placeholder="Choose category"
+									       onclick="clearCategoryInput()"
+									       oninput="filterCategoryDropdown()"
+									       onkeydown="handleCategoryKey(event)"
+									       required>
+
+									<ul class="category-dropdown" id="categoryDropdown">
+										<li th:each="cat : ${categories}"
+										    th:text="${cat.name}"
+										    th:attr="data-id=${cat.id}, data-name=${cat.name}"
+										    onclick="selectCategory(this)">
+										</li>
+									</ul>
+								</div>
+							</div>
+
+							<!-- Manufacturer -->
+							<div class="col-md-4 mb-3">
+								<label class="form-label">Manufacturer</label>
+								<input type="text" th:field="*{manufacturer}"
+								       class="form-control"
+								       placeholder="Enter manufacturer"
+								       required>
+							</div>
+
+							<!-- Location -->
+							<div class="col-md-4 mb-3">
+								<label class="form-label">Location (eg : shelf, rack)</label>
+								<input type="text" th:field="*{location}"
+								       class="form-control"
+								       placeholder="Enter location"
+								       required>
+							</div>
+						</div>
 
 
+						<!-- Mfg. Date & Exp. Date Row -->
+						<div class="row">
+							<div class="col-md-6 mb-3">
+								<label class="form-label">Mfg. Date</label>
+								<input type="date"
+								       class="form-control"
+								       name="mfgDate"
+								       th:field="*{mfgDate}"
+								       required>
+							</div>
+							<div class="col-md-6 mb-3">
+								<label class="form-label">Exp. Date</label>
+								<input type="date"
+								       class="form-control"
+								       name="expDate"
+								       th:field="*{expDate}"
+								       required>
+							</div>
+						</div>
+
+						<div class="modal-footer">
+							<button type="button"
+							        class="btn btn-secondary"
+							        onclick="closeMedicineModal()">
+								Cancel
+							</button>
+
+							<button type="submit"
+							        class="btn btn-primary">
+								Save Medicine
+							</button>
+						</div>
+
+					</form>
+				</div>
+			</div>
 
 	</div>
 

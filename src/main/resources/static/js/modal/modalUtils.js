@@ -45,3 +45,13 @@ function closeModal(modalId, backdropId, resetForm = true) {
         if (form) form.reset();
     }
 }
+
+function lockModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) modal.classList.add("modal-locked");
+}
+
+function unlockModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) modal.classList.remove("modal-locked");
+}

@@ -3,6 +3,7 @@
 =============================== */
 
 function openMedicineModal() {
+    lockModal("purchaseModal");
     openModal("medicineModal", "medicineBackdrop");
 
     // Reset custom category dropdown
@@ -42,6 +43,7 @@ function openEditMedicineModal(id) {
 
 function closeMedicineModal() {
     closeModal("medicineModal", "medicineBackdrop");
+    unlockModal("purchaseModal");
 
     // Reset custom category dropdown
     const modal = document.getElementById("medicineModal");
@@ -151,29 +153,28 @@ function saveMedicine() {
     const data = Object.fromEntries(formData.entries())
     data.qtyUnit = data.qtyUnit.toUpperCase();
     data.category = { id: categoryId };  // <-- IMPORTANT
-    delete data["category.id"];          // remove the old key
-
-    console.log(data)
+    delete data["category.id"];
 
     fetch("/medicine/save", {
         method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data)
     })
-        .then(res => res.json())
-        .then(saved => {
+        .then(res => res.text())  // get raw text
+        .then(text => {
+            console.log(text);  // check if it’s valid JSON
+            try {
+                const json = JSON.parse(text); // parse safely
+                console.log(json);
+                // 1️⃣ close add medicine modal
+                closeMedicineModal()
 
-            console.log(saved);
-
-            // 1️⃣ close add medicine modal
-            closeMedicineModal()
-
-            // 2️⃣ add to purchase available products
-            appendMedToAvailableList(saved)
-
-        })
+                // 2️⃣ add to purchase available products
+                appendMedToAvailableList(json);
+            } catch (err) {
+                console.error("Invalid JSON from server:", err);
+            }
+        });
 }
 
 function appendMedToAvailableList(m) {
@@ -186,18 +187,20 @@ function appendMedToAvailableList(m) {
     const div = document.createElement("div")
     div.className = "list-group-item d-flex justify-content-between"
 
-    console.log(m);
-
     div.innerHTML = `
 		<div>
-            <strong th:text="${m.name}"></strong><br>
-            <small th:text="'Cost: ' + ${currencySymbol} + ${m.price}"></small>
-        </div>
-        <button class="btn btn-sm btn-primary" type="button"
-                onclick="addMedicineToPurchase(this)">
-            Add
-        </button>
+			<strong>${m.name}</strong><br>
+			<small>Cost: ${currencySymbol} ${m.price}</small>
+		</div>
+		<button class="btn btn-sm btn-primary" type="button">
+			Add
+		</button>
 	`
+
+    // attach handler safely
+    div.querySelector("button").onclick = function () {
+        addMedicineToPurchase(this, m.price)
+    }
 
     list.prepend(div)
 }
