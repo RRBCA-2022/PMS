@@ -33,9 +33,5 @@ public class MainController {
 		return "sales";
 	}
 
-	@GetMapping("/user")
-	public String user () {
-		return "user";
-	}
 
 }

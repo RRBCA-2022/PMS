@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{base::layout(~{::section})}">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Add User</title>
+</head>
+
+<body>
+<section>
+
+  <div class="container mt-4">
+    <div class="card shadow-sm">
+      <div class="card-header bg-primary text-white">
+        <h4 th:text="${mode != null && mode == 'Add'  ? 'Add User' : 'Edit User'}"></h4>
+      </div>
+      <div class="card-body">
+
+        <form th:action="@{/user/save}" th:object="${user}" method="post">
+          <input type="hidden" th:field="*{id}" />
+          <div class="mb-3">
+            <label class="form-label">Name</label>
+            <input type="text" th:field="*{name}" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input type="text" th:field="*{email}" class="form-control" required>
+
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Username</label>
+            <input type="text" th:field="*{username}" class="form-control" required>
+
+          </div>
+          <div class="mb-3">
+            <label class="form-label">New Password</label>
+            <input type="password" th:field="*{password}" class="form-control" required>
+          </div>
+          <div>
+            <label>Account Type</label>
+            <select th:field="*{accountType}">
+              <option value="">-- Select Type --</option>
+
+              <option th:each="type : ${accountTypes}"
+                      th:value="${type}"
+                      th:text="${type}">
+              </option>
+            </select>
+
+          </div>
+
+
+          <!-- Action Buttons -->
+          <div class="d-flex justify-content-end">
+            <a th:href="@{/user}" class="btn btn-secondary me-2">
+              Cancel
+            </a>
+            <button type="submit" class="btn btn-success">
+              Save Supplier
+            </button>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+
+</section>
+</body>
+</html>

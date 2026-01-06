@@ -1,14 +1,69 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{base::layout(~{::section})}">
-
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="base::layout(~{::section})" >
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
 <section>
+    <div class="container mt-5">
+        <div class="d-flex justify-content-between mb-3">
+            <h2>User List</h2>
+            <a th:href="@{/user/new}" class="btn btn-primary">+ New User</a>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-4 ms-auto">
+                <input type="text"
+                       class="form-control"
+                       placeholder="🔍 Search user..."
+                       id="Usersearch">
+            </div>
+        </div>
+        <table class="table table-bordered table-hover bg-white" id="usertable" >
+            <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Username</th>
+                <th>Password</th>
+                <th>AccountType</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="user : ${users}">
+                <td th:text="${user.id}"></td>
+                <td th:text="${user.name}"></td>
+                <td th:text="${user.email}"></td>
+                <td th:text="${user.username}"></td>
+                <td th:text="${user.password}"></td>
+                <td th:text="${user.accountType}"></td>
 
+
+                <td>
+                    <a th:href="@{/user/edit/{id}(id=${user.id})}" class="btn btn-sm btn-warning">Edit</a>
+                    <a th:href="@{/user/delete/{id}(id=${user.id})}"
+                       class="btn btn-sm btn-danger"
+                       onclick="return confirm('Delete this category?')">Delete</a>
+
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <script>
+            document.getElementById("usersearch").addEventListener("keyup", function () {
+            let filter = this.value.toLowerCase();
+            let rows = document.querySelectorAll("#usertable tbody tr");
+
+            rows.forEach(row => {
+                row.style.display = row.textContent.toLowerCase().includes(filter)
+                    ? ""
+                    : "none";
+            });
+        });
+    </script>
 </section>
-
 </body>
 </html>
