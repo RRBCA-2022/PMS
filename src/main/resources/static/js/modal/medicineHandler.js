@@ -171,12 +171,12 @@ function saveMedicine() {
             closeMedicineModal()
 
             // 2️⃣ add to purchase available products
-            appendMedicineToPurchaseList(saved)
+            appendMedToAvailableList(saved)
 
         })
 }
 
-function appendMedicineToPurchaseList(m) {
+function appendMedToAvailableList(m) {
 
     const currencySymbol =
         document.getElementById("grandTotal")?.dataset.currSymbol || ""
@@ -185,6 +185,8 @@ function appendMedicineToPurchaseList(m) {
 
     const div = document.createElement("div")
     div.className = "list-group-item d-flex justify-content-between"
+
+    console.log(m);
 
     div.innerHTML = `
 		<div>

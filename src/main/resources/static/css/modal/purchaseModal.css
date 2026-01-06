@@ -1,5 +1,5 @@
 .product-list {
-    max-height: 300px;
+    max-height: 700px;
     overflow-y: auto;
     border: 1px solid #dee2e6;
     border-radius: 6px;
@@ -29,7 +29,7 @@
 /* Maintain previous empty state styling */
 .product-list,
 #purchaseItemsList {
-    min-height: 150px;
+    min-height: 400px;
     padding: 4px 0;
 }
 
