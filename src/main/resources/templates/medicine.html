@@ -36,10 +36,10 @@
 						<th>ID</th>
 						<th>Name</th>
 						<th>Description</th>
-						<th>Quantity</th>
-						<th>Unit</th>
 						<th>Category</th>
 						<th>Price</th>
+						<th>Quantity</th>
+						<th>Unit</th>
 						<th>Location</th>
 						<th>Manufacturer</th>
 						<th>MFG Date</th>
@@ -51,23 +51,23 @@
 					<tbody>
 
 					<!-- REAL DATA (from DB) -->
-					<tr th:each="medicine : ${medicines}">
-						<td th:text="${medicine.id}"></td>
-						<td th:text="${medicine.name}"></td>
-						<td th:text="${medicine.description}"></td>
-						<td th:text="${medicine.qty}"></td>
-						<td th:text="${medicine.qtyUnit}"></td>
-						<td th:text="${medicine.category.name}"></td>
-						<td th:text="${medicine.price}"></td>
-						<td th:text="${medicine.location}"></td>
-						<td th:text="${medicine.manufacturer}"></td>
-						<td th:text="${medicine.mfgDate}"></td>
-						<td th:text="${medicine.expDate}"></td>
+					<tr th:each="medicine : ${medicines}" th:attr="data-id=${medicine.id}">
+						<td class="td-id" th:text="${medicine.id}"></td>
+						<td class="td-name" th:text="${medicine.name}"></td>
+						<td class="td-desc" th:text="${medicine.description}"></td>
+						<td class="td-category" th:text="${medicine.category.name}"></td>
+						<td class="td-price" th:text="${medicine.price}"></td>
+						<td class="td-qty" th:text="${medicine.qty}"></td>
+						<td class="td-qtyUnit" th:text="${medicine.qtyUnit}"></td>
+						<td class="td-location" th:text="${medicine.location}"></td>
+						<td class="td-manufacturer" th:text="${medicine.manufacturer}"></td>
+						<td class="td-mfgDate" th:text="${medicine.mfgDate}"></td>
+						<td class="td-expDate" th:text="${medicine.expDate}"></td>
 
 						<td class="text-center">
 							<button type="button"
 							        class="btn btn-sm btn-warning me-1"
-							        th:onclick="|openEditMedicineModal(${medicine.id})|">
+							        th:attr="onclick=${'openEditMedicineModal('+ medicine.id +')'}">
 								Edit
 							</button>
 							<a th:href="@{/medicine/delete/{id}(id=${medicine.id})}"
@@ -87,16 +87,22 @@
 
 	<!-- Simple Client-Side Search -->
 	<script>
-		document.getElementById("medicineSearch").addEventListener("keyup", function () {
-			let filter = this.value.toLowerCase();
-			let rows = document.querySelectorAll("#medicineTable tbody tr");
+        document.getElementById("medicineSearch").addEventListener("keyup", function () {
+            let filter = this.value.toLowerCase();
+            let rows = document.querySelectorAll("#medicineTable tbody tr");
 
-			rows.forEach(row => {
-				row.style.display = row.textContent.toLowerCase().includes(filter)
-						? ""
-						: "none";
-			});
-		});
+            rows.forEach(row => {
+                let idCell = row.cells[0];   // ID column
+                let nameCell = row.cells[1]; // Name column
+
+                // Check if either ID or Name includes the filter
+                let matches = idCell.textContent.toLowerCase().includes(filter) ||
+                    nameCell.textContent.toLowerCase().includes(filter);
+
+                row.style.display = matches ? "" : "none";
+            });
+        });
+
 	</script>
 
 	<div th:replace="~{modal/add-medicine-modal :: modal}"></div>

@@ -6,6 +6,8 @@ import jakarta.validation.constraints.AssertTrue;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
@@ -53,7 +55,8 @@ public class Medicine {
 	}
 
 	@ManyToOne
-	@JoinColumn(name = "category_id", nullable = false)
+	@JoinColumn(name = "category_id", nullable = true)
+	@OnDelete(action = OnDeleteAction.SET_NULL)
 	private Category category;
 
 }

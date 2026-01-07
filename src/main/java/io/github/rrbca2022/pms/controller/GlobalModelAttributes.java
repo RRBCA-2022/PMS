@@ -1,5 +1,6 @@
 package io.github.rrbca2022.pms.controller;
 
+import io.github.rrbca2022.pms.entity.Category;
 import io.github.rrbca2022.pms.entity.Medicine;
 import io.github.rrbca2022.pms.services.PMSConfigService;
 import org.springframework.beans.factory.annotation.Value;
@@ -37,5 +38,10 @@ public class GlobalModelAttributes {
 	@ModelAttribute("medicine")
 	public Medicine medicine() {
 		return new Medicine();
+	}
+
+	@ModelAttribute("category")
+	public Category category6() {
+		return new Category();
 	}
 }

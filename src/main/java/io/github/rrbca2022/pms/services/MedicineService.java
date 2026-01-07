@@ -22,7 +22,7 @@ public class MedicineService {
 
     public Medicine getMedicineById(Long id){return medicineRepository.findById(id).orElse(null);}
 
-    public void savaMedicine(Medicine medicine)
+    public void saveMedicine(Medicine medicine)
     {   Long catId=medicine.getCategory().getId();
         Category category=categoryService.getCategoryById(catId);
         medicine.setCategory(category);

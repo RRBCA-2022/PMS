@@ -1,5 +1,4 @@
 .product-list {
-    overflow-y: auto;
     border: 1px solid #dee2e6;
     border-radius: 6px;
     padding: 8px;               /* inner space so items don’t touch edges */
@@ -32,6 +31,7 @@
 /* Maintain previous empty state styling */
 .product-list,
 #purchaseItemsList {
+    overflow-y: auto;
     height: 400px;
     min-height: 400px;
     max-height: 400px;

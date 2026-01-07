@@ -6,6 +6,36 @@
 </head>
 <body>
 <section>
+    <style>
+        #categorytable th:first-child,
+        #categorytable td:first-child {
+            width: 40px;        /* Adjust as needed */
+            white-space: nowrap; /* Prevents buttons from wrapping */
+            text-align: center;  /* Keep buttons centered */
+        }
+
+        /* 2nd column (Name) */
+        #categorytable th:nth-child(2),
+        #categorytable td:nth-child(2) {
+            width: 200px;        /* Adjust as needed */
+            text-align: left;    /* Align text if desired */
+        }
+
+        /* 3rd column (Description) */
+        #categorytable th:nth-child(3),
+        #categorytable td:nth-child(3) {
+            width: 300px;        /* Adjust as needed */
+            text-align: left;
+        }
+
+        #categorytable th:last-child,
+        #categorytable td:last-child {
+            width: 100px;        /* Adjust as needed */
+            white-space: nowrap; /* Prevents buttons from wrapping */
+            text-align: center;  /* Keep buttons centered */
+        }
+
+    </style>
     <div class="container mt-5">
         <div class="d-flex justify-content-between mb-3">
             <h2>Category List</h2>
@@ -51,11 +81,17 @@
             let rows = document.querySelectorAll("#categorytable tbody tr");
 
             rows.forEach(row => {
-                row.style.display = row.textContent.toLowerCase().includes(filter)
-                    ? ""
-                    : "none";
+                let idCell = row.cells[0];   // ID column
+                let nameCell = row.cells[1]; // Name column
+
+                // Show row if either ID or Name matches the filter
+                let matches = idCell.textContent.toLowerCase().includes(filter) ||
+                        nameCell.textContent.toLowerCase().includes(filter);
+
+                row.style.display = matches ? "" : "none";
             });
         });
+
     </script>
 </section>
 </body>

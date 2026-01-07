@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -28,7 +30,8 @@ public class Purchase {
 	private LocalTime time;
 
 	@ManyToOne
-	@JoinColumn(name = "supplier_id", nullable = false)
+	@JoinColumn(name = "supplier_id", nullable = true)
+	@OnDelete(action = OnDeleteAction.SET_NULL)
 	private Supplier supplier;
 
 	@OneToMany(mappedBy = "purchase", cascade = CascadeType.ALL, orphanRemoval = true)

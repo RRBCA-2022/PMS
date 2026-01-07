@@ -17,28 +17,35 @@ function openMedicineModal() {
 
 function openEditMedicineModal(id) {
     fetch(`/medicine/edit/${id}`)
-        .then(res => res.json())
-        .then(med => {
+        .then(res => res.text())  // get raw text
+        .then(text => {
+            try {
+                const med = JSON.parse(text); // parse safely
 
-            document.querySelector('[name="id"]').value = med.id
-            document.querySelector('[name="name"]').value = med.name
-            document.querySelector('[name="description"]').value = med.description
-            document.querySelector('[name="price"]').value = med.price
-            document.querySelector('[name="qty"]').value = med.qty
-            document.querySelector('[name="qtyUnit"]').value = med.qtyUnit
-            document.querySelector('[name="location"]').value = med.location
-            document.querySelector('[name="mfgDate"]').value = med.mfgDate
-            document.querySelector('[name="expDate"]').value = med.expDate
+                openMedicineModal()
 
-            // category
-            document.getElementById("categoryId").value = med.category.id
-            document.getElementById("categoryInput").value = med.category.name
+                document.getElementById("id").value = med.id
+                document.getElementById("name").value = med.name
+                document.getElementById("description").value = med.description
+                document.getElementById("price").value = med.price
+                document.getElementById("qty").value = med.qty
+                document.getElementById("qtyUnit").value = med.qtyUnit.toLowerCase()
+                document.getElementById("location").value = med.location
+                document.getElementById("manufacturer").value = med.manufacturer
+                document.getElementById("mfgDate").value = med.mfgDate
+                document.getElementById("expDate").value = med.expDate
 
-            // title
-            document.querySelector("#medicineModal h5").textContent = "Edit Medicine"
+                // category
+                document.getElementById("categoryId").value = med.category.id
+                document.getElementById("categoryInput").value = med.category.name
 
-            openMedicineModal()
-        })
+                // title
+                document.querySelector("#medicineModal h5").textContent = "Edit Medicine"
+
+            } catch (err) {
+                console.error("[Edit Med] Invalid JSON from server:", err);
+            }
+        });
 }
 
 function closeMedicineModal() {
@@ -144,6 +151,26 @@ document.querySelector("#medicineModal form")
         saveMedicine()
     })
 
+function updateMedicineRow(med) {
+    const row = document.querySelector(`tr[data-id='${med.id}']`);
+    if (!row) {
+        console.warn("[updateMedicineRow] Row not found for ID", med.id);
+        return;
+    }
+
+    // Update using querySelector with class names
+    row.querySelector(".td-name").textContent = med.name;
+    row.querySelector(".td-desc").textContent = med.description;
+    row.querySelector(".td-category").textContent = med.category.name;
+    row.querySelector(".td-price").textContent = med.price;
+    row.querySelector(".td-qty").textContent = med.qty;
+    row.querySelector(".td-qtyUnit").textContent = med.qtyUnit.toUpperCase();
+    row.querySelector(".td-location").textContent = med.location;
+    row.querySelector(".td-manufacturer").textContent = med.manufacturer;
+    row.querySelector(".td-mfgDate").textContent = med.mfgDate;
+    row.querySelector(".td-expDate").textContent = med.expDate;
+}
+
 function saveMedicine() {
 
     const form = document.querySelector("#medicineModal form")
@@ -155,22 +182,26 @@ function saveMedicine() {
     data.category = { id: categoryId };  // <-- IMPORTANT
     delete data["category.id"];
 
+    let isEditMode = document.querySelector("#medicineModal h5").textContent === "Edit Medicine";
+    console.log(isEditMode);
+
     fetch("/medicine/save", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data)
     })
-        .then(res => res.text())  // get raw text
+        .then(res => res.text())
         .then(text => {
-            console.log(text);  // check if it’s valid JSON
             try {
-                const json = JSON.parse(text); // parse safely
-                console.log(json);
-                // 1️⃣ close add medicine modal
-                closeMedicineModal()
+                const json = JSON.parse(text);
+                // close add medicine modal
+                closeMedicineModal();
 
-                // 2️⃣ add to purchase available products
-                appendMedToAvailableList(json);
+                // add to purchase available products
+                if (!isEditMode)
+                    appendMedToAvailableList(json);
+                else
+                    updateMedicineRow(json);
             } catch (err) {
                 console.error("Invalid JSON from server:", err);
             }
@@ -179,10 +210,16 @@ function saveMedicine() {
 
 function appendMedToAvailableList(m) {
 
+    const list = document.getElementById("availableProducts")
+
+    if (!list) {
+        console.warn("[appendMed] availableProducts not found in DOM. The UI was probably opened in edit mode.");
+        return;
+    }
+
     const currencySymbol =
         document.getElementById("grandTotal")?.dataset.currSymbol || ""
 
-    const list = document.getElementById("availableProducts")
 
     const div = document.createElement("div")
     div.className = "list-group-item d-flex justify-content-between"

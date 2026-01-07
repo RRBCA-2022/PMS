@@ -1,5 +1,6 @@
 package io.github.rrbca2022.pms.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,7 +26,8 @@ public class Supplier {
 	private String phone;
 	private String email;
 
-	@OneToMany(mappedBy = "supplier", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "supplier")
+	@JsonIgnore
 	private List<Purchase> purchases = new ArrayList<>();
 
 }

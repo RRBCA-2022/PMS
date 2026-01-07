@@ -33,15 +33,12 @@ public class MedicineController {
             @Valid @RequestBody Medicine medicine
     ) {
 
-        System.out.println("Medicine Info");
-        System.out.println(medicine.toString());
-
         if (medicine.getCategory() != null && medicine.getCategory().getName() != null) {
             Category cat = categoryService.getCategoryById(medicine.getCategory().getId());
             medicine.setCategory(cat);
         }
 
-        medicineService.savaMedicine(medicine);
+        medicineService.saveMedicine(medicine);
         return medicine;
     }
 

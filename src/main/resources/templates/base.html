@@ -94,9 +94,6 @@
     </div>
   </div>
 
-  <!-- Toast container -->
-  <div id="toast-container" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;"></div>
-
   <!-- Page Content -->
   <div class="p-4">
     <div th:replace="${content}"></div>
@@ -119,6 +116,10 @@
 
 <script th:if="${loginStatusSuccess}" th:inline="javascript">
   showToast([[${loginStatusSuccess}]] ,'success', 7000);
+  showToast("test 1", "info", 25000);
+  showToast("test 2", undefined, 23000);
+  showToast("test 3", undefined, 2000);
+  showToast("test 4", "error", 4000);
 </script>
 
 

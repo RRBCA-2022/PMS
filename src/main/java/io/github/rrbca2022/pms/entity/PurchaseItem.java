@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Data
 @NoArgsConstructor
@@ -25,7 +27,11 @@ public class PurchaseItem {
 	private Purchase purchase;
 
 	@ManyToOne
-	@JoinColumn(name = "med_id", nullable = false)
+	@JoinColumn(name = "med_id", nullable = true)
+	@OnDelete(action = OnDeleteAction.SET_NULL)
 	private Medicine medicine;
+
+	@Column(name = "med_name")
+	private String medicineName;  // Store the medicine name at the time of purchase
 
 }
