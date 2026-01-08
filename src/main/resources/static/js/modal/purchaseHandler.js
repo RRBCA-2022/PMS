@@ -137,3 +137,35 @@ function filterMedicines() {
 }
 
 document.getElementById("medicineSearch").addEventListener("input", filterMedicines);
+
+
+let cart=[];
+function sellMedicine() {
+    let date = document.getElementById("timestamp").value;
+
+    if (!date || cart.length === 0) {
+        alert("Select date and add medicines");
+        return;
+    }
+
+    let payload = {
+        date: date,
+        items: cart.map(i => ({
+            medicineId: i.medicineId,
+            quantity: i.quantity
+        }))
+    };
+    fetch('/sales/sell', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            medicineIds: [1, 2],
+            quantities: [5, 3]
+        })
+    }).then(res => res.text()).then(console.log);
+
+
+
+}
