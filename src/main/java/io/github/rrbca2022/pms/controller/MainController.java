@@ -29,8 +29,11 @@ public class MainController {
 	}
 
 	@GetMapping("/sales")
-	public String sales () {
-		return "sales";
+	public String sales (ModelMap model) {
+		model.addAttribute("mode","Add");
+		model.addAttribute("medicines", medicineService.getAllMedicines());
+		model.addAttribute("categories", categoryService.getAllCategories());
+		return "salesModal";
 	}
 
 

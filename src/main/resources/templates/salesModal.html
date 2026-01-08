@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{base::layout(~{::section})}">
+
+<section class="container mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4>Sales</h4>
+        <button class="btn btn-primary" onclick="openPurchaseModal()">
+            + New Sale
+        </button>
+    </div>
+
+    <!-- Purchase list table (simple) -->
+    <table class="table table-bordered table-hover">
+        <thead class="table-light">
+        <tr>
+            <th>Id</th>
+            <th>Date</th>
+            <th>Total Amount</th>
+            <th>Total Items</th>
+            <th>In charge</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="purchase : ${purchases}">
+            <td th:text="${#dates.format(purchase.date, 'dd/MM/yyyy')}"></td>
+            <td th:text="${purchase.supplierName}"></td>
+            <td th:text="${purchase.itemCount}"></td>
+            <td th:text="${#numbers.formatDecimal(purchase.total, 2, 'POINT')}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- Modal include -->
+    <div th:replace="~{modal/sell_medicine :: modal}"></div>
+
+    <!-- Common modal utilities -->
+    <script th:src="@{/js/modal/modalUtils.js}"></script>
+
+    <!-- Modal specific handlers -->
+    <script th:src="@{/js/modal/purchaseHandler.js}"></script>
+
+</section>
+
+</html>
