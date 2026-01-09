@@ -23,7 +23,7 @@ public class SessionInterceptor implements HandlerInterceptor {
 
 		String path = request.getRequestURI();
 		HttpSession session = request.getSession(false);
-		boolean loggedIn = session != null && session.getAttribute("loggedInUser") != null;
+		boolean loggedIn = session != null && session.getAttribute("LOGGED_USER") != null;
 
 		if (path.equals("/login")) {
 			return true;

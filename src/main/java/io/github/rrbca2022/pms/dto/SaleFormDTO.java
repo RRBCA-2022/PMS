@@ -9,7 +9,8 @@ import java.util.List;
 @Getter
 @Setter
 public class SaleFormDTO {
-	private LocalDate timestamp;   // sale date
-	private List<Long> id;         // medicine IDs
-	private List<Integer> qty;     // quantities
+	private LocalDate timestamp;
+	private Long sellerId;
+	private String sellerName;
+	private List<MedItemDTO> items;
 }

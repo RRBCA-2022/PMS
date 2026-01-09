@@ -87,25 +87,28 @@ function selectCategory(li) {
 }
 
 function filterCategoryDropdown() {
-    const input = document.getElementById("categoryInput").value.toLowerCase();
+    const inputEl = document.getElementById("categoryInput");
+    const input = inputEl.value.toLowerCase();
     const items = document.querySelectorAll("#categoryDropdown li");
     let anyVisible = false;
 
     items.forEach((li, index) => {
         const text = li.getAttribute("data-name").toLowerCase();
-        if (text.includes(input)) {
+        if (text.includes(input) || input === "") {
             li.style.display = "block";
             anyVisible = true;
         } else {
             li.style.display = "none";
         }
-        li.classList.remove("active"); // remove previous active
+        li.classList.remove("active");
     });
 
+    // Show dropdown if at least one match OR input is empty
     document.getElementById("categoryDropdown").style.display = anyVisible ? "block" : "none";
     activeIndex = -1;
 }
 
+// Handle arrow keys + enter selection
 function handleCategoryKey(e) {
     const items = Array.from(document.querySelectorAll("#categoryDropdown li")).filter(li => li.style.display !== "none");
     if (!items.length) return;
@@ -132,6 +135,23 @@ function updateActiveItem(items) {
         else li.classList.remove("active");
     });
 }
+
+// **Clear invalid input on blur**
+document.getElementById("categoryInput").addEventListener("blur", () => {
+    setTimeout(() => {
+        const inputEl = document.getElementById("categoryInput");
+        const inputVal = inputEl.value.toLowerCase();
+        const items = Array.from(document.querySelectorAll("#categoryDropdown li"));
+        const match = items.find(li => li.getAttribute("data-name").toLowerCase() === inputVal);
+
+        if (!match) {
+            inputEl.value = "";
+            document.getElementById("categoryId").value = "";
+        }
+
+        document.getElementById("categoryDropdown").style.display = "none";
+    }, 150); // delay ensures click on dropdown item runs first
+});
 
 
 // ------------------------------------------
@@ -187,7 +207,6 @@ function saveMedicine() {
     delete data["category.id"];
 
     let isEditMode = document.querySelector("#medicineModal h5").textContent === "Edit Medicine";
-    console.log(isEditMode);
 
     fetch("/medicine/save", {
         method: "POST",
@@ -198,18 +217,21 @@ function saveMedicine() {
         .then(text => {
             try {
                 const json = JSON.parse(text);
-                // close add medicine modal
+
+                // close modal
                 closeMedicineModal();
 
-                // add to purchase available products
+                // add or update in available list
                 if (!isEditMode)
                     appendMedToAvailableList(json);
                 else
                     updateMedicineRow(json);
+
             } catch (err) {
                 console.error("Invalid JSON from server:", err);
             }
         });
+
 }
 
 function appendMedToAvailableList(m) {

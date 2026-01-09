@@ -31,8 +31,10 @@ function addToast(message, type = 'success') {
 
 // Shows the toast
 function showToast(message, type = 'success', duration = 3000) {
+    const toastType = type || 'success';
+
     const container = getToastContainer();
-    const toast = addToast(message, type);
+    const toast = addToast(message, toastType);
     container.appendChild(toast);
 
     // Trigger show animation

@@ -1,7 +1,7 @@
 package io.github.rrbca2022.pms.controller;
 
 import io.github.rrbca2022.pms.dto.PurchaseFormDTO;
-import io.github.rrbca2022.pms.dto.PurchaseItemDTO;
+import io.github.rrbca2022.pms.dto.MedItemDTO;
 import io.github.rrbca2022.pms.services.CategoryService;
 import io.github.rrbca2022.pms.services.MedicineService;
 import io.github.rrbca2022.pms.services.PurchasesService;
@@ -11,6 +11,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/purchases")
@@ -39,7 +40,7 @@ public class PurchasesController {
     }
 
     @PostMapping("/save")
-    public String save(PurchaseFormDTO purchaseForm) {
+    public String save(PurchaseFormDTO purchaseForm, RedirectAttributes redirectAttributes) {
 
 //        Supplier supplier;
 //
@@ -60,12 +61,18 @@ public class PurchasesController {
         System.out.println("Supplier Name: " + purchaseForm.getSupplierName());
         System.out.println("Order Date: " + purchaseForm.getOrderDate());
 
-        for (PurchaseItemDTO item : purchaseForm.getItems()) {
+        double total = 0;
+
+        for (MedItemDTO item : purchaseForm.getItems()) {
+            total += item.getPrice();
             System.out.println("Medicine ID: " + item.getId() +
                     ", Name: " + item.getName() +
                     ", Price: " + item.getPrice() +
                     ", Qty: " + item.getQty());
         }
+
+        redirectAttributes.addFlashAttribute("toastMessage", "Purchase of " + total + " completed successfully");
+        redirectAttributes.addFlashAttribute("toastType", "success");
 
         return "redirect:/purchases";
     }

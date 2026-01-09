@@ -1,6 +1,5 @@
 package io.github.rrbca2022.pms.services;
 
-import io.github.rrbca2022.pms.entity.AccountType;
 import io.github.rrbca2022.pms.entity.User;
 import io.github.rrbca2022.pms.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -18,9 +17,18 @@ public class LoginService {
 		this.userRepository = userRepository;
 	}
 
-	public boolean authenticate(String username, String password) {
-		Optional<User> user = userRepository.findByUsername(username);
-		if (user.isEmpty()) return false;
-		else return user.get().getPassword().equals(password);
+	public User authenticate(String username, String password) {
+
+		Optional<User> opt = userRepository.findByUsername(username);
+		if (opt.isEmpty()) return null;
+
+		User user = opt.get();
+
+		if (!user.getPassword().equals(password)) {
+			return null;
+		}
+
+		return user;
 	}
+
 }

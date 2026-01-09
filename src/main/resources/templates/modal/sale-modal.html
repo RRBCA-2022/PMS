@@ -10,19 +10,36 @@
             <button class="btn-close" onclick="closeSaleModal()"></button>
         </div>
 
-        <form th:action="@{/sales/sell}" th:object="${salesDTO}" method="post">
+        <form th:action="@{/sales/sell}" method="post" class="modal-body">
             <div class="container-fluid">
 
                 <div class="row mb-3">
-                    <!-- Order Date-->
+
+                    <!-- Sale Date -->
                     <div class="col-md-6">
-                        <label class="form-label"> Date </label>
+                        <label class="form-label">Date</label>
                         <input type="date"
                                class="form-control"
                                name="timestamp"
                                required>
                     </div>
+
+                    <!-- Seller -->
+                    <div class="col-md-6">
+                        <label class="form-label">Seller</label>
+                        <input type="text"
+                               class="form-control"
+                               name="sellerName"
+                               th:value="${sellerName}"
+                               readonly>
+
+                        <input type="hidden"
+                               name="sellerId"
+                               th:value="${sellerId}">
+                    </div>
+
                 </div>
+
 
                 <hr>
 
@@ -57,7 +74,7 @@
                         </div>
                     </div>
 
-                    <!-- Purchase Items -->
+                    <!-- Sale Items -->
                     <div class="col-md-6">
                         <h6>Sale Items</h6>
 

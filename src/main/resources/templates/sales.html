@@ -37,6 +37,16 @@
     <!-- Modal include -->
     <div th:replace="~{modal/sale-modal :: modal}"></div>
 
+    <script th:src="@{/js/toast.js}"></script>
+
+    <script th:if="${toastMessage != null}">
+        showToast(
+                '[[${toastMessage}]]',
+                '[[${toastType}]]',
+                7000
+        );
+    </script>
+
 </section>
 
 </html>

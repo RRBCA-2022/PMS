@@ -29,9 +29,7 @@ public class MedicineController {
 
     @PostMapping("/save")
     @ResponseBody
-    public Medicine saveMedicine(
-            @Valid @RequestBody Medicine medicine
-    ) {
+    public Medicine saveMedicine(@Valid @RequestBody Medicine medicine) {
 
         if (medicine.getCategory() != null && medicine.getCategory().getId() != null) {
             Category cat = categoryService.getCategoryById(medicine.getCategory().getId());

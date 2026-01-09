@@ -12,5 +12,5 @@ public class PurchaseFormDTO {
 	private Long supplierId;       // <- add this
 	private String supplierName;
 	private LocalDate orderDate;
-	private List<PurchaseItemDTO> items;
+	private List<MedItemDTO> items;
 }
