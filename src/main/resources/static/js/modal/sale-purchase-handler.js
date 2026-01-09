@@ -122,19 +122,25 @@ document.addEventListener("click", function(event) {
 
 
 /* ---------- Add / Render Medicines ---------- */
-function addMedicineToList(button, price) {
+function addMedicineToList(button, price, totalQty) {
     const itemEl = button.closest(".list-group-item")
     const name = itemEl.querySelector("strong").innerText
     const id = button.dataset.id  // now you get the ID
     const priceNum = price
+    const totalQtyVal = totalQty
+    const isSaleMode = button.dataset.mode === 'sale';
 
     const existing = listItems.find(i => i.id === id)
     if (existing) {
-        existing.qty += 1
+        if (existing.availableQty >= existing.qty + 1 || !isSaleMode) {
+            existing.qty += 1
+        }
         existing.total = existing.qty * existing.price
     } else {
-        listItems.push({ id, name, price: priceNum, qty: 1, total: priceNum })
+        listItems.push({ id, name, price: priceNum, qty: 1, total: priceNum, availableQty: totalQtyVal, isSaleMode: isSaleMode })
     }
+
+    if (isSaleMode) listItems = listItems.filter(item => item.availableQty > 0);
 
     renderListItems()
 }
@@ -200,8 +206,13 @@ function removeItem(index) {
 function updateQty(index, value) {
     let qty = parseInt(value);
 
+    let totalAvailableMeds = listItems[index].availableQty;
+    let isSaleMode = listItems[index].isSaleMode;
+
     // Reset invalid or out-of-range input
     if (isNaN(qty) || qty < 1) qty = 1;
+    if (totalAvailableMeds === 0 && isSaleMode) qty = 0;
+    if (qty > totalAvailableMeds && isSaleMode) qty = totalAvailableMeds;
     if (qty > 9999) qty = 9999; // clamp max value
 
     listItems[index].qty = qty;

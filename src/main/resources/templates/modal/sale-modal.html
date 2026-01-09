@@ -66,7 +66,7 @@
                                 </div>
                                 <!-- Use th:attr to safely pass price as a number -->
                                 <button class="btn btn-sm btn-primary" type="button"
-                                        th:attr="data-id=${m.id}, onclick=${'addMedicineToList(this,' + m.price + ')'}">
+                                        th:attr="data-id=${m.id}, data-mode='sale', onclick=${'addMedicineToList(this, ' + m.price + ', ' + m.qty + ')'}">
                                     Add
                                 </button>
                             </div>

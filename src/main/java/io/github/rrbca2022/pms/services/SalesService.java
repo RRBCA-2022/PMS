@@ -13,6 +13,5 @@ public class SalesService {
         this.medicineRepository=medicineRepository;
         this.salesRepository=salesRepository;
     }
-    
 
 }
