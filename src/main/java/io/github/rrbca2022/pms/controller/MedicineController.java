@@ -33,7 +33,7 @@ public class MedicineController {
             @Valid @RequestBody Medicine medicine
     ) {
 
-        if (medicine.getCategory() != null && medicine.getCategory().getName() != null) {
+        if (medicine.getCategory() != null && medicine.getCategory().getId() != null) {
             Category cat = categoryService.getCategoryById(medicine.getCategory().getId());
             medicine.setCategory(cat);
         }

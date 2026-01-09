@@ -40,11 +40,26 @@ public class PurchasesController {
 
     @PostMapping("/save")
     public String save(PurchaseFormDTO purchaseForm) {
-        // supplier and order date
-        System.out.println("Supplier: " + purchaseForm.getSupplierName());
+
+//        Supplier supplier;
+//
+//        if (purchaseForm.getSupplierId() != null) {
+//            // user selected from dropdown
+//            supplier = supplierService.findById(purchaseForm.getSupplierId());
+//        } else {
+//            // user typed manually; try to fetch by name or create new
+//            supplier = supplierService.findByName(purchaseForm.getSupplierName());
+//            if (supplier == null) {
+//                supplier = new Supplier();
+//                supplier.setName(purchaseForm.getSupplierName());
+//                supplierService.save(supplier); // create new supplier
+//            }
+//        }
+
+        System.out.println("Supplier ID: " + purchaseForm.getSupplierId());
+        System.out.println("Supplier Name: " + purchaseForm.getSupplierName());
         System.out.println("Order Date: " + purchaseForm.getOrderDate());
 
-        // loop through items
         for (PurchaseItemDTO item : purchaseForm.getItems()) {
             System.out.println("Medicine ID: " + item.getId() +
                     ", Name: " + item.getName() +
@@ -52,10 +67,8 @@ public class PurchasesController {
                     ", Qty: " + item.getQty());
         }
 
-        // call your service to persist
-        //purchasesService.savePurchase(purchaseForm);
-
         return "redirect:/purchases";
     }
+
 
 }
