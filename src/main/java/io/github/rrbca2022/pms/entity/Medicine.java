@@ -54,7 +54,7 @@ public class Medicine {
 		return expDate.isAfter(mfgDate);
 	}
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "category_id", nullable = true)
 	@OnDelete(action = OnDeleteAction.SET_NULL)
 	private Category category;

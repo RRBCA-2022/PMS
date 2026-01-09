@@ -1,7 +1,7 @@
 package io.github.rrbca2022.pms.controller;
 
 import io.github.rrbca2022.pms.entity.Supplier;
-import io.github.rrbca2022.pms.services.SupplierService;
+import io.github.rrbca2022.pms.services.SuppliersService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -10,16 +10,16 @@ import org.springframework.web.bind.annotation.*;
 
 
 @Controller
-@RequestMapping("/supplier")
-public class SupplierController {
+@RequestMapping("/suppliers")
+public class SuppliersController {
 
-    private final SupplierService supplierService;
-    public SupplierController(SupplierService supplierService) {this.supplierService=supplierService;}
+    private final SuppliersService suppliersService;
+    public SuppliersController(SuppliersService suppliersService) {this.suppliersService = suppliersService;}
 
     @GetMapping
-    public String  ListSuppliers(Model model){
-        model.addAttribute("suppliers", supplierService.getAllSuppliers());
-        return "supplier";
+    public String ListSuppliers(Model model){
+        model.addAttribute("suppliers", suppliersService.getAllSuppliers());
+        return "suppliers";
     }
 
     @GetMapping("/new")
@@ -31,12 +31,12 @@ public class SupplierController {
 
     @PostMapping("/save")
     public String savaSupplier(@ModelAttribute Supplier supplier){
-        supplierService.saveSupplier(supplier);
-        return "redirect:/supplier";
+        suppliersService.saveSupplier(supplier);
+        return "redirect:/suppliers";
     }
     @GetMapping("/edit/{id}")
     public String editSupplier(@PathVariable Long id, ModelMap model){
-        Supplier sup = supplierService.getSupplierById(id);
+        Supplier sup = suppliersService.getSupplierById(id);
         model.addAttribute("supplier",sup);
         model.addAttribute("mode","Edit");
         return "edit_supplier";
@@ -45,8 +45,8 @@ public class SupplierController {
 
     @GetMapping("/delete/{id}")
     public String deleteSupplier(@PathVariable Long id){
-        supplierService.deleteSupplier(id);
-        return "redirect:/supplier";
+        suppliersService.deleteSupplier(id);
+        return "redirect:/suppliers";
     }
 
 

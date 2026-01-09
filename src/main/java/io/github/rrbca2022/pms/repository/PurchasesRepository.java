@@ -1,10 +1,9 @@
 package io.github.rrbca2022.pms.repository;
 
-import io.github.rrbca2022.pms.entity.Supplier;
+import io.github.rrbca2022.pms.entity.Purchase;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface SupplierRepository extends JpaRepository<Supplier, Long> {
-
+public interface PurchasesRepository extends JpaRepository<Purchase,Long> {
 }

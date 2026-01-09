@@ -7,20 +7,20 @@
 
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h4>Sales</h4>
-        <button class="btn btn-primary" onclick="openPurchaseModal()">
+        <button class="btn btn-primary" onclick="openSaleModal()">
             + New Sale
         </button>
     </div>
 
-    <!-- Purchase list table (simple) -->
+    <!-- Sale list table (simple) -->
     <table class="table table-bordered table-hover">
         <thead class="table-light">
         <tr>
-            <th>Id</th>
+            <th>ID</th>
             <th>Date</th>
             <th>Total Amount</th>
             <th>Total Items</th>
-            <th>In charge</th>
+            <th>Seller</th>
         </tr>
         </thead>
         <tbody>
@@ -29,19 +29,19 @@
             <td th:text="${#temporals.format(sale.timestamp, 'dd/MM/yyyy')}"></td>
             <td th:text="${#numbers.formatDecimal(sale.totalAmount, 2, 'POINT')}"></td>
             <td th:text="${sale.items.size()}"></td>
-            <td th:text="${sale.user.username}"></td>
+            <td th:text="${sale.sellerName}"></td>
         </tr>
         </tbody>
     </table>
 
     <!-- Modal include -->
-    <div th:replace="~{modal/sell_medicine :: modal}"></div>
+    <div th:replace="~{modal/sale-modal :: modal}"></div>
 
     <!-- Common modal utilities -->
-    <script th:src="@{/js/modal/modalUtils.js}"></script>
+    <script th:src="@{/js/modal/modal-utils.js}"></script>
 
     <!-- Modal specific handlers -->
-    <script th:src="@{/js/modal/purchaseHandler.js}"></script>
+    <script th:src="@{/js/modal/sale-purchase-handler.js}"></script>
 
 </section>
 

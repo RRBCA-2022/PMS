@@ -41,7 +41,9 @@ public class GlobalModelAttributes {
 	}
 
 	@ModelAttribute("category")
-	public Category category6() {
+	public Category category() {
 		return new Category();
 	}
+
+
 }

@@ -3,7 +3,6 @@ package io.github.rrbca2022.pms.services;
 import io.github.rrbca2022.pms.entity.Medicine;
 import io.github.rrbca2022.pms.entity.Sale;
 import io.github.rrbca2022.pms.entity.SaleItem;
-import io.github.rrbca2022.pms.entity.User;
 import io.github.rrbca2022.pms.repository.MedicineRepository;
 import io.github.rrbca2022.pms.repository.SalesRepository;
 import lombok.Data;
@@ -27,7 +26,6 @@ public class SalesService {
         private List<Long> medicineId;
         private List<Integer> quantity;
     }
-
 
 
     public void sellMedicine(
@@ -61,7 +59,7 @@ public class SalesService {
             medicineRepository.save(med);
 
             SaleItem saleItem=new SaleItem();
-            saleItem.setProductName(med.getName());
+            saleItem.setMedicineName(med.getName());
             saleItem.setQuantity(med.getQty());
             saleItem.setPrice(med.getPrice());
             saleItem.setSale(sale);

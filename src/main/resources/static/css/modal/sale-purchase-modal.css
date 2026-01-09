@@ -1,4 +1,4 @@
-.product-list {
+.available-product-list {
     border: 1px solid #dee2e6;
     border-radius: 6px;
     padding: 8px;               /* inner space so items don’t touch edges */
@@ -7,30 +7,30 @@
     box-sizing: border-box;     /* ensure padding is inside the border */
 }
 
-.product-list .list-group-item {
+.available-product-list .list-group-item {
     border-radius: 4px;         /* rounded corners for items */
     padding: 8px 12px;          /* inner padding */
     box-sizing: border-box;      /* prevent padding from overflowing */
     margin: 2px 10px;
 }
 
-.product-list .list-group-item + .list-group-item {
-    margin-top: 6px;
+.available-product-list .list-group-item + .list-group-item {
+    margin-top: 2px;
 }
 
 /* Prevent last item margin from adding extra space */
-.product-list .list-group-item:last-child {
+.available-product-list .list-group-item:last-child {
     margin-bottom: 2px;
 }
 
 /* Optional hover effect */
-.product-list .list-group-item:hover {
+.available-product-list .list-group-item:hover {
     background-color: #f8f9fa;
 }
 
 /* Maintain previous empty state styling */
-.product-list,
-#purchaseItemsList {
+.available-product-list,
+#itemsList {
     overflow-y: auto;
     height: 400px;
     min-height: 400px;
@@ -38,8 +38,8 @@
     padding: 4px 0;
 }
 
-.product-list:empty::before,
-#purchaseItemsList:empty::before {
+.available-product-list:empty::before,
+#itemsList:empty::before {
     content: "";
     display: block;
     height: 1px;
@@ -76,5 +76,4 @@
 .remove-item:hover {
     color: #000;
 }
-
 

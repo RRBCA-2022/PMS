@@ -1,6 +1,6 @@
 <div th:fragment="modal">
 	<link rel="stylesheet" th:href="@{/css/dropdown.css}">
-	<link rel="stylesheet" th:href="@{/css/modal/modalMain.css}">
+	<link rel="stylesheet" th:href="@{/css/modal/modal-main.css}">
 
 	<div id="medicineBackdrop" class="modal-backdrop-custom" onclick="closeMedicineModal()"></div>
 
@@ -71,18 +71,16 @@
 							<!-- Category -->
 							<div class="col-md-4 mb-3">
 								<label class="form-label">Category</label>
-								<input type="hidden" th:field="*{category.id}" id="categoryId">
 
-								<div class="category-select form-select">
+								<div class="custom-select-wrapper form-select">
 									<input type="text" id="categoryInput"
-									       class="category-input"
+									       class="custom-select-input"
 									       placeholder="Choose category"
 									       onclick="clearCategoryInput()"
 									       oninput="filterCategoryDropdown()"
-									       onkeydown="handleCategoryKey(event)"
 									       required>
 
-									<ul class="category-dropdown" id="categoryDropdown">
+									<ul class="custom-select-dropdown" id="categoryDropdown">
 										<li th:each="cat : ${categories}"
 										    th:text="${cat.name}"
 										    th:attr="data-id=${cat.id}, data-name=${cat.name}"
@@ -90,6 +88,8 @@
 										</li>
 									</ul>
 								</div>
+								<input type="hidden" th:field="*{category.id}" id="categoryId">
+
 							</div>
 
 							<!-- Manufacturer -->
@@ -150,8 +150,8 @@
 	</div>
 
 	<!-- Common modal utilities -->
-	<script th:src="@{/js/modal/modalUtils.js}"></script>
+	<script th:src="@{/js/modal/modal-utils.js}"></script>
 
 	<!-- Modal specific handlers -->
-	<script th:src="@{/js/modal/medicineHandler.js}"></script>
+	<script th:src="@{/js/modal/medicine-handler.js}"></script>
 </div>

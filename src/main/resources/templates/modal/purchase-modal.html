@@ -1,0 +1,130 @@
+<div th:fragment="modal">
+	<link rel="stylesheet" th:href="@{/css/dropdown.css}">
+	<link rel="stylesheet" th:href="@{/css/modal/modal-main.css}">
+	<link rel="stylesheet" th:href="@{/css/modal/sale-purchase-modal.css}">
+
+	<div id="purchaseBackdrop" class="modal-backdrop-custom" onclick="closePurchaseModal()"></div>
+
+	<div id="purchaseModal" class="modal-custom">
+		<div class="modal-header">
+			<h5>New Purchase Order</h5>
+			<button class="btn-close" onclick="closePurchaseModal()"></button>
+		</div>
+
+		<form th:action="@{/purchases/save}" method="post" class="modal-body">
+			<div class="container-fluid">
+
+				<div class="row mb-3">
+					<!-- Supplier -->
+					<div class="col-md-6">
+						<label class="form-label">Supplier</label>
+
+						<div class="custom-select-wrapper form-select">
+							<input type="text" id="supplierInput"
+							       class="custom-select-input"
+							       placeholder="Choose supplier"
+							       onclick="clearSupplierInput()"
+							       oninput="filterSupplierDropdown()"
+							       required>
+
+							<ul class="custom-select-dropdown" id="supplierDropdown">
+								<li th:each="s : ${suppliers}"
+								    th:text="${s.name}"
+								    th:attr="data-id=${s.id}, data-name=${s.name}"
+								    onclick="selectSupplier(this)">
+								</li>
+							</ul>
+						</div>
+						<input type="hidden" name="supplierId" id="supplierId">
+					</div>
+
+					<!-- Order Date-->
+					<div class="col-md-6">
+						<label class="form-label">Order Date *</label>
+						<input type="date"
+						       class="form-control"
+						       name="orderDate"
+						       required>
+					</div>
+				</div>
+
+				<hr>
+
+				<div class="row">
+					<!-- Available Products -->
+					<div class="col-md-6">
+						<div class="d-flex justify-content-between align-items-center mb-2">
+							<h6>Available Products</h6>
+							<button class="btn btn-sm btn-outline-primary"
+							        type="button"
+							        onclick="openMedicineModal()">
+								+ Add Medicine
+							</button>
+						</div>
+
+						<div class="input-group mb-2">
+                        <span class="input-group-text">
+                            <i class="bi bi-search"></i>
+                        </span>
+							<input type="text"
+							       class="form-control"
+							       placeholder="Search medicine"
+							       id="medicineSearch">
+						</div>
+
+						<div class="list-group available-product-list" id="availableProducts">
+							<div class="list-group-item d-flex justify-content-between"
+							     th:each="m : ${medicines}">
+								<div>
+									<strong th:text="${m.name}"></strong><br>
+									<small th:text="${currencySymbol + ' ' + m.price}"></small>
+								</div>
+								<!-- Use th:attr to safely pass price as a number -->
+								<button class="btn btn-sm btn-primary" type="button"
+								        th:attr="data-id=${m.id}, onclick=${'addMedicineToList(this,' + m.price + ')'}">
+									Add
+								</button>
+							</div>
+
+						</div>
+					</div>
+
+					<!-- Purchase Items -->
+					<div class="col-md-6">
+						<h6>Purchase Items</h6>
+
+						<div class="list-group" id="itemsList">
+							<!-- Items will be dynamically added here -->
+						</div>
+
+						<hr>
+
+						<div class="d-flex justify-content-between">
+							<strong>Total:</strong>
+							<strong id="grandTotal" th:data-curr-symbol="${currencySymbol}">${currencySymbol} 0.00</strong>
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" onclick="closePurchaseModal()">
+					Cancel
+				</button>
+				<button type="submit" class="btn btn-primary">
+					Create Purchase
+				</button>
+			</div>
+
+		</form>
+
+	</div>
+
+	<!-- Common modal utilities -->
+	<script th:src="@{/js/modal/modal-utils.js}"></script>
+
+	<!-- Modal specific handlers -->
+	<script th:src="@{/js/modal/sale-purchase-handler.js}"></script>
+
+</div>

@@ -22,11 +22,11 @@ public class PurchaseItem {
 
 	private double price;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "purchase_id", nullable = false)
 	private Purchase purchase;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "med_id", nullable = true)
 	@OnDelete(action = OnDeleteAction.SET_NULL)
 	private Medicine medicine;

@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Data
 @NoArgsConstructor
@@ -15,12 +17,20 @@ public class SaleItem {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	private String productName;
 	private int quantity;
+
 	private double price;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "sale_id", nullable = false)
 	private Sale sale;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "med_id", nullable = true)
+	@OnDelete(action = OnDeleteAction.SET_NULL)
+	private Medicine medicine;
+
+	@Column(name = "med_name")
+	private String medicineName;
 
 }

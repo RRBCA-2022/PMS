@@ -16,7 +16,7 @@
             </div>
             <div class="card-body">
 
-                <form th:action="@{/supplier/save}" th:object="${supplier}" method="post">
+                <form th:action="@{/suppliers/save}" th:object="${supplier}" method="post">
                     <input type="hidden" th:field="*{id}" />
                     <div class="mb-3">
                         <label class="form-label">Name</label>
@@ -40,7 +40,7 @@
 
                     <!-- Action Buttons -->
                     <div class="d-flex justify-content-end">
-                        <a th:href="@{/supplier}" class="btn btn-secondary me-2">
+                        <a th:href="@{/suppliers}" class="btn btn-secondary me-2">
                             Cancel
                         </a>
                         <button type="submit" class="btn btn-success">

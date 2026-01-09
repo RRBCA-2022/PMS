@@ -138,12 +138,16 @@ function updateActiveItem(items) {
 
 // Close dropdown when clicking outside
 document.addEventListener("click", function(event) {
-    const selectBox = document.querySelector(".category-select");
-    const dropdown = document.getElementById("categoryDropdown");
-    if (!selectBox.contains(event.target)) {
-        dropdown.style.display = "none";
-    }
+    const dropdowns = document.querySelectorAll(".custom-select-wrapper");
+    dropdowns.forEach(wrapper => {
+        const input = wrapper.querySelector(".custom-select-input");
+        const dropdown = wrapper.querySelector(".custom-select-dropdown");
+        if (!wrapper.contains(event.target) && dropdown) {
+            dropdown.style.display = "none";
+        }
+    });
 });
+
 
 document.querySelector("#medicineModal form")
     .addEventListener("submit", function (e) {
@@ -213,7 +217,7 @@ function appendMedToAvailableList(m) {
     const list = document.getElementById("availableProducts")
 
     if (!list) {
-        console.warn("[appendMed] availableProducts not found in DOM. The UI was probably opened in edit mode.");
+        console.warn("[appendMed] availableProducts not found in DOM.");
         return;
     }
 
@@ -234,9 +238,11 @@ function appendMedToAvailableList(m) {
 		</button>
 	`
 
-    // attach handler safely
-    div.querySelector("button").onclick = function () {
-        addMedicineToPurchase(this, m.price)
+    // attach ID to button
+    const button = div.querySelector("button")
+    button.dataset.id = m.id   // <-- attach medicine ID
+    button.onclick = function () {
+        addMedicineToList(this, m.price)
     }
 
     list.prepend(div)

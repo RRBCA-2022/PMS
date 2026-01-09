@@ -29,10 +29,13 @@ public class Purchase {
 
 	private LocalTime time;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "supplier_id", nullable = true)
 	@OnDelete(action = OnDeleteAction.SET_NULL)
 	private Supplier supplier;
+
+	@Column(name = "supplier_name")
+	private String supplierName;
 
 	@OneToMany(mappedBy = "purchase", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<PurchaseItem> items = new ArrayList<>();
