@@ -8,6 +8,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,9 +26,7 @@ public class Purchase {
 
 	private Double totalAmount;
 
-	private LocalDate date;
-
-	private LocalTime time;
+	private LocalDateTime datetime;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "supplier_id", nullable = true)

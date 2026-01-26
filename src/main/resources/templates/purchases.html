@@ -26,10 +26,10 @@
         <tbody>
         <tr th:each="purchase : ${purchases}">
             <td th:text="${purchase.id}"></td>
-            <td th:text="${#dates.format(purchase.date, 'dd/MM/yyyy')}"></td>
+            <td th:text="${#temporals.format(purchase.datetime, 'dd/MM/yyyy')}"></td>
             <td th:text="${purchase.supplierName}"></td>
             <td th:text="${purchase.itemCount}"></td>
-            <td th:text="${#numbers.formatDecimal(purchase.total, 2, 'POINT')}"></td>
+            <td th:text="${#numbers.formatDecimal(purchase.totalAmount, 1, 2)}"></td>
         </tr>
         </tbody>
     </table>
