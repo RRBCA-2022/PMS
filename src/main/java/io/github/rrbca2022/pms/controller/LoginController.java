@@ -3,6 +3,7 @@ package io.github.rrbca2022.pms.controller;
 import io.github.rrbca2022.pms.entity.User;
 import io.github.rrbca2022.pms.services.LoginService;
 import jakarta.servlet.http.HttpSession;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,13 +12,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
+@AllArgsConstructor
 public class LoginController {
 
     private final LoginService loginService;
-
-    public LoginController(LoginService loginService) {
-        this.loginService = loginService;
-    }
 
     @RequestMapping("/")
     public String login() {

@@ -81,10 +81,10 @@
 									       required>
 
 									<ul class="custom-select-dropdown" id="categoryDropdown">
-										<li onmousedown="selectCategory(this)"
-											th:each="cat : ${categories}"
+										<li th:each="cat : ${categories}"
 										    th:text="${cat.name}"
-										    th:attr="data-id=${cat.id}, data-name=${cat.name}">
+										    th:attr="data-id=${cat.id}, data-name=${cat.name}"
+											onmousedown="selectCategory(this)">
 										</li>
 									</ul>
 								</div>

@@ -2,6 +2,7 @@ package io.github.rrbca2022.pms.controller;
 
 import io.github.rrbca2022.pms.entity.Category;
 import io.github.rrbca2022.pms.services.CategoryService;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -9,12 +10,11 @@ import org.springframework.web.bind.annotation.*;
 
 
 @Controller
+@AllArgsConstructor
 @RequestMapping("/category")
 public class CategoryController {
 
 	private  final CategoryService categoryService;
-
-	public CategoryController(CategoryService categoryService){this.categoryService=categoryService;}
 
 	@GetMapping
 	public String listCategories(Model model){

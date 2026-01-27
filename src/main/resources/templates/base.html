@@ -16,51 +16,56 @@
     <small class="d-block fs-6">Management System</small>
   </h5>
 
-  <a th:href="@{/dashboard}"
-     th:classappend="${active == 'dashboard'} ? 'active'">
-    <i class="bi bi-grid"></i> Dashboard
-  </a>
+  <th:block th:with="role=${session.LOGGED_USER.accountType.name()}">
+    <a th:href="@{/dashboard}"
+       th:classappend="${active == 'dashboard'} ? 'active'">
+      <i class="bi bi-grid"></i> Dashboard
+    </a>
 
-  <a th:href="@{/medicine}"
-     th:classappend="${active == 'medicine'} ? 'active'">
-    <i class="bi bi-capsule"></i> Medicine
-  </a>
+    <a th:href="@{/medicine}"
+       th:classappend="${active == 'medicine'} ? 'active'">
+      <i class="bi bi-capsule"></i> Medicine
+    </a>
 
-  <a th:href="@{/category}"
-     th:classappend="${active == 'category'} ? 'active'">
-    <i class="bi bi-tags"></i> Category
-  </a>
+    <a th:href="@{/category}"
+       th:classappend="${active == 'category'} ? 'active'">
+      <i class="bi bi-tags"></i> Category
+    </a>
 
-  <a th:href="@{/sales}"
-     th:classappend="${active == 'sales'} ? 'active'">
-    <i class="bi bi-cart"></i> Sales
-  </a>
+    <a th:href="@{/sales}"
+       th:classappend="${active == 'sales'} ? 'active'">
+      <i class="bi bi-cart"></i> Sales
+    </a>
 
-  <a th:href="@{/purchases}"
-     th:classappend="${active == 'purchase'} ? 'active'">
-    <i class="bi bi-arrow-down-up"></i> Purchases
-  </a>
+    <a th:if="${role == 'ADMIN'}"
+       th:href="@{/purchases}"
+       th:classappend="${active == 'purchase'} ? 'active'">
+      <i class="bi bi-arrow-down-up"></i> Purchases
+    </a>
 
-  <a th:href="@{/suppliers}"
-     th:classappend="${active == 'supplier'} ? 'active'">
-    <i class="bi bi-truck"></i> Suppliers
-  </a>
+    <a th:if="${role == 'ADMIN'}"
+       th:href="@{/suppliers}"
+       th:classappend="${active == 'supplier'} ? 'active'">
+      <i class="bi bi-truck"></i> Suppliers
+    </a>
 
-  <a th:href="@{/user}"
-     th:classappend="${active == 'user'} ? 'active'">
-    <i class="bi bi-people"></i> User Management
-  </a>
+    <a th:if="${role == 'ADMIN'}"
+       th:href="@{/user}"
+       th:classappend="${active == 'user'} ? 'active'">
+      <i class="bi bi-people"></i> User Management
+    </a>
 
+    <a th:href="@{/reports}"
+       th:classappend="${active == 'reports'} ? 'active'">
+      <i class="bi bi-file-earmark-text"></i> Reports
+    </a>
 
-  <a th:href="@{/reports}"
-     th:classappend="${active == 'reports'} ? 'active'">
-    <i class="bi bi-file-earmark-text"></i> Reports
-  </a>
-
-  <a th:href="@{/settings}"
-     th:classappend="${active == 'settings'} ? 'active'">
-    <i class="bi bi-gear"></i> Settings
-  </a>
+    <a th:if="${role == 'ADMIN'}"
+       th:href="@{/settings}"
+       th:classappend="${active == 'settings'} ? 'active'">
+      <i class="bi bi-gear"></i> Settings
+    </a>
+  </th:block>
 
   <div class="footer-text">
     &copy; 2026 PMS | Version 1.0.0
@@ -80,7 +85,9 @@
       <i class="bi bi-bell"></i>
       <div class="admin-dropdown">
         <button class="admin-btn" onclick="toggleDropdown()" aria-haspopup="true">
-          <i class="fas fa-user-circle"></i><span th:text="${session.loggedInUser}">Admin</span>
+          <i class="fas fa-user-circle"></i><span th:text="${session.LOGGED_USER.name + ' (' + session.LOGGED_USER.accountType + ')'}">
+          USER_FIELD
+          </span>
         </button>
         <div id="adminMenu" class="dropdown-menu">
           <a th:href="@{/profile}">

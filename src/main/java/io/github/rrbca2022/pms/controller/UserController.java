@@ -3,19 +3,19 @@ package io.github.rrbca2022.pms.controller;
 import io.github.rrbca2022.pms.entity.AccountType;
 import io.github.rrbca2022.pms.entity.User;
 import io.github.rrbca2022.pms.services.UserService;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @Controller
+@AllArgsConstructor
 @RequestMapping("/user")
 public class UserController {
 
     private final UserService userService;
-    public UserController(UserService userService){this.userService=userService;}
+
     @GetMapping
     public String listSupplier(Model model){
         model.addAttribute("users",userService.getAllUsers());

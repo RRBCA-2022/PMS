@@ -2,6 +2,7 @@ package io.github.rrbca2022.pms.controller;
 
 import io.github.rrbca2022.pms.entity.Supplier;
 import io.github.rrbca2022.pms.services.SuppliersService;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -10,11 +11,11 @@ import org.springframework.web.bind.annotation.*;
 
 
 @Controller
+@AllArgsConstructor
 @RequestMapping("/suppliers")
 public class SuppliersController {
 
     private final SuppliersService suppliersService;
-    public SuppliersController(SuppliersService suppliersService) {this.suppliersService = suppliersService;}
 
     @GetMapping
     public String ListSuppliers(Model model){

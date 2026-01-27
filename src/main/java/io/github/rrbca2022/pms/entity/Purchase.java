@@ -7,9 +7,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +20,7 @@ public class Purchase {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long purchaseId;
+	private Long id;
 
 	private Double totalAmount;
 

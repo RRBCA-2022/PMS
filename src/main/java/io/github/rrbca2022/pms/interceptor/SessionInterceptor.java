@@ -1,5 +1,7 @@
 package io.github.rrbca2022.pms.interceptor;
 
+import io.github.rrbca2022.pms.entity.AccountType;
+import io.github.rrbca2022.pms.entity.User;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -39,6 +41,21 @@ public class SessionInterceptor implements HandlerInterceptor {
 		if (!loggedIn && !path.equals("/")) {
 			response.sendRedirect("/");
 			return false;
+		}
+
+		User user = loggedIn ? (User) session.getAttribute("LOGGED_USER") : null;
+
+		// Admin-only routes
+		if (
+				path.startsWith("/purchases") ||
+						path.startsWith("/suppliers") ||
+						path.startsWith("/user") ||
+						path.startsWith("/settings")
+		) {
+			if (user.getAccountType() != AccountType.ADMIN) {
+				response.sendRedirect("/dashboard");
+				return false;
+			}
 		}
 
 		return true;

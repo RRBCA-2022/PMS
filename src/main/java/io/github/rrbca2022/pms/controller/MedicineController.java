@@ -5,21 +5,18 @@ import io.github.rrbca2022.pms.entity.Medicine;
 import io.github.rrbca2022.pms.services.CategoryService;
 import io.github.rrbca2022.pms.services.MedicineService;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
+@AllArgsConstructor
 @RequestMapping("/medicine")
 public class MedicineController {
 
     private final CategoryService categoryService;
     private final MedicineService medicineService;
-
-    public MedicineController(MedicineService medicineService, CategoryService categoryService) {
-        this.medicineService=medicineService;
-        this.categoryService=categoryService;
-    }
 
     @GetMapping
     public String ListMedicines(Model model){
