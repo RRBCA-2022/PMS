@@ -75,7 +75,10 @@ function clearCategoryInput() {
     filterCategoryDropdown();
 }
 
+
+
 function selectCategory(li) {
+
     const id = li.getAttribute("data-id");
     const name = li.getAttribute("data-name");
 
@@ -168,12 +171,12 @@ document.addEventListener("click", function(event) {
     });
 });
 
-
-document.querySelector("#medicineModal form")
-    .addEventListener("submit", function (e) {
-        e.preventDefault()
-        saveMedicine()
-    })
+document.addEventListener("submit", function (e) {
+    if (e.target && e.target.closest("#medicineModal form")) {
+        e.preventDefault();
+        saveMedicine();
+    }
+});
 
 function updateMedicineRow(med) {
     const row = document.querySelector(`tr[data-id='${med.id}']`);
@@ -205,6 +208,14 @@ function saveMedicine() {
     data.qtyUnit = data.qtyUnit.toUpperCase();
     data.category = { id: categoryId };  // <-- IMPORTANT
     delete data["category.id"];
+    const mfg = new Date(data.mfgDate);
+    const exp = new Date(data.expDate);
+
+// 2. Perform the logical check
+    if (exp <= mfg) {
+        alert("Expiry date must be after manufacturing date!");
+        return; // This 'return' is the most important part; it stops the fetch.
+    }
 
     let isEditMode = document.querySelector("#medicineModal h5").textContent === "Edit Medicine";
 
