@@ -1,0 +1,66 @@
+<div th:fragment="modal">
+    <link rel="stylesheet" th:href="@{/css/modal/modal-main.css}">
+    <link rel="stylesheet" th:href="@{/css/modal/sale-purchase-modal.css}">
+
+    <div id="viewPurchaseBackdrop" class="modal-backdrop-custom" onclick="closeViewModal()"></div>
+
+    <div id="viewPurchaseModal" class="modal-custom">
+        <div class="modal-header">
+            <h5>Purchase Details Summary</h5>
+            <button class="btn-close" onclick="closeViewModal()"></button>
+        </div>
+
+        <div class="modal-body">
+            <div class="container-fluid">
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label text-muted">Purchase ID</label>
+                        <p class="fw-bold" id="view-purchase-id">---</p>
+                    </div>
+                    <div class="col-md-6 text-md-end">
+                        <label class="form-label text-muted">Order Date</label>
+                        <p id="view-date">---</p>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <label class="form-label text-muted">Supplier</label>
+                        <p class="h6" id="view-supplier">---</p>
+                    </div>
+                </div>
+
+                <hr>
+
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <h6>Medicines Purchased</h6>
+                        <div id="view-medicine-list" class="list-group list-group-flush mb-3">
+                        </div>
+                    </div>
+                </div>
+
+                <hr>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <p class="mb-1">Total Items: <span id="view-total-items" class="badge bg-secondary">0</span></p>
+
+                    </div>
+                    <div class="col-md-6 text-md-end">
+                        <label class="form-label text-muted">Grand Total Amount</label>
+                        <h4 class="text-primary" id="view-total-amount">0.00</h4>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" onclick="closeViewModal()">
+                Close
+            </button>
+        </div>
+    </div>
+</div>

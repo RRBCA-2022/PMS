@@ -1,17 +1,17 @@
 package io.github.rrbca2022.pms.controller;
 
 import io.github.rrbca2022.pms.dto.PurchaseFormDTO;
+import io.github.rrbca2022.pms.entity.Purchase;
 import io.github.rrbca2022.pms.services.CategoryService;
 import io.github.rrbca2022.pms.services.MedicineService;
 import io.github.rrbca2022.pms.services.PurchasesService;
 import io.github.rrbca2022.pms.services.SuppliersService;
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -32,6 +32,16 @@ public class PurchasesController {
         model.addAttribute("suppliers", suppliersService.getAllSuppliers());
         model.addAttribute("purchases", purchasesService.getAllPurchases());
         return "purchases";
+    }
+    @GetMapping("/{id}")
+    @ResponseBody
+    public ResponseEntity<Purchase> getPurchaseDetails(@PathVariable Long id) {
+        try {
+            Purchase purchase = purchasesService.getPurchaseById(id);
+            return ResponseEntity.ok(purchase);
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PostMapping("/save")

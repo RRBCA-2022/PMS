@@ -1,12 +1,15 @@
 package io.github.rrbca2022.pms.services;
 
 import io.github.rrbca2022.pms.entity.PMSConfig;
+import io.github.rrbca2022.pms.entity.User;
 import io.github.rrbca2022.pms.repository.PMSConfigRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
-@Transactional(readOnly = true)
+@Transactional(readOnly = false)
 public class PMSConfigService {
 
 	private final PMSConfigRepository pmsConfigRepository;
@@ -33,6 +36,10 @@ public class PMSConfigService {
 		pmsConfigRepository.save(cachedConfig); // update cache manually
 		return cachedConfig;
 	}
+
+	public List<PMSConfig> getAllUsers(){return pmsConfigRepository.findAll();}
+
+	public PMSConfig  getPMSById(Long id) {return  pmsConfigRepository.findById(id).orElse(null);}
 
 	public String getPharmacyName() {
 		System.out.println(getConfig().getPharmacyName());
@@ -70,5 +77,4 @@ public class PMSConfigService {
 		getConfig().setCurrencySymbol(currencySymbol);
 		saveConfig();
 	}
-
 }

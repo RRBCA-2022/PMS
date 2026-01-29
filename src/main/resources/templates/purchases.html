@@ -21,6 +21,7 @@
             <th>Supplier</th>
             <th>Total Items</th>
             <th>Total Amount</th>
+            <th>Actions</th>
         </tr>
         </thead>
         <tbody>
@@ -30,6 +31,12 @@
             <td th:text="${purchase.supplierName}"></td>
             <td th:text="${#lists.size(purchase.items)}"></td>
             <td th:text="${#numbers.formatDecimal(purchase.totalAmount, 1, 2)}"></td>
+            <td>
+                <button class="btn btn-sm btn-outline-info"
+                        th:if="${purchase != null}"
+                        th:onclick="|openViewModal(${purchase.id})|">
+                    <i class="fa fa-eye"></i> </button>
+            </td>
         </tr>
         </tbody>
     </table>
@@ -37,6 +44,7 @@
     <!-- Modal include -->
     <div th:replace="~{modal/purchase-modal :: modal}"></div>
     <div th:replace="~{modal/add-medicine-modal :: modal}"></div>
+    <div th:replace="~{modal/view-modal :: modal}"></div>
 
     <script th:src="@{/js/toast.js}"></script>
 

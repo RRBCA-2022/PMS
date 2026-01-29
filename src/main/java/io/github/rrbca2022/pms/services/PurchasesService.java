@@ -25,6 +25,11 @@ public class PurchasesService {
         return purchasesRepository.findAll();
     }
 
+    public Purchase getPurchaseById(Long id) {
+        return purchasesRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Purchase not found with ID: " + id));
+    }
+
     public double newPurchase(PurchaseFormDTO purchaseDTO) {
 
         //create new purchase
