@@ -38,4 +38,10 @@ public class Sale {
 	@OneToMany(mappedBy = "sale", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<SaleItem> items = new ArrayList<>();
 
+	public int calculateTotalQuantity() {
+		return items.stream()
+				.mapToInt(SaleItem::getQuantity)
+				.sum();
+	}
+
 }

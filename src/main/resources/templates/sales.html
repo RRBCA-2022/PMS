@@ -28,7 +28,7 @@
             <td th:text="${sale.id}"></td>
             <td th:text="${#temporals.format(sale.timestamp, 'dd/MM/yyyy')}"></td>
             <td th:text="${#numbers.formatDecimal(sale.totalAmount, 1, 2)}"></td>
-            <td th:text="${sale.items.size()}"></td>
+            <td th:text="${sale.calculateTotalQuantity()}"></td>
             <td th:text="${sale.sellerName}"></td>
         </tr>
         </tbody>

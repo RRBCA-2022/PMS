@@ -11,6 +11,8 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
+import java.time.LocalDate;
+
 @ControllerAdvice
 public class GlobalModelAttributes {
 
@@ -55,6 +57,11 @@ public class GlobalModelAttributes {
 			model.addAttribute("sellerId", user.getId());
 			model.addAttribute("sellerName", user.getName());
 		}
+	}
+
+	@ModelAttribute
+	public void addLocalDate(ModelMap model) {
+		model.addAttribute("currentDate", LocalDate.now());
 	}
 
 

@@ -1,0 +1,79 @@
+
+/* Settings card baseline */
+.settings-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    min-height: 500px;
+    overflow: hidden;
+}
+
+/* List-group base styles inside settings tabs container */
+#settings-tabs .list-group {
+    border: 0;
+    margin: 0;
+    padding: 0;
+}
+
+/* Individual tab items */
+#settings-tabs .list-group-item {
+    border: none;
+    padding: 15px 20px;
+    font-size: 0.95rem;
+    color: #6c757d;               /* muted default text */
+    background: transparent;
+    border-radius: 8px;
+    margin: 6px 10px;            /* spacing between items */
+    transition: background-color 150ms ease, color 150ms ease,
+    box-shadow 150ms ease, transform 120ms ease;
+}
+
+/* Hover / focus states (darker gray tone) */
+#settings-tabs .list-group-item:hover,
+#settings-tabs .list-group-item:focus {
+    color: #495057;
+    background-color: rgba(33,37,41,0.06); /* subtle dark/gray tone */
+    outline: none;
+    text-decoration: none;
+}
+
+/* Active state (matches Pharmacy Info: blue background, white text) */
+#settings-tabs .list-group-item.active,
+#settings-tabs .list-group-item[aria-selected="true"] {
+    background-color: #0d6efd !important;
+    color: #fff !important;
+    font-weight: 500;
+    border: 1px solid #0d6efd;
+    box-shadow: none;
+    transform: none;
+}
+
+/* Ensure icons inside tabs inherit color */
+#settings-tabs .list-group-item .bi {
+    vertical-align: -0.125em;
+    margin-right: 0.5rem;
+    color: inherit;
+}
+
+/* If using Bootstrap nav-tabs classes that may override styles, bump specificity */
+#settings-tabs .list-group.list-group-flush .list-group-item.active,
+#settings-tabs .nav .list-group-item.active {
+    background-color: #0d6efd !important;
+    color: #fff !important;
+    border-color: #0d6efd !important;
+}
+
+/* Small screens: tighten spacing */
+@media (max-width: 575.98px) {
+    #settings-tabs .list-group-item {
+        padding: 12px 14px;
+        margin: 4px 8px;
+        font-size: 0.9rem;
+    }
+}
+
+
+
+
+
+

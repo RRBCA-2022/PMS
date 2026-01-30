@@ -254,8 +254,8 @@ function appendMedToAvailableList(m) {
         return;
     }
 
-    const currencySymbol =
-        document.getElementById("grandTotal")?.dataset.currSymbol || ""
+
+    const currencySymbol = document.getElementById('global-currency-symbol').value;
 
 
     const div = document.createElement("div")

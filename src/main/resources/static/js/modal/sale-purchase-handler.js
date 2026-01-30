@@ -1,5 +1,5 @@
 /* ===============================
-   PURCHASE MODAL
+   PURCHASE / SALE MODAL
 =============================== */
 
 let listItems = [];
@@ -151,7 +151,7 @@ function renderListItems() {
 
     let grandTotal = 0;
     const grandTotalEl = document.getElementById("grandTotal");
-    const currency = grandTotalEl.dataset.currSymbol || "$";
+    const currencySymbol = document.getElementById('global-currency-symbol').value;
 
     listItems.forEach((item, index) => {
         grandTotal += item.total;
@@ -162,7 +162,7 @@ function renderListItems() {
         div.innerHTML = `
             <div>
                 <strong>${item.name}</strong><br>
-                <small>${currency} ${item.price.toLocaleString(undefined, {
+                <small>${currencySymbol} ${item.price.toLocaleString(undefined, {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2
         })} each</small>
@@ -172,7 +172,7 @@ function renderListItems() {
                 <input type="number" min="1" max="9999" class="qty-input text-center" value="${item.qty}" 
                         onchange="updateQty(${index}, this.value)">
                 <button type="button" class="btn btn-sm btn-light" onclick="increaseQty(${index})">+</button>
-                <strong>${currency} ${item.total.toLocaleString(undefined, {
+                <strong>${currencySymbol} ${item.total.toLocaleString(undefined, {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2
         })}</strong>
@@ -193,7 +193,7 @@ function renderListItems() {
         list.appendChild(div);
     });
 
-    grandTotalEl.innerText = currency + ' ' + grandTotal.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    grandTotalEl.innerText = currencySymbol + ' ' + grandTotal.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 
 function removeItem(index) {

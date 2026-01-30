@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 @Service
@@ -35,7 +36,7 @@ public class SalesService {
         Sale sale=new Sale();
         sale.setTimestamp(
                 formDTO.getTimestamp() !=null
-                ? formDTO.getTimestamp().atStartOfDay()
+                ? formDTO.getTimestamp().atTime(LocalTime.now())
                         : LocalDateTime.now()
         );
         sale.setSeller(seller);

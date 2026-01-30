@@ -41,11 +41,13 @@
 
 					<!-- Order Date-->
 					<div class="col-md-6">
-						<label class="form-label">Order Date *</label>
+						<label class="form-label">Order Date</label>
 						<input type="date"
 						       class="form-control"
 						       name="orderDate"
-						       required>
+						       th:value="${currentDate}"
+						       required
+						       readonly>
 					</div>
 				</div>
 

@@ -36,7 +36,7 @@ public class LoginController {
             redirectAttributes.addFlashAttribute("loginStatusFail", "Invalid username or password");
             return "redirect:/"; // back to login
         }
-        System.out.println(user);
+        System.out.println("Logged In : " + user);
 
         session.setAttribute("LOGGED_USER", user);
 
