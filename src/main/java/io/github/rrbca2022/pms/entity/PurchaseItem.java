@@ -31,6 +31,7 @@ public class PurchaseItem {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "med_id", nullable = true)
 	@OnDelete(action = OnDeleteAction.SET_NULL)
+	@JsonIgnore
 	private Medicine medicine;
 
 	@Column(name = "med_name")

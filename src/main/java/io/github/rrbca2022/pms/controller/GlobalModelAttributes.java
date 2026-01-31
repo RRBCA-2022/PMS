@@ -27,7 +27,7 @@ public class GlobalModelAttributes {
 
 	@ModelAttribute
 	public void addPharmacyName(ModelMap model) {
-		model.addAttribute("pharmacyName", pmsConfigService.getPharmacyName());
+		model.addAttribute("pharmacyName", pmsConfigService.getConfig().getPharmacyName());
 	}
 
 	@ModelAttribute
@@ -37,7 +37,7 @@ public class GlobalModelAttributes {
 
 	@ModelAttribute
 	public void addCurrencySymbol(ModelMap model) {
-		model.addAttribute("currencySymbol", pmsConfigService.getCurrencySymbol());
+		model.addAttribute("currencySymbol", pmsConfigService.getConfig().getCurrencySymbol());
 	}
 
 	@ModelAttribute("medicine")

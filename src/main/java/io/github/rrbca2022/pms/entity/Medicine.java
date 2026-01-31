@@ -1,11 +1,14 @@
 package io.github.rrbca2022.pms.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import io.github.rrbca2022.pms.utils.id.AlphaNumericIdGenerator;
+import io.github.rrbca2022.pms.utils.id.IdPrefix;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.AssertTrue;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -18,11 +21,13 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "medicine")
+@IdPrefix("MED-")
 public class Medicine {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	@GeneratedValue(generator = "alphanumeric-id")
+	@GenericGenerator(name = "alphanumeric-id", type = AlphaNumericIdGenerator.class)
+	private String id;
 
 	@Column(unique = true, nullable = false)
 	private String name;

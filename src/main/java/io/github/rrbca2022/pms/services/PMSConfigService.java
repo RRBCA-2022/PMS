@@ -1,22 +1,40 @@
 package io.github.rrbca2022.pms.services;
 
 import io.github.rrbca2022.pms.entity.PMSConfig;
-import io.github.rrbca2022.pms.entity.User;
 import io.github.rrbca2022.pms.repository.PMSConfigRepository;
+import io.github.rrbca2022.pms.utils.PMSLogger;
+import jakarta.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 @Service
 @Transactional(readOnly = false)
+@RequiredArgsConstructor()
 public class PMSConfigService {
-
 	private final PMSConfigRepository pmsConfigRepository;
 	private PMSConfig cachedConfig;
 
-	public PMSConfigService(PMSConfigRepository pmsConfigRepository) {
-		this.pmsConfigRepository = pmsConfigRepository;
+	@PostConstruct
+	public void postConstruct() {
+		// Load config from DB if exists, else use temporary in-memory default
+		cachedConfig = pmsConfigRepository.findById(1L).orElseGet(() -> {
+			PMSLogger.warn("PMSConfig not found. Using temporary in-memory default.");
+			PMSConfig defaultConfig = new PMSConfig();
+			defaultConfig.setId(1L);
+			defaultConfig.setPharmacyName("Default Pharmacy");
+			defaultConfig.setPharmacyEmail("email@example.com");
+			defaultConfig.setPharmacyAddress("Default Address");
+			defaultConfig.setCurrencySymbol("$");
+			return defaultConfig;
+		});
+
+		PMSLogger.info("PMSConfig loaded");
+		PMSLogger.setLogLevel(cachedConfig.getLogLevel());
+	}
+
+	public boolean doesConfigExists() {
+		return pmsConfigRepository.existsById(1L);
 	}
 
 	// Cached method
@@ -28,53 +46,20 @@ public class PMSConfigService {
 	}
 
 	public PMSConfig saveConfig(PMSConfig config) {
-		cachedConfig = pmsConfigRepository.save(config); // update cache manually
+		cachedConfig = pmsConfigRepository.save(config);
+		PMSLogger.setLogLevel(cachedConfig.getLogLevel());
 		return cachedConfig;
 	}
 
 	public PMSConfig saveConfig() {
-		pmsConfigRepository.save(cachedConfig); // update cache manually
-		return cachedConfig;
+		return saveConfig(cachedConfig);
 	}
 
-	public List<PMSConfig> getAllUsers(){return pmsConfigRepository.findAll();}
-
-	public PMSConfig  getPMSById(Long id) {return  pmsConfigRepository.findById(id).orElse(null);}
-
-	public String getPharmacyName() {
-		System.out.println(getConfig().getPharmacyName());
-		return getConfig().getPharmacyName();
+	public void refreshCache() {
+		pmsConfigRepository.findById(1L).ifPresent(config -> {
+			cachedConfig = config;
+			PMSLogger.debug("PMSConfig cache refreshed from DB");
+		});
 	}
 
-	public void setPharmacyName(String pharmacyName) {
-		getConfig().setPharmacyName(pharmacyName);
-		saveConfig();
-	}
-
-	public String getPharmacyEmail() {
-		return getConfig().getPharmacyEmail();
-	}
-
-	public void setPharmacyEmail(String pharmacyEmail) {
-		getConfig().setPharmacyEmail(pharmacyEmail);
-		saveConfig();
-	}
-
-	public String getPharmacyAddress() {
-		return getConfig().getPharmacyAddress();
-	}
-
-	public void setPharmacyAddress(String pharmacyAddress) {
-		getConfig().setPharmacyAddress(pharmacyAddress);
-		saveConfig();
-	}
-
-	public String getCurrencySymbol() {
-		return getConfig().getCurrencySymbol();
-	}
-
-	public void setCurrencySymbol(String currencySymbol) {
-		getConfig().setCurrencySymbol(currencySymbol);
-		saveConfig();
-	}
 }

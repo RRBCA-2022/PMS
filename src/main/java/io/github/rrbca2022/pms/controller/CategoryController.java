@@ -36,7 +36,7 @@ public class CategoryController {
 	}
 
 	@GetMapping("/edit/{id}")
-	public String editCategory(@PathVariable Long id, ModelMap model){
+	public String editCategory(@PathVariable String id, ModelMap model){
 		Category ctg = categoryService.getCategoryById(id);
 		model.addAttribute("category", ctg);
 		model.addAttribute("mode", "Edit");
@@ -44,7 +44,7 @@ public class CategoryController {
 	}
 
 	@GetMapping("/delete/{id}")
-	public String deleteCategory(@PathVariable Long id){
+	public String deleteCategory(@PathVariable String id){
 		categoryService.deleteCategory(id);
 		return "redirect:/category" ;
 	}

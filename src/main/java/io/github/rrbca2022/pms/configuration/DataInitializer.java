@@ -3,58 +3,49 @@ package io.github.rrbca2022.pms.configuration;
 import io.github.rrbca2022.pms.entity.AccountType;
 import io.github.rrbca2022.pms.entity.PMSConfig;
 import io.github.rrbca2022.pms.entity.User;
-import io.github.rrbca2022.pms.repository.PMSConfigRepository;
-import io.github.rrbca2022.pms.repository.UserRepository;
+import io.github.rrbca2022.pms.services.PMSConfigService;
+import io.github.rrbca2022.pms.services.UserService;
 import io.github.rrbca2022.pms.utils.PMSLogger;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import lombok.AllArgsConstructor;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
+import org.springframework.stereotype.Component;
 
-@Configuration
+@Component
+@AllArgsConstructor
 public class DataInitializer {
+	private final UserService userService;
+	private final PMSConfigService configService;
 
-	private final UserRepository userRepository;
-	private final PMSConfigRepository configRepository;
+	@EventListener(ApplicationReadyEvent.class)
+	public void initializeData() {
+		// ===== ROOT USER =====
+		if (!userService.adminExists()) {
+			User rootUser = new User();
+			rootUser.setName("PMS Root");
+			rootUser.setEmail("root@example.com");
+			rootUser.setUsername("PMS");
+			rootUser.setPassword("PMS2026");
+			rootUser.setAccountType(AccountType.ADMIN);
 
-	public DataInitializer(UserRepository userRepository, PMSConfigRepository configRepository) {
-		this.userRepository = userRepository;
-		this.configRepository = configRepository;
-	}
+			userService.saveUser(rootUser);
+			PMSLogger.debug("PMS Root User created");
+		} else {
+			PMSLogger.debug("PMS Root / Admin User already exists");
+		}
 
-	@Bean
-	public CommandLineRunner initRootUserAndConfig() {
-		return args -> {
-			// ===== ROOT USER =====
-			if (userRepository.findByUsername("PMS").isEmpty()) {
-				User rootUser = new User();
-				rootUser.setName("PMS Root");
-				rootUser.setEmail("root@example.com");
-				rootUser.setUsername("PMS");
-				rootUser.setPassword("PMS2026");
-				rootUser.setAccountType(AccountType.ADMIN);
-
-				userRepository.save(rootUser);
-
-				PMSLogger.debug("PMS Root User created");
-			} else {
-				PMSLogger.debug("PMS Root User already exists");
-			}
-
-			// ===== PHARMACY CONFIG =====
-			if (configRepository.findById(1L).isEmpty()) {
-				PMSConfig config = new PMSConfig();
-				config.setId(1L); // fixed single-row ID
-				config.setPharmacyName("My Pharmacy");
-				config.setPharmacyEmail("email@example.com");
-				config.setPharmacyAddress("Example Location");
-				config.setCurrencySymbol("$");
-
-				configRepository.save(config);
-
-				PMSLogger.debug("Pharmacy configuration initialized");
-			} else {
-				PMSLogger.debug("Pharmacy configuration already exists");
-			}
-		};
+		// ===== PHARMACY CONFIG =====
+		if (!configService.doesConfigExists()) {
+			PMSConfig config = new PMSConfig();
+			config.setId(1L); // fixed single-row ID
+			config.setPharmacyName("My Pharmacy");
+			config.setPharmacyEmail("email@example.com");
+			config.setPharmacyAddress("Example Location");
+			config.setCurrencySymbol("$");
+			configService.saveConfig(config); // saves + updates cache
+			PMSLogger.debug("Pharmacy configuration initialized");
+		} else {
+			PMSLogger.debug("Pharmacy configuration already exists");
+		}
 	}
 }

@@ -2,21 +2,21 @@ package io.github.rrbca2022.pms.services;
 
 import io.github.rrbca2022.pms.entity.Category;
 import io.github.rrbca2022.pms.repository.CategoryRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor()
 public class CategoryService {
-
     private final CategoryRepository categoryRepository;
-    public CategoryService(CategoryRepository categoryRepository){this.categoryRepository=categoryRepository;}
 
     public List<Category> getAllCategories() {
         return categoryRepository.findAll();
     }
 
-    public Category getCategoryById(Long id) {
+    public Category getCategoryById(String id) {
         return  categoryRepository.findById(id).orElse(null);
     }
 
@@ -26,7 +26,7 @@ public class CategoryService {
         categoryRepository.save(category);
     }
 
-    public void deleteCategory(Long id) {
+    public void deleteCategory(String id) {
         categoryRepository.deleteById(id);
     }
 }

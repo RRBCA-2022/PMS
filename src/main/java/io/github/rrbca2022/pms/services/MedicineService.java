@@ -5,32 +5,25 @@ import io.github.rrbca2022.pms.entity.Medicine;
 import io.github.rrbca2022.pms.entity.MedicineBatch;
 import io.github.rrbca2022.pms.repository.MedicineBatchRepository;
 import io.github.rrbca2022.pms.repository.MedicineRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor()
 public class MedicineService {
-
     private final CategoryService categoryService;
     private final MedicineRepository medicineRepository;
-    private final MedicineBatchRepository batchRepository; // New Repository
-
-    public MedicineService(MedicineRepository medicineRepository,
-                           CategoryService categoryService,
-                           MedicineBatchRepository batchRepository) {
-        this.medicineRepository = medicineRepository;
-        this.categoryService = categoryService;
-        this.batchRepository = batchRepository;
-    }
+    private final MedicineBatchRepository batchRepository;
 
     public List<Medicine> getAllMedicines(){return medicineRepository.findAll();}
 
-    public Medicine getMedicineById(Long id){return medicineRepository.findById(id).orElse(null);}
+    public Medicine getMedicineById(String id){return medicineRepository.findById(id).orElse(null);}
 
     public void saveMedicine(Medicine medicine)
     {
-        Long catId=medicine.getCategory().getId();
+        String catId = medicine.getCategory().getId();
         Category category=categoryService.getCategoryById(catId);
         medicine.setCategory(category);
         Medicine savedMedicine=medicineRepository.save(medicine);
@@ -48,7 +41,7 @@ public class MedicineService {
         batchRepository.save(initialBatch);
     }
 
-    public void deleteMedicine(Long id){ medicineRepository.deleteById(id);}
+    public void deleteMedicine(String id){ medicineRepository.deleteById(id);}
 
 
 

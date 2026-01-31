@@ -10,7 +10,7 @@ import java.util.List;
 @Setter
 public class SaleFormDTO {
 	private LocalDate timestamp;
-	private Long sellerId;
+	private String sellerId;
 	private String sellerName;
 	private List<MedItemDTO> items;
 }

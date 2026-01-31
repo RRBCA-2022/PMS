@@ -1,22 +1,22 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{base::layout(~{::section})}" >
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{base::layout(~{::section})}">
+
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" th:href="@{/css/settings.css}">
 </head>
+
 <body>
 <section class="container mt-4">
     <div class="row settings-container shadow-sm bg-white rounded overflow-hidden">
         <div class="col-md-3 border-end p-0 bg-light">
             <div class="list-group list-group-flush shadow-none nav nav-tabs border-0" id="settingsTabs" role="tablist">
 
-                <button class="list-group-item list-group-item-action active py-3 border-0"
-                        id="pharmacy-tab" data-bs-toggle="tab" data-bs-target="#pharmacy-content" type="button" role="tab">
+                <button class="list-group-item list-group-item-action active py-3 border-0" id="pharmacy-tab" data-bs-toggle="tab" data-bs-target="#pharmacy-content" type="button" role="tab">
                     <i class="bi bi-hospital me-2"></i> Pharmacy Info
                 </button>
-                <button class="list-group-item list-group-item-action py-3 border-0"
-                        id="security-tab" data-bs-toggle="tab" data-bs-target="#security-content" type="button" role="tab">
+                <button class="list-group-item list-group-item-action py-3 border-0" id="security-tab" data-bs-toggle="tab" data-bs-target="#security-content" type="button" role="tab">
                     <i class="bi bi-person-gear me-2"></i> Profile & Security
                 </button>
             </div>
@@ -32,37 +32,60 @@
 
                     <div class="card-body">
                         <form th:action="@{/settings/save}" th:object="${config}" method="post">
-                        <input type="hidden" th:field="*{id}">
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <label class="form-label text-muted small">Pharmacy Name *</label>
-                                <input type="text" class="form-control" th:field="*{pharmacyName}" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label text-muted small">Email Address *</label>
-                                <input type="email" class="form-control" th:field="*{pharmacyEmail}">
-                            </div>
-                            <div class="col-12">
-                                <label class="form-label text-muted small">Address *</label>
-                                <textarea class="form-control" rows="3" th:field="*{pharmacyAddress}"></textarea>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label text-muted small">Currency</label>
-                                <select class="form-select" th:field="*{currencySymbol}">
-                                    <option value="£">GBP (£) - British Pound</option>
-                                    <option value="€">EUR (€) - Euro</option>
-                                    <option value="रु">NPR (रु) - Nepalese Rupee</option>
-                                    <option value="$">USD ($) - US Dollar</option>
-                                </select>
-                            </div>
-                        </div>
+                            <input type="hidden" th:field="*{id}">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label text-muted small">Pharmacy Name *</label>
+                                    <input type="text" class="form-control" th:field="*{pharmacyName}" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label text-muted small">Email Address *</label>
+                                    <input type="email" class="form-control" th:field="*{pharmacyEmail}">
+                                </div>
 
-                        <div class="mt-5 text-end">
-                            <button type="submit" class="btn btn-primary px-4">
-                                <i class="bi bi-save me-2"></i> Save Changes
-                            </button>
-                        </div>
-                    </form>
+                                <!-- Address and Currency -->
+                                <div class="col-md-8">
+                                    <label class="form-label text-muted small">Address *</label>
+                                    <textarea class="form-control" rows="1" th:field="*{pharmacyAddress}"></textarea>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label text-muted small">Currency</label>
+                                    <select class="form-select" th:field="*{currencySymbol}">
+                                        <option value="£">GBP (£) - British Pound</option>
+                                        <option value="€">EUR (€) - Euro</option>
+                                        <option value="रु">NPR (रु) - Nepalese Rupee</option>
+                                        <option value="$">USD ($) - US Dollar</option>
+                                    </select>
+                                </div>
+
+                                <!-- Log Lvl -->
+                                <div class="col-12">
+                                    <label class="form-label text-muted small">
+                                        Log Level
+                                        <span class="text-primary" data-bs-toggle="tooltip" title="Controls how much information the system logs. Debug is useful for troubleshooting.">
+                                            <i class="bi bi-question-circle"></i>
+                                        </span>
+                                    </label>
+                                    <select class="form-select" th:field="*{logLevel}">
+                                        <option value="INFO">Info & Warning</option>
+                                        <option value="DEBUG">Debugging</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <script>
+                                var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+                                var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                                    return new bootstrap.Tooltip(tooltipTriggerEl)
+                                })
+                            </script>
+
+                            <div class="mt-5 text-end">
+                                <button type="submit" class="btn btn-primary px-4">
+                                    <i class="bi bi-floppy me-2"></i> Save Changes
+                                </button>
+                            </div>
+                        </form>
                     </div>
                 </div>
 
@@ -106,7 +129,7 @@
                             </div>
                             <div class="mt-5 text-end">
                                 <button type="submit" class="btn btn-primary px-4">
-                                    <i class="bi bi-save me-2"></i> Save Changes
+                                    <i class="bi bi-floppy me-2"></i> Save Changes
                                 </button>
                             </div>
                         </form>
@@ -119,13 +142,13 @@
 
     <script th:if="${toastMessage != null}">
         showToast(
-            '[[${toastMessage}]]',
-            '[[${toastType}]]',
-            7000
+                '[[${toastMessage}]]',
+                '[[${toastType}]]',
+                7000
         );
     </script>
 </section>
 
-
 </body>
+
 </html>

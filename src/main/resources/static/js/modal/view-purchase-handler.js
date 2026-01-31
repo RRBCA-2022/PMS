@@ -15,13 +15,19 @@ function openViewModal(purchaseId) {
         .then(data => {
             // Mapping fields to match your Java Entity (Purchase.java)
             document.getElementById('view-purchase-id').innerText = "#" + data.id;
-
-            // Formatting the date (Assuming LocalDateTime string)
-            const date = new Date(data.datetime);
+            document.getElementById('view-order-status').innerText = data.orderStatus;
+            // Formatting the date
+            const date = new Date(data.timestamp);
             document.getElementById('view-date').innerText = date.toLocaleDateString();
 
             document.getElementById('view-supplier').innerText = data.supplierName;
-            document.getElementById('view-total-items').innerText = data.items.length;
+            document.getElementById('view-reviewer').innerText = data.reviewerName || '-';
+            const reviewdate = data.reviewTimestamp ? new Date(data.reviewTimestamp) : null;
+            document.getElementById('view-review-date').innerText = reviewdate
+                ? reviewdate.toLocaleDateString()
+                : '-';
+
+            document.getElementById('view-total-items').innerText = data.items.length.toString();
             const currencySymbol = document.getElementById('global-currency-symbol').value;
             document.getElementById('view-total-amount').innerText = currencySymbol +" "+ data.totalAmount.toFixed(2);
             // Medicine Names (Text format)

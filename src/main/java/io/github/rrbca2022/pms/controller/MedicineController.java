@@ -39,12 +39,12 @@ public class MedicineController {
 
     @GetMapping("/edit/{id}")
     @ResponseBody
-    public Medicine editMedicine(@PathVariable Long id){
+    public Medicine editMedicine(@PathVariable String id){
         return medicineService.getMedicineById(id);
     }
 
     @GetMapping("/delete/{id}")
-    public String deleteMedicine(@PathVariable Long id){
+    public String deleteMedicine(@PathVariable String id){
         medicineService.deleteMedicine(id);
         return "redirect:/medicine";
     }

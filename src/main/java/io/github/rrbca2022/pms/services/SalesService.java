@@ -17,7 +17,7 @@ import java.util.List;
 
 @Service
 @Transactional
-@RequiredArgsConstructor
+@RequiredArgsConstructor()
 public class SalesService {
 
     private final MedicineRepository medicineRepository;

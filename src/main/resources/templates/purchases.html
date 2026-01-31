@@ -27,15 +27,17 @@
         <tbody>
         <tr th:each="purchase : ${purchases}">
             <td th:text="${purchase.id}"></td>
-            <td th:text="${#temporals.format(purchase.datetime, 'dd/MM/yyyy')}"></td>
+            <td th:text="${#temporals.format(purchase.timestamp, 'dd/MM/yyyy')}"></td>
             <td th:text="${purchase.supplierName}"></td>
-            <td th:text="${#lists.size(purchase.items)}"></td>
+            <td th:text="${purchase.calculateTotalQuantity()}"></td>
             <td th:text="${#numbers.formatDecimal(purchase.totalAmount, 1, 2)}"></td>
             <td>
                 <button class="btn btn-sm btn-outline-info"
                         th:if="${purchase != null}"
-                        th:onclick="|openViewModal(${purchase.id})|">
-                    <i class="fa fa-eye"></i> </button>
+                        th:data-id="${purchase.id}"
+                        onclick="openViewModal(this.dataset.id)">
+                    <i class="fa fa-eye"></i>
+                </button>
             </td>
         </tr>
         </tbody>

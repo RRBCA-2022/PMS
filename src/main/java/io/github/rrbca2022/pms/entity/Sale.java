@@ -1,7 +1,10 @@
 package io.github.rrbca2022.pms.entity;
 
+import io.github.rrbca2022.pms.utils.id.AlphaNumericIdGenerator;
+import io.github.rrbca2022.pms.utils.id.IdPrefix;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -17,14 +20,17 @@ import java.util.List;
 @AllArgsConstructor
 @ToString(exclude = {"items", "seller"})
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@IdPrefix("SALE-")
 public class Sale {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	@GeneratedValue(generator = "alphanumeric-id")
+	@GenericGenerator(name = "alphanumeric-id", type = AlphaNumericIdGenerator.class)
+	private String id;
 
 	private LocalDateTime timestamp;
 
+	@Column(name = "total_amount")
 	private Double totalAmount;
 
 	@ManyToOne(fetch = FetchType.LAZY)

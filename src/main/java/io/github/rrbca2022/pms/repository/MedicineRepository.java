@@ -2,7 +2,6 @@ package io.github.rrbca2022.pms.repository;
 
 import io.github.rrbca2022.pms.entity.Medicine;
 import io.github.rrbca2022.pms.entity.MedicineUnitType;
-import jakarta.validation.constraints.AssertTrue;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -10,7 +9,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 @Repository
-public interface MedicineRepository extends JpaRepository<Medicine, Long> {
+public interface MedicineRepository extends JpaRepository<Medicine, String> {
 
 	/* =========================
 	   BASIC LOOKUPS
@@ -56,7 +55,7 @@ public interface MedicineRepository extends JpaRepository<Medicine, Long> {
 	   ========================= */
 
     // All medicines in a category (by id)
-    List<Medicine> findByCategoryId(Long categoryId);
+    List<Medicine> findByCategoryId(String categoryId);
 
     // All medicines in a category (by name)
     List<Medicine> findByCategoryName(String categoryName);

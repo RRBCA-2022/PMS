@@ -36,7 +36,7 @@ public class SuppliersController {
         return "redirect:/suppliers";
     }
     @GetMapping("/edit/{id}")
-    public String editSupplier(@PathVariable Long id, ModelMap model){
+    public String editSupplier(@PathVariable String id, ModelMap model){
         Supplier sup = suppliersService.getSupplierById(id);
         model.addAttribute("supplier",sup);
         model.addAttribute("mode","Edit");
@@ -45,7 +45,7 @@ public class SuppliersController {
     }
 
     @GetMapping("/delete/{id}")
-    public String deleteSupplier(@PathVariable Long id){
+    public String deleteSupplier(@PathVariable String id){
         suppliersService.deleteSupplier(id);
         return "redirect:/suppliers";
     }

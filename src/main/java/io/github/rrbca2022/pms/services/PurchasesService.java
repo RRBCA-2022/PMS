@@ -2,20 +2,18 @@ package io.github.rrbca2022.pms.services;
 
 import io.github.rrbca2022.pms.dto.MedItemDTO;
 import io.github.rrbca2022.pms.dto.PurchaseFormDTO;
-import io.github.rrbca2022.pms.entity.Medicine;
-import io.github.rrbca2022.pms.entity.Purchase;
-import io.github.rrbca2022.pms.entity.PurchaseItem;
-import io.github.rrbca2022.pms.entity.Supplier;
+import io.github.rrbca2022.pms.entity.*;
 import io.github.rrbca2022.pms.repository.MedicineRepository;
 import io.github.rrbca2022.pms.repository.PurchasesRepository;
-import lombok.AllArgsConstructor;
+import io.github.rrbca2022.pms.utils.PMSLogger;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalTime;
 import java.util.List;
 
-@AllArgsConstructor
 @Service
+@RequiredArgsConstructor()
 public class PurchasesService {
     private final MedicineRepository medicineRepository;
     private final PurchasesRepository purchasesRepository;
@@ -25,7 +23,7 @@ public class PurchasesService {
         return purchasesRepository.findAll();
     }
 
-    public Purchase getPurchaseById(Long id) {
+    public Purchase getPurchaseById(String id) {
         return purchasesRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Purchase not found with ID: " + id));
     }
@@ -34,29 +32,37 @@ public class PurchasesService {
 
         //create new purchase
         Purchase purchase= new Purchase();
-        purchase.setDatetime(purchaseDTO.getOrderDate().atTime(LocalTime.now()));
+        purchase.setTimestamp(purchaseDTO.getOrderDate().atTime(LocalTime.now()));
+        purchase.setOrderStatus(PurchaseOrderStatus.PENDING);
 
         Supplier supplier;
-
-        if (purchaseDTO.getSupplierId() != null) {
+        if (purchaseDTO.getSupplierId() != null && !purchaseDTO.getSupplierId().isEmpty()) {
             // user selected from dropdown
             supplier = suppliersService.getSupplierById(purchaseDTO.getSupplierId());
+
+            PMSLogger.debug("Supplier ID Found");
+            PMSLogger.debug(purchaseDTO.getSupplierId());
         } else {
             // user typed manually; try to create new
             supplier = new Supplier();
             supplier.setName(purchaseDTO.getSupplierName());
             suppliersService.saveSupplier(supplier); // create new supplier
+
+            PMSLogger.debug("Supplier ID Not Found");
+            PMSLogger.debug(purchaseDTO.getSupplierId());
         }
         purchase.setSupplierName(supplier.getName());
         purchase.setSupplier(supplier);
 
         double totalAmount = 0.0;
         for(MedItemDTO item: purchaseDTO.getItems()){
-            Medicine medicine=medicineRepository.findById(item.getId()).orElseThrow(()->new RuntimeException("Medicine not found"));
 
+            Medicine medicine = medicineRepository.findById(item.getId()).orElseThrow(()->new RuntimeException("Medicine not found"));
+
+            /*
             medicine.setQty(medicine.getQty() + item.getQty());
-
             medicineRepository.save(medicine);
+             */
 
             PurchaseItem items=new PurchaseItem();
             items.setMedicineName(medicine.getName());
@@ -70,7 +76,6 @@ public class PurchasesService {
             totalAmount+=itemsTotal;
 
         }
-
         purchase.setTotalAmount(totalAmount);
 
         purchasesRepository.save(purchase);

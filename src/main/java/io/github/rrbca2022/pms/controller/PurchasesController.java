@@ -14,8 +14,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.time.LocalDate;
-
 @Controller
 @AllArgsConstructor
 @RequestMapping("/purchases")
@@ -37,7 +35,7 @@ public class PurchasesController {
     }
     @GetMapping("/{id}")
     @ResponseBody
-    public ResponseEntity<Purchase> getPurchaseDetails(@PathVariable Long id) {
+    public ResponseEntity<Purchase> getPurchaseDetails(@PathVariable String id) {
         try {
             Purchase purchase = purchasesService.getPurchaseById(id);
             return ResponseEntity.ok(purchase);

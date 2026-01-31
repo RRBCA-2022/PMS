@@ -26,4 +26,8 @@ public class PMSConfig {
 
 	@Column(nullable = false)
 	private String currencySymbol;
+
+	@Enumerated(EnumType.STRING)
+	@Column(name = "log_level", nullable = false)
+	private LogLevel logLevel = LogLevel.INFO;
 }

@@ -11,5 +11,5 @@ public interface MedicineBatchRepository extends JpaRepository<MedicineBatch, Lo
 
     @Query("SELECT b FROM MedicineBatch b WHERE b.medicine.id = :medId " +
             "AND b.stockQuantity > 0 ORDER BY b.expiryDate ASC")
-    List<MedicineBatch> findAvailableBatchesFEFO(@Param("medId") Long medId);
+    List<MedicineBatch> findAvailableBatchesFEFO(@Param("medId") String medId);
 }
