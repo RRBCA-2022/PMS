@@ -2,10 +2,8 @@ package io.github.rrbca2022.pms.services;
 
 import io.github.rrbca2022.pms.dto.MedItemDTO;
 import io.github.rrbca2022.pms.dto.SaleFormDTO;
-import io.github.rrbca2022.pms.entity.Medicine;
-import io.github.rrbca2022.pms.entity.Sale;
-import io.github.rrbca2022.pms.entity.SaleItem;
-import io.github.rrbca2022.pms.entity.User;
+import io.github.rrbca2022.pms.entity.*;
+import io.github.rrbca2022.pms.repository.MedicineBatchRepository;
 import io.github.rrbca2022.pms.repository.MedicineRepository;
 import io.github.rrbca2022.pms.repository.SalesRepository;
 import io.github.rrbca2022.pms.repository.UserRepository;
@@ -25,6 +23,7 @@ public class SalesService {
     private final MedicineRepository medicineRepository;
     private final SalesRepository salesRepository;
     private final UserRepository userRepository;
+    private final MedicineBatchRepository batchRepository;
 
     public List<Sale> getAll() {
         return salesRepository.findAll();
@@ -46,14 +45,33 @@ public class SalesService {
 
         for(MedItemDTO item:formDTO.getItems()){
             Medicine medicine=medicineRepository.findById(item.getId()).orElseThrow(()->new RuntimeException("medicine not available"));
+
             if(medicine.getQty()< item.getQty()){
                 throw new RuntimeException(
                         "medicine not available" + medicine.getName()
                 );
             }
-            medicine.setQty(
-                    medicine.getQty()-item.getQty()
-            );
+            //FEFO Logic: Fetch batches ordered by expiry date
+            List<MedicineBatch> batches = batchRepository.findAvailableBatchesFEFO(medicine.getId());
+            int remainingToDeduct = item.getQty();
+
+            for (MedicineBatch batch : batches) {
+                if (remainingToDeduct <= 0) break;
+
+                int batchQty = batch.getStockQuantity();
+                if (batchQty >= remainingToDeduct) {
+                    // Current batch can cover the remaining need
+                    batch.setStockQuantity(batchQty - remainingToDeduct);
+                    remainingToDeduct = 0;
+                } else {
+                    // Drain this batch and move to the next
+                    remainingToDeduct -= batchQty;
+                    batch.setStockQuantity(0);
+                }
+                batchRepository.save(batch);
+            }
+
+            medicine.setQty(medicine.getQty()-item.getQty());
 
             SaleItem saleItem = new SaleItem();
             saleItem.setSale(sale);

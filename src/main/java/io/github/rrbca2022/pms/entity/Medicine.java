@@ -11,6 +11,7 @@ import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -54,9 +55,46 @@ public class Medicine {
 		return expDate.isAfter(mfgDate);
 	}
 
+	@OneToMany(mappedBy = "medicine", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private List<MedicineBatch> batches;
+
 	@ManyToOne
 	@JoinColumn(name = "category_id", nullable = true)
 	@OnDelete(action = OnDeleteAction.SET_NULL)
 	private Category category;
 
+
+	@Transient
+	public LocalDate getSoonestExpiryDate() {
+		// Check if batches is null or empty before streaming
+		if (this.batches == null || this.batches.isEmpty()) {
+			return null;
+		}
+		return this.batches.stream()
+				.filter(b -> b.getStockQuantity() != null && b.getStockQuantity() > 0)
+				.map(MedicineBatch::getExpiryDate)
+				.filter(java.util.Objects::nonNull)
+				.min(java.util.Comparator.naturalOrder())
+				.orElse(null);
+	}
+
+	@Transient
+	public String getInventoryStatus() {
+		if (this.qty <= 0) return "OUT_OF_STOCK";
+
+		// Re-use the safe method above
+		LocalDate soonestDate = getSoonestExpiryDate();
+
+		if (soonestDate != null) {
+			long daysToExpiry = java.time.temporal.ChronoUnit.DAYS.between(
+					java.time.LocalDate.now(), soonestDate);
+
+			if (daysToExpiry <= 0) return "EXPIRED";
+			if (daysToExpiry <= 30) return "EXPIRY_SOON";
+		}
+
+		if (this.qty < 10) return "LOW_STOCK";
+
+		return "NORMAL";
+	}
 }

@@ -42,32 +42,49 @@
 						<th>Unit</th>
 						<th>Location</th>
 						<th>Manufacturer</th>
-						<th>MFG Date</th>
-						<th>EXP Date</th>
+						<th>Soonest EXP</th>
+						<th>Alert Status</th>
 						<th class="text-center">Actions</th>
 					</tr>
 					</thead>
 
 					<tbody>
-
-					<!-- REAL DATA (from DB) -->
 					<tr th:each="medicine : ${medicines}" th:attr="data-id=${medicine.id}">
 						<td class="td-id" th:text="${medicine.id}"></td>
 						<td class="td-name" th:text="${medicine.name}"></td>
 						<td class="td-desc" th:text="${medicine.description}"></td>
 						<td class="td-category" th:text="${medicine.category.name}"></td>
 						<td class="td-price" th:text="${medicine.price}"></td>
-						<td class="td-qty" th:text="${medicine.qty}"></td>
+
+						<td class="td-qty">
+							<span th:text="${medicine.qty}"></span>
+							<i th:if="${medicine.inventoryStatus == 'LOW_STOCK'}"
+							   class="fas fa-exclamation-triangle text-warning" title="Low Stock"></i>
+						</td>
+
 						<td class="td-qtyUnit" th:text="${medicine.qtyUnit}"></td>
 						<td class="td-location" th:text="${medicine.location}"></td>
 						<td class="td-manufacturer" th:text="${medicine.manufacturer}"></td>
-						<td class="td-mfgDate" th:text="${medicine.mfgDate}"></td>
-						<td class="td-expDate" th:text="${medicine.expDate}"></td>
+
+						<td class="td-expDate"
+							th:text="${medicine.soonestExpiryDate != null ? medicine.soonestExpiryDate : 'N/A'}"
+							th:classappend="${medicine.inventoryStatus == 'EXPIRED' ? 'text-danger fw-bold' : ''}">
+						</td>
+
+						<td>
+							<div th:switch="${medicine.inventoryStatus}">
+								<span th:case="'OUT_OF_STOCK'" class="badge bg-secondary">Out of Stock</span>
+								<span th:case="'EXPIRED'" class="badge bg-dark">Expired</span>
+								<span th:case="'EXPIRY_SOON'" class="badge bg-danger">Expiring Soon</span>
+								<span th:case="'LOW_STOCK'" class="badge bg-warning text-dark">Low Stock</span>
+								<span th:case="'NORMAL'" class="badge bg-success">Healthy</span>
+							</div>
+						</td>
 
 						<td class="text-center">
 							<button type="button"
-							        class="btn btn-sm btn-warning me-1"
-							        th:attr="onclick=${'openEditMedicineModal('+ medicine.id +')'}">
+									class="btn btn-sm btn-warning me-1"
+									th:attr="onclick=${'openEditMedicineModal('+ medicine.id +')'}">
 								Edit
 							</button>
 							<a th:href="@{/medicine/delete/{id}(id=${medicine.id})}"
@@ -77,7 +94,6 @@
 							</a>
 						</td>
 					</tr>
-
 					</tbody>
 				</table>
 			</div>
