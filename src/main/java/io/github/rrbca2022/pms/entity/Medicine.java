@@ -1,6 +1,7 @@
 package io.github.rrbca2022.pms.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import io.github.rrbca2022.pms.utils.id.AlphaNumericIdGenerator;
 import io.github.rrbca2022.pms.utils.id.IdPrefix;
 import jakarta.persistence.*;
@@ -61,6 +62,7 @@ public class Medicine {
 	}
 
 	@OneToMany(mappedBy = "medicine", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JsonManagedReference
 	private List<MedicineBatch> batches;
 
 	@ManyToOne

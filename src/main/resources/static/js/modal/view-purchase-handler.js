@@ -61,3 +61,26 @@ function openViewModal(purchaseId) {
 function closeViewModal() {
     closeModal("viewPurchaseModal", "viewPurchaseBackdrop");
 }
+
+/**
+ * Processes the approval or denial of a purchase record.
+ * @param {string} action - 'APPROVE' or 'REJECT'
+ */
+async function handlePurchaseAction(action) {
+    const purchaseId = document.getElementById('view-purchase-id').innerText;
+
+    // const actionContainer = document.getElementById('review-actions-container');
+    // const buttons = actionContainer.querySelectorAll('button');
+
+    try {
+        alert(`Purchase = ${action.toLowerCase()}`);
+        if (action === 'REJECT' && !confirm("Are you certain you wish to reject this purchase?")) {
+            console.log("Rejected purchase")
+        }
+        closeViewModal();
+    } catch (error) {
+        console.error("Workflow Error:", error);
+        alert("Error processing that request.");
+        buttons.forEach(btn => btn.disabled = false);
+    }
+}

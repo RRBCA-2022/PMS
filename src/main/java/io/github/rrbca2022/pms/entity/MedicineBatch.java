@@ -1,9 +1,11 @@
 package io.github.rrbca2022.pms.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import java.time.LocalDate;
 
 @Entity
@@ -28,6 +30,7 @@ public class MedicineBatch {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "medicine_id", nullable = false)
+    @JsonBackReference
     private Medicine medicine;
 
     /**

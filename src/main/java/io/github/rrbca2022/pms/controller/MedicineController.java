@@ -32,9 +32,7 @@ public class MedicineController {
             Category cat = categoryService.getCategoryById(medicine.getCategory().getId());
             medicine.setCategory(cat);
         }
-
-        medicineService.saveMedicine(medicine);
-        return medicine;
+        return medicineService.saveMedicine(medicine);
     }
 
     @GetMapping("/edit/{id}")

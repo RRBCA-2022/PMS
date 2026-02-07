@@ -16,6 +16,8 @@ function openMedicineModal() {
 }
 
 function openEditMedicineModal(id) {
+    console.log("[openEditMedicineModal] Fetching medicine with ID:", id);
+
     fetch(`/medicine/edit/${id}`)
         .then(res => res.text())  // get raw text
         .then(text => {
@@ -179,6 +181,8 @@ document.addEventListener("submit", function (e) {
 });
 
 function updateMedicineRow(med) {
+    console.log("[updateMedicineRow] Updating row for medicine:", med);
+
     const row = document.querySelector(`tr[data-id='${med.id}']`);
     if (!row) {
         console.warn("[updateMedicineRow] Row not found for ID", med.id);
@@ -194,8 +198,35 @@ function updateMedicineRow(med) {
     row.querySelector(".td-qtyUnit").textContent = med.qtyUnit.toUpperCase();
     row.querySelector(".td-location").textContent = med.location;
     row.querySelector(".td-manufacturer").textContent = med.manufacturer;
-    row.querySelector(".td-mfgDate").textContent = med.mfgDate;
     row.querySelector(".td-expDate").textContent = med.expDate;
+}
+
+/**
+ * Quick View Handler for Medicine Details
+ * Master Seven, this pulls data directly from the DOM for maximum speed.
+ */
+function viewMedicineDetails(row) {
+    const id = row.dataset.id;
+    const name = row.querySelector('.td-name span').innerText;
+    const manufacturer = row.querySelector('.td-manufacturer').innerText;
+    const category = row.querySelector('.td-category').innerText;
+    const price = row.querySelector('.td-price').innerText;
+    const qty = row.querySelector('.td-qty span').innerText;
+    const status = row.querySelector('.td-status').innerText.trim();
+
+    const detailString = `
+📦 Medicine Details
+-------------------------
+ID: ${id}
+Name: ${name}
+Manufacturer: ${manufacturer}
+Category: ${category}
+Price: ${price}
+Stock: ${qty}
+Current Status: ${status}
+    `;
+
+    alert(detailString);
 }
 
 function saveMedicine() {
@@ -211,7 +242,7 @@ function saveMedicine() {
     const mfg = new Date(data.mfgDate);
     const exp = new Date(data.expDate);
 
-// 2. Perform the logical check
+    // 2. Perform the logical check
     if (exp <= mfg) {
         alert("Expiry date must be after manufacturing date!");
         return; // This 'return' is the most important part; it stops the fetch.
@@ -229,6 +260,8 @@ function saveMedicine() {
             try {
                 const json = JSON.parse(text);
 
+                console.log("[saveMedicine] Server response:", json);
+
                 // close modal
                 closeMedicineModal();
 
@@ -239,7 +272,7 @@ function saveMedicine() {
                     updateMedicineRow(json);
 
             } catch (err) {
-                console.error("Invalid JSON from server:", err);
+                console.error("Save Medicine Error :", err);
             }
         });
 
@@ -253,7 +286,6 @@ function appendMedToAvailableList(m) {
         console.warn("[appendMed] availableProducts not found in DOM.");
         return;
     }
-
 
     const currencySymbol = document.getElementById('global-currency-symbol').value;
 
@@ -274,6 +306,7 @@ function appendMedToAvailableList(m) {
     // attach ID to button
     const button = div.querySelector("button")
     button.dataset.id = m.id   // <-- attach medicine ID
+
     button.onclick = function () {
         addMedicineToList(this, m.price)
     }

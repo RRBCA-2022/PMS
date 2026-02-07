@@ -55,7 +55,7 @@ public class PurchasesService {
         purchase.setSupplier(supplier);
 
         double totalAmount = 0.0;
-        for(MedItemDTO item: purchaseDTO.getItems()){
+        for(MedItemDTO item: purchaseDTO.getItems()) {
 
             Medicine medicine = medicineRepository.findById(item.getId()).orElseThrow(()->new RuntimeException("Medicine not found"));
 

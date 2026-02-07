@@ -5,6 +5,7 @@ import io.github.rrbca2022.pms.entity.Medicine;
 import io.github.rrbca2022.pms.entity.MedicineBatch;
 import io.github.rrbca2022.pms.repository.MedicineBatchRepository;
 import io.github.rrbca2022.pms.repository.MedicineRepository;
+import io.github.rrbca2022.pms.utils.PMSLogger;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,12 +22,14 @@ public class MedicineService {
 
     public Medicine getMedicineById(String id){return medicineRepository.findById(id).orElse(null);}
 
-    public void saveMedicine(Medicine medicine)
+    public Medicine saveMedicine(Medicine medicine)
     {
+        PMSLogger.debug("Saving Medicine: " + medicine.getId() + " - " + medicine.getName());
         String catId = medicine.getCategory().getId();
-        Category category=categoryService.getCategoryById(catId);
+        Category category = categoryService.getCategoryById(catId);
         medicine.setCategory(category);
-        Medicine savedMedicine=medicineRepository.save(medicine);
+        Medicine savedMedicine = medicineRepository.save(medicine);
+        PMSLogger.debug("Saved Medicine: " + medicine.getId() + " - " + medicine.getName());
 
         // 3. Create the Initial Batch from the Medicine form data
         // This makes sure your FEFO algorithm has a record to track.
@@ -39,6 +42,8 @@ public class MedicineService {
         // if you don't set it here.
 
         batchRepository.save(initialBatch);
+
+        return savedMedicine;
     }
 
     public void deleteMedicine(String id){ medicineRepository.deleteById(id);}

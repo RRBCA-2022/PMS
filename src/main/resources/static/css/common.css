@@ -1,0 +1,91 @@
+/* --- Dashboard Layout & Headers --- */
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.25rem 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #f8f9fa; /* Refined thick border */
+}
+
+.page-title {
+    font-weight: 700;
+    color: #2c3e50;
+    margin: 0;
+}
+
+/* --- Search Bar & Inputs --- */
+.search-container {
+    max-width: 400px;
+    margin-bottom: 1.5rem;
+}
+
+.search-input-group {
+    position: relative;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+/* --- Table & Card Containers --- */
+.custom-card {
+    border: none;
+    border-radius: 12px; /* Smooth modern corners */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); /* Deep, professional depth */
+    overflow: hidden;
+    background-color: #ffffff;
+}
+
+.table-custom {
+    margin-bottom: 0;
+}
+
+.table-custom thead {
+    background-color: #343a40; /* Modern dark header */
+    color: #ffffff;
+}
+
+.table-custom th {
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+    padding: 12px 15px;
+    border: none;
+}
+
+.table-custom td {
+    vertical-align: middle;
+    padding: 1rem; /* Balanced spacing */
+    color: #495057;
+    border-bottom: 1px solid #f1f3f5;
+}
+
+/* --- Status Badges (Thematic) --- */
+.status-badge {
+    padding: 0.5em 0.8em;
+    border-radius: 50px; /* Pill style */
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: inline-block;
+}
+
+/* --- Action Buttons --- */
+.btn-action {
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    transition: all 0.2s ease-in-out;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-action:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* --- Legacy Content Class Hooks --- */
+.td-id { font-family: 'Monaco', 'Consolas', monospace; font-weight: bold; }
+.td-name { font-weight: 600; }
+.td-price { font-weight: 500; color: #2c3e50; }

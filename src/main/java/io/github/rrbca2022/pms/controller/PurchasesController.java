@@ -56,8 +56,21 @@ public class PurchasesController {
             redirectAttributes.addFlashAttribute("toastType", "success");
 
             return "redirect:/purchases";
-        }
     }
+
+    @PostMapping("/review/{id}")
+    public String review(
+            @PathVariable String id,
+            @RequestParam String status,
+            RedirectAttributes redirectAttributes
+    ) {
+        //purchaseService.updateStatus(id, status);
+        redirectAttributes.addFlashAttribute("message", "Status updated to " + status);
+        return "redirect:/purchases";
+    }
+
+
+}
 
 
 
