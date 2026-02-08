@@ -1,39 +1,69 @@
+/* ==========================================
+   LOGIN CONFIGURATION (Elysium Brand)
+   ========================================== */
+:root {
+    --primary-blue: #3b82f6;
+    --hover-blue: #2563eb;
+    --white: #ffffff;
+}
+
 body {
     height: 100vh;
+    /* Use a blue-tinted overlay instead of pure black to make it feel vibrant */
     background: linear-gradient(
-            rgba(0, 0, 0, 0.5),
-            rgba(0, 0, 0, 0.5)
+            rgba(30, 58, 138, 0.4),
+            rgba(30, 58, 138, 0.4)
     ),
     url('/images/PMS.png') no-repeat center center/cover;
     display: flex;
     align-items: center;
     justify-content: center;
+    font-family: "Segoe UI", Roboto, sans-serif;
 }
 
 .login-card {
-    background: rgba(255, 255, 255, 0.9);
-    border-radius: 15px;
-    padding: 30px;
+    background: rgba(255, 255, 255, 0.95); /* Increased opacity for clarity */
+    border-radius: 16px;
+    padding: 40px;
     width: 100%;
     max-width: 400px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-}
-
-button.btnbg {
-    background: royalblue;
-    color: white;
-}
-
-button.btnbg:hover {
-    background: cornflowerblue;
-    color: white;
-
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(8px); /* Modern frosted glass effect */
 }
 
 .login-card h3 {
     text-align: center;
-    margin-bottom: 20px;
-    font-weight: bold;
-    color: royalblue;
+    margin-bottom: 30px;
+    font-weight: 800;
+    color: var(--primary-blue); /* Match dashboard active color */
+    letter-spacing: -0.5px;
 }
 
+/* Form Labels */
+.form-label {
+    font-weight: 600;
+    color: #4a5568;
+}
+
+/* Vibrant Button logic */
+button.btnbg {
+    background: var(--primary-blue);
+    color: var(--white);
+    border: none;
+    padding: 12px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+button.btnbg:hover {
+    background: var(--hover-blue);
+    color: var(--white);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(59, 130, 246, 0.4);
+}
+
+/* Form Inputs focus state */
+.form-control:focus {
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}

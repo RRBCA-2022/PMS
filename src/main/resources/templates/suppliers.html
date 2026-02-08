@@ -1,66 +1,76 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{base::layout(~{::section})}" >
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<section>
-    <div class="container mt-5">
-        <div class="d-flex justify-content-between mb-3">
-            <h2>Supplier List</h2>
-            <a th:href="@{/suppliers/new}" class="btn btn-primary">+ Add Supplier</a>
-        </div>
-        <div class="row mb-3">
-            <div class="col-md-4 ms-auto">
-                <input type="text"
-                       class="form-control"
-                       placeholder="🔍 Search supplier..."
-                       id="suppliersearch">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{base::layout(~{::section})}">
+
+<section class="container-fluid px-4 mt-3">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+
+    <div class="page-header">
+        <h4 class="mb-0">Supplier Management</h4>
+        <a th:href="@{/suppliers/new}" class="btn btn-primary btn-action">
+            <i class="fas fa-plus"></i> Add Supplier
+        </a>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-4 ms-auto">
+            <div class="input-group search-input-group">
+                <span class="input-group-text bg-white">
+                    <i class="fas fa-search text-muted"></i>
+                </span>
+                <input type="text" id="suppliersearch" class="form-control"
+                       placeholder="Search Supplier ..">
             </div>
         </div>
-        <table class="table table-bordered table-hover bg-white" id="suppliertable" >
-            <thead class="table-dark">
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Address</th>
-                <th>Phone</th>
-                <th>Email</th>
-                <th>Actions</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="supplier : ${suppliers}">
-                <td th:text="${supplier.id}"></td>
-                <td th:text="${supplier.name}"></td>
-                <td th:text="${supplier.address}"></td>
-                <td th:text="${supplier.phone}"></td>
-                <td th:text="${supplier.email}"></td>
-
-                <td>
-                    <a th:href="@{/suppliers/edit/{id}(id=${supplier.id})}" class="btn btn-sm btn-warning">Edit</a>
-                    <a th:href="@{/suppliers/delete/{id}(id=${supplier.id})}"
-                       class="btn btn-sm btn-danger"
-                       onclick="return confirm('Delete this category?')">Delete</a>
-
-                </td>
-            </tr>
-            </tbody>
-        </table>
     </div>
-    <script>
-        document.getElementById("suppliersearch").addEventListener("keyup", function () {
-            let filter = this.value.toLowerCase();
-            let rows = document.querySelectorAll("#suppliertable tbody tr");
 
-            rows.forEach(row => {
-                row.style.display = row.textContent.toLowerCase().includes(filter)
-                    ? ""
-                    : "none";
-            });
-        });
-    </script>
+    <div class="card custom-card">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover table-custom mb-0" id="suppliertable">
+                    <thead>
+                    <tr>
+                        <th class="text-center">ID</th>
+                        <th>Supplier Name</th>
+                        <th>Address</th>
+                        <th>Contact Info</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="supplier : ${suppliers}">
+                        <td class="td-id text-center" th:text="${supplier.id}"></td>
+                        <td class="td-name" th:text="${supplier.name}"></td>
+                        <td class="text-muted" th:text="${supplier.address}"></td>
+                        <td>
+                            <div class="small">
+                                <i class="fas fa-phone fa-sm me-2 text-primary"></i><span th:text="${supplier.phone}"></span><br>
+                                <i class="fas fa-envelope fa-sm me-2 text-primary"></i><span th:text="${supplier.email}"></span>
+                            </div>
+                        </td>
+                        <td class="text-center">
+                            <div class="btn-group" role="group">
+                                <a th:href="@{/suppliers/edit/{id}(id=${supplier.id})}"
+                                   class="btn btn-sm btn-outline-warning" title="Edit">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <a th:href="@{/suppliers/delete/{id}(id=${supplier.id})}"
+                                   class="btn btn-sm btn-outline-danger"
+                                   title="Delete"
+                                   onclick="return confirm('Delete this supplier?')">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script th:src="@{/js/supplier.js}"></script>
 </section>
-</body>
+
 </html>

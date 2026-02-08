@@ -65,7 +65,7 @@ function closeMedicineModal() {
 
 // ----------------------------------
 
-let activeIndex = -1;
+let activeIndx = -1;
 
 function clearCategoryInput() {
     const input = document.getElementById("categoryInput");
@@ -73,7 +73,7 @@ function clearCategoryInput() {
     document.getElementById("categoryId").value = "";
     const dropdown = document.getElementById("categoryDropdown");
     dropdown.style.display = "block";
-    activeIndex = -1;
+    activeIndx = -1;
     filterCategoryDropdown();
 }
 
@@ -88,7 +88,7 @@ function selectCategory(li) {
     document.getElementById("categoryInput").value = name;
 
     document.getElementById("categoryDropdown").style.display = "none";
-    activeIndex = -1;
+    activeIndx = -1;
 }
 
 function filterCategoryDropdown() {
@@ -110,7 +110,7 @@ function filterCategoryDropdown() {
 
     // Show dropdown if at least one match OR input is empty
     document.getElementById("categoryDropdown").style.display = anyVisible ? "block" : "none";
-    activeIndex = -1;
+    activeIndx = -1;
 }
 
 // Handle arrow keys + enter selection
@@ -120,23 +120,23 @@ function handleCategoryKey(e) {
 
     if (e.key === "ArrowDown") {
         e.preventDefault();
-        activeIndex = (activeIndex + 1) % items.length;
+        activeIndx = (activeIndx + 1) % items.length;
         updateActiveItem(items);
     } else if (e.key === "ArrowUp") {
         e.preventDefault();
-        activeIndex = (activeIndex - 1 + items.length) % items.length;
+        activeIndx = (activeIndx - 1 + items.length) % items.length;
         updateActiveItem(items);
     } else if (e.key === "Enter") {
         e.preventDefault();
-        if (activeIndex >= 0 && activeIndex < items.length) {
-            selectCategory(items[activeIndex]);
+        if (activeIndx >= 0 && activeIndx < items.length) {
+            selectCategory(items[activeIndx]);
         }
     }
 }
 
 function updateActiveItem(items) {
     items.forEach((li, index) => {
-        if (index === activeIndex) li.classList.add("active");
+        if (index === activeIndx) li.classList.add("active");
         else li.classList.remove("active");
     });
 }
@@ -190,14 +190,14 @@ function updateMedicineRow(med) {
     }
 
     // Update using querySelector with class names
-    row.querySelector(".td-name").textContent = med.name;
+    row.querySelector(".td-name span").textContent = med.name;
+    row.querySelector(".td-manufacturer").textContent = med.manufacturer;
     row.querySelector(".td-desc").textContent = med.description;
     row.querySelector(".td-category").textContent = med.category.name;
     row.querySelector(".td-price").textContent = med.price;
     row.querySelector(".td-qty").textContent = med.qty;
     row.querySelector(".td-qtyUnit").textContent = med.qtyUnit.toUpperCase();
     row.querySelector(".td-location").textContent = med.location;
-    row.querySelector(".td-manufacturer").textContent = med.manufacturer;
     row.querySelector(".td-expDate").textContent = med.expDate;
 }
 
@@ -313,4 +313,30 @@ function appendMedToAvailableList(m) {
 
     list.prepend(div)
 }
+
+/**
+ * Medicine Management Logic
+ * Handles real-time search filtering and modal interactions.
+ */
+document.addEventListener('DOMContentLoaded', () => {
+    const searchInput = document.getElementById("medicineSearch");
+    const tableRows = document.querySelectorAll("#medicineTable tbody tr");
+
+    // 1. Search Filtering Logic
+    if (searchInput) {
+        searchInput.addEventListener("keyup", function () {
+            const filter = this.value.toLowerCase();
+
+            tableRows.forEach(row => {
+                const idCell = row.cells[0];   // ID Column
+                const nameCell = row.cells[1]; // Name & Manufacturer Column
+
+                const matches = idCell.textContent.toLowerCase().includes(filter) ||
+                    nameCell.textContent.toLowerCase().includes(filter);
+
+                row.style.display = matches ? "" : "none";
+            });
+        });
+    }
+});
 

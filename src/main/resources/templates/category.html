@@ -1,99 +1,64 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{base::layout(~{::section})}" >
+<section class="container-fluid px-4 mt-3">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
 
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<section>
-    <style>
-        #categorytable th:first-child,
-        #categorytable td:first-child {
-            width: 40px;        /* Adjust as needed */
-            white-space: nowrap; /* Prevents buttons from wrapping */
-            text-align: center;  /* Keep buttons centered */
-        }
+    <div class="page-header">
+        <h4 class="mb-0">Category Management</h4>
+        <a th:href="@{/category/new}" class="btn btn-primary btn-action">
+            <i class="fas fa-plus"></i> Add Category
+        </a>
+    </div>
 
-        /* 2nd column (Name) */
-        #categorytable th:nth-child(2),
-        #categorytable td:nth-child(2) {
-            width: 200px;        /* Adjust as needed */
-            text-align: left;    /* Align text if desired */
-        }
-
-        /* 3rd column (Description) */
-        #categorytable th:nth-child(3),
-        #categorytable td:nth-child(3) {
-            width: 300px;        /* Adjust as needed */
-            text-align: left;
-        }
-
-        #categorytable th:last-child,
-        #categorytable td:last-child {
-            width: 100px;        /* Adjust as needed */
-            white-space: nowrap; /* Prevents buttons from wrapping */
-            text-align: center;  /* Keep buttons centered */
-        }
-
-    </style>
-    <div class="container mt-5">
-        <div class="d-flex justify-content-between mb-3">
-            <h2>Category List</h2>
-            <a th:href="@{/category/new}" class="btn btn-primary">+ Add Category</a>
-        </div>
-        <div class="row mb-3">
-            <div class="col-md-4 ms-auto">
-                <input type="text"
-                       class="form-control"
-                       placeholder="🔍 Search Category..."
-                       id="categorysearch">
+    <div class="row mb-4">
+        <div class="col-md-4 ms-auto">
+            <div class="input-group search-input-group">
+                <span class="input-group-text bg-white">
+                    <i class="fas fa-search text-muted"></i>
+                </span>
+                <input type="text" id="categorysearch" class="form-control"
+                       placeholder="Search Category..">
             </div>
         </div>
-        <table class="table table-bordered table-hover bg-white" id="categorytable" >
-            <thead class="table-dark">
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Actions</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="category : ${categories}">
-                <td th:text="${category.id}"></td>
-                <td th:text="${category.name}"></td>
-                <td th:text="${category.description}"></td>
-
-                <td>
-                    <a th:href="@{/category/edit/{id}(id=${category.id})}" class="btn btn-sm btn-warning">Edit</a>
-                    <a th:href="@{/category/delete/{id}(id=${category.id})}"
-                       class="btn btn-sm btn-danger"
-                       onclick="return confirm('Delete this category?')">Delete</a>
-
-                </td>
-            </tr>
-            </tbody>
-        </table>
     </div>
-    <script>
-        document.getElementById("categorysearch").addEventListener("keyup", function () {
-            let filter = this.value.toLowerCase();
-            let rows = document.querySelectorAll("#categorytable tbody tr");
 
-            rows.forEach(row => {
-                let idCell = row.cells[0];   // ID column
-                let nameCell = row.cells[1]; // Name column
-
-                // Show row if either ID or Name matches the filter
-                let matches = idCell.textContent.toLowerCase().includes(filter) ||
-                        nameCell.textContent.toLowerCase().includes(filter);
-
-                row.style.display = matches ? "" : "none";
-            });
-        });
-
-    </script>
+    <div class="card custom-card">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover table-custom mb-0" id="categorytable">
+                    <thead>
+                    <tr>
+                        <th class="text-center">ID</th>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="category : ${categories}">
+                        <td class="td-id text-center" th:text="${category.id}"></td>
+                        <td class="td-name" th:text="${category.name}"></td>
+                        <td class="text-muted" th:text="${category.description}"></td>
+                        <td class="text-center text-nowrap">
+                            <div class="btn-group" role="group">
+                                <a th:href="@{/category/edit/{id}(id=${category.id})}"
+                                   class="btn btn-sm btn-outline-warning" title="Edit">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <a th:href="@{/category/delete/{id}(id=${category.id})}"
+                                   class="btn btn-sm btn-outline-danger"
+                                   title="Delete"
+                                   onclick="return confirm('Delete this category?')">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script th:src="@{/js/category.js}"></script>
 </section>
-</body>
 </html>

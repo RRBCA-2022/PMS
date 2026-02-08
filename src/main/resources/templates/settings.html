@@ -1,154 +1,123 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{base::layout(~{::section})}">
 
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+<section class="container-fluid px-4 mt-3">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
     <link rel="stylesheet" th:href="@{/css/settings.css}">
-</head>
 
-<body>
-<section class="container mt-4">
-    <div class="row settings-container shadow-sm bg-white rounded overflow-hidden">
-        <div class="col-md-3 border-end p-0 bg-light">
-            <div class="list-group list-group-flush shadow-none nav nav-tabs border-0" id="settingsTabs" role="tablist">
+    <div class="page-header">
+        <h4 class="mb-0">System Settings</h4>
+    </div>
 
-                <button class="list-group-item list-group-item-action active py-3 border-0" id="pharmacy-tab" data-bs-toggle="tab" data-bs-target="#pharmacy-content" type="button" role="tab">
-                    <i class="bi bi-hospital me-2"></i> Pharmacy Info
+    <div class="row settings-container overflow-hidden">
+        <div class="col-md-3 p-0 settings-sidebar">
+            <div class="list-group list-group-flush nav nav-tabs" id="settingsTabs" role="tablist">
+                <button class="list-group-item list-group-item-action active" id="pharmacy-tab" data-bs-toggle="tab" data-bs-target="#pharmacy-content" type="button" role="tab">
+                    <i class="fas fa-hospital-alt"></i> Pharmacy Info
                 </button>
-                <button class="list-group-item list-group-item-action py-3 border-0" id="security-tab" data-bs-toggle="tab" data-bs-target="#security-content" type="button" role="tab">
-                    <i class="bi bi-person-gear me-2"></i> Profile & Security
+                <button class="list-group-item list-group-item-action" id="security-tab" data-bs-toggle="tab" data-bs-target="#security-content" type="button" role="tab">
+                    <i class="fas fa-shield-alt"></i> Profile & Security
                 </button>
             </div>
         </div>
 
-        <div class="col-md-9 p-4">
+        <div class="col-md-9 p-4 bg-white">
             <div class="tab-content" id="settingsTabsContent">
-                <div class="tab-pane fade show active" id="pharmacy-content" role="tabpanel" aria-labelledby="pharmacy-tab">
+
+                <div class="tab-pane fade show active" id="pharmacy-content" role="tabpanel">
                     <div class="mb-4">
-                        <h5>Pharmacy Info</h5>
-                        <p class="text-muted">Manage your pharmacy details here.</p>
+                        <h5 class="fw-bold">Pharmacy Configuration</h5>
+                        <p class="text-muted small">Update your establishment's identity and system preferences.</p>
                     </div>
 
-                    <div class="card-body">
-                        <form th:action="@{/settings/save}" th:object="${config}" method="post">
-                            <input type="hidden" th:field="*{id}">
-                            <div class="row g-3">
-                                <div class="col-md-6">
-                                    <label class="form-label text-muted small">Pharmacy Name *</label>
-                                    <input type="text" class="form-control" th:field="*{pharmacyName}" required>
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label text-muted small">Email Address *</label>
-                                    <input type="email" class="form-control" th:field="*{pharmacyEmail}">
-                                </div>
-
-                                <!-- Address and Currency -->
-                                <div class="col-md-8">
-                                    <label class="form-label text-muted small">Address *</label>
-                                    <textarea class="form-control" rows="1" th:field="*{pharmacyAddress}"></textarea>
-                                </div>
-                                <div class="col-md-4">
-                                    <label class="form-label text-muted small">Currency</label>
-                                    <select class="form-select" th:field="*{currencySymbol}">
-                                        <option value="£">GBP (£) - British Pound</option>
-                                        <option value="€">EUR (€) - Euro</option>
-                                        <option value="रु">NPR (रु) - Nepalese Rupee</option>
-                                        <option value="$">USD ($) - US Dollar</option>
-                                    </select>
-                                </div>
-
-                                <!-- Log Lvl -->
-                                <div class="col-12">
-                                    <label class="form-label text-muted small">
-                                        Log Level
-                                        <span class="text-primary" data-bs-toggle="tooltip" title="Controls how much information the system logs. Debug is useful for troubleshooting.">
-                                            <i class="bi bi-question-circle"></i>
-                                        </span>
-                                    </label>
-                                    <select class="form-select" th:field="*{logLevel}">
-                                        <option value="INFO">Info & Warning</option>
-                                        <option value="DEBUG">Debugging</option>
-                                    </select>
-                                </div>
+                    <form th:action="@{/settings/save}" th:object="${config}" method="post">
+                        <input type="hidden" th:field="*{id}">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label small">Pharmacy Name *</label>
+                                <input type="text" class="form-control" th:field="*{pharmacyName}" required>
                             </div>
-
-                            <script>
-                                var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-                                var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-                                    return new bootstrap.Tooltip(tooltipTriggerEl)
-                                })
-                            </script>
-
-                            <div class="mt-5 text-end">
-                                <button type="submit" class="btn btn-primary px-4">
-                                    <i class="bi bi-floppy me-2"></i> Save Changes
-                                </button>
+                            <div class="col-md-6">
+                                <label class="form-label small">Email Address *</label>
+                                <input type="email" class="form-control" th:field="*{pharmacyEmail}">
                             </div>
-                        </form>
-                    </div>
-                </div>
-
-                <div class="tab-pane fade" id="security-content" role="tabpanel" aria-labelledby="security-tab">
-                    <div class="mb-4">
-                        <h5>Profile & Security</h5>
-                        <p class="text-muted">Manage your admin credentials and security preferences here.</p>
-                    </div>
-
-                    <div class="card-body">
-                        <form th:action="@{/settings/save-user}" th:object="${user}" method="post">
-                            <input type="hidden" th:field="*{id}" />
-
-                            <div class="mb-3">
-                                <label class="form-label">Name</label>
-                                <input type="text" th:field="*{name}" class="form-control" required>
+                            <div class="col-md-8">
+                                <label class="form-label small">Physical Address</label>
+                                <input type="text" class="form-control" th:field="*{pharmacyAddress}">
                             </div>
-
-                            <div class="mb-3">
-                                <label class="form-label">Email</label>
-                                <input type="email" th:field="*{email}" class="form-control" required>
-                            </div>
-
-                            <div class="mb-3">
-                                <label class="form-label">Username</label>
-                                <input type="text" th:field="*{username}" class="form-control" required>
-                            </div>
-
-                            <div class="mb-3">
-                                <label class="form-label">New Password</label>
-                                <input type="password" th:field="*{password}" class="form-control" placeholder="Leave blank to keep current">
-                            </div>
-                            <div>
-                                <label class="form-label">Account Type</label>
-                                <select class="form-select bg-light" th:field="*{accountType}" disabled>
-                                    <option th:each="type : ${accountTypes}"
-                                            th:value="${type}"
-                                            th:text="${type}">
-                                    </option>
+                            <div class="col-md-4">
+                                <label class="form-label small">System Currency</label>
+                                <select class="form-select" th:field="*{currencySymbol}">
+                                    <option value="£">GBP (£) - British Pound</option>
+                                    <option value="€">EUR (€) - Euro</option>
+                                    <option value="रु">NPR (रु) - Nepalese Rupee</option>
+                                    <option value="$">USD ($) - US Dollar</option>
                                 </select>
                             </div>
-                            <div class="mt-5 text-end">
-                                <button type="submit" class="btn btn-primary px-4">
-                                    <i class="bi bi-floppy me-2"></i> Save Changes
-                                </button>
+                            <div class="col-12">
+                                <label class="form-label small">
+                                    System Log Level
+                                    <i class="fas fa-question-circle text-primary ms-1" data-bs-toggle="tooltip" title="Controls logging detail. Use DEBUG only for troubleshooting."></i>
+                                </label>
+                                <select class="form-select" th:field="*{logLevel}">
+                                    <option value="INFO">Standard (Info & Warning)</option>
+                                    <option value="DEBUG">Developer (Debug Mode)</option>
+                                </select>
                             </div>
-                        </form>
-                    </div>
+                        </div>
+                        <div class="mt-4 text-end">
+                            <button type="submit" class="btn btn-primary btn-action">
+                                <i class="fas fa-save me-2"></i> Update Configuration
+                            </button>
+                        </div>
+                    </form>
                 </div>
+
+                <div class="tab-pane fade" id="security-content" role="tabpanel">
+                    <div class="mb-4">
+                        <h5 class="fw-bold">Admin Profile</h5>
+                        <p class="text-muted small">Maintain your access credentials and security settings.</p>
+                    </div>
+
+                    <form th:action="@{/settings/save-user}" th:object="${user}" method="post">
+                        <input type="hidden" th:field="*{id}" />
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label small">Full Name</label>
+                                <input type="text" th:field="*{name}" class="form-control" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small">Admin Email</label>
+                                <input type="email" th:field="*{email}" class="form-control" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small">Login Username</label>
+                                <input type="text" th:field="*{username}" class="form-control" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small">New Password</label>
+                                <input type="password" th:field="*{password}" class="form-control" placeholder="Leave blank to keep current">
+                            </div>
+                        </div>
+                        <div class="mt-4 text-end">
+                            <button type="submit" class="btn btn-primary btn-action">
+                                <i class="fas fa-user-shield me-2"></i> Update Profile
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
             </div>
         </div>
     </div>
-    <script th:src="@{/js/toast.js}"></script>
 
-    <script th:if="${toastMessage != null}">
-        showToast(
-                '[[${toastMessage}]]',
-                '[[${toastType}]]',
-                7000
-        );
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+            tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl)
+            });
+        });
     </script>
 </section>
-
-</body>
-
 </html>

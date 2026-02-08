@@ -3,9 +3,14 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1.25rem 0;
+    min-height: 48px; /* Standardizes height for pages with/without buttons */
     margin-bottom: 1.5rem;
-    border-bottom: 2px solid #f8f9fa; /* Refined thick border */
+    padding-bottom: 0.5rem;
+}
+
+.page-header h4 {
+    margin-bottom: 0 !important;
+    line-height: 1.2;
 }
 
 .page-title {
@@ -27,7 +32,7 @@
 
 /* --- Table & Card Containers --- */
 .custom-card {
-    border: none;
+    border-top: 4px solid var(--primary-blue);
     border-radius: 12px; /* Smooth modern corners */
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); /* Deep, professional depth */
     overflow: hidden;
@@ -39,8 +44,8 @@
 }
 
 .table-custom thead {
-    background-color: #343a40; /* Modern dark header */
-    color: #ffffff;
+    background-color: var(--primary-dark) !important;
+    color: var(--white);
 }
 
 .table-custom th {
@@ -57,6 +62,34 @@
     padding: 1rem; /* Balanced spacing */
     color: #495057;
     border-bottom: 1px solid #f1f3f5;
+}
+
+.table-custom td:last-child {
+    width: 1%; /* Forces the column to shrink-wrap the buttons */
+}
+
+/* --- Added for Search Consistency --- */
+.input-group-text.bg-white {
+    border-right: none;
+}
+
+.search-input-group .form-control {
+    border-left: none;
+}
+
+/* --- Ensure Table Actions don't wrap without hardcoding widths --- */
+.text-nowrap {
+    white-space: nowrap;
+}
+
+/* --- Action Buttons --- */
+.btn-primary, .btn-action {
+    background-color: var(--primary-blue) !important;
+    border: none !important;
+}
+
+.btn-primary:hover, .btn-action:hover {
+    background-color: var(--hover-blue) !important;
 }
 
 /* --- Status Badges (Thematic) --- */

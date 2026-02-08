@@ -1,69 +1,83 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{base::layout(~{::section})}" >
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<section>
-    <div class="container mt-5">
-        <div class="d-flex justify-content-between mb-3">
-            <h2>User List</h2>
-            <a th:href="@{/user/new}" class="btn btn-primary">+ New User</a>
-        </div>
-        <div class="row mb-3">
-            <div class="col-md-4 ms-auto">
-                <input type="text"
-                       class="form-control"
-                       placeholder="🔍 Search user..."
-                       id="Usersearch">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{base::layout(~{::section})}">
+
+<section class="container-fluid px-4 mt-3">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+
+    <div class="page-header">
+        <h4 class="mb-0">User Management</h4>
+        <a th:href="@{/user/new}" class="btn btn-primary btn-action">
+            <i class="fas fa-user-plus"></i> New User
+        </a>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-4 ms-auto">
+            <div class="input-group search-input-group">
+                <span class="input-group-text bg-white">
+                    <i class="fas fa-search text-muted"></i>
+                </span>
+                <input type="text" id="usersearch" class="form-control"
+                       placeholder="Search Name or Username...">
             </div>
         </div>
-        <table class="table table-bordered table-hover bg-white" id="usertable" >
-            <thead class="table-dark">
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Username</th>
-                <th>Password</th>
-                <th>AccountType</th>
-                <th>Actions</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="user : ${users}">
-                <td th:text="${user.id}"></td>
-                <td th:text="${user.name}"></td>
-                <td th:text="${user.email}"></td>
-                <td th:text="${user.username}"></td>
-                <td th:text="${user.password}"></td>
-                <td th:text="${user.accountType}"></td>
-
-
-                <td>
-                    <a th:href="@{/user/edit/{id}(id=${user.id})}" class="btn btn-sm btn-warning">Edit</a>
-                    <a th:href="@{/user/delete/{id}(id=${user.id})}"
-                       class="btn btn-sm btn-danger"
-                       onclick="return confirm('Delete this category?')">Delete</a>
-
-                </td>
-            </tr>
-            </tbody>
-        </table>
     </div>
-    <script>
-            document.getElementById("usersearch").addEventListener("keyup", function () {
-            let filter = this.value.toLowerCase();
-            let rows = document.querySelectorAll("#usertable tbody tr");
 
-            rows.forEach(row => {
-                row.style.display = row.textContent.toLowerCase().includes(filter)
-                    ? ""
-                    : "none";
-            });
-        });
-    </script>
+    <div class="card custom-card">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover table-custom mb-0" id="usertable">
+                    <thead>
+                    <tr>
+                        <th class="text-center">ID</th>
+                        <th>Full Name</th>
+                        <th>Credentials</th>
+                        <th class="text-center">Role</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="user : ${users}">
+                        <td class="td-id text-center" th:text="${user.id}"></td>
+                        <td class="td-name">
+                            <span th:text="${user.name}"></span><br>
+                            <small class="text-muted" th:text="${user.email}"></small>
+                        </td>
+                        <td>
+                            <div class="small">
+                                <i class="fas fa-at fa-sm me-2 text-primary"></i><span th:text="${user.username}"></span><br>
+                                <i class="fas fa-key fa-sm me-2 text-muted"></i><span class="text-muted">••••••••</span>
+                            </div>
+                        </td>
+                        <td class="text-center">
+                      <span class="badge status-badge"
+                            th:classappend="${user.accountType.name() == 'ADMIN' ? 'bg-primary' : 'bg-info'}"
+                            th:text="${user.accountType}"></span>
+                        </td>
+                        <td class="text-center">
+                            <div class="btn-group" role="group">
+                                <a th:href="@{/user/edit/{id}(id=${user.id})}"
+                                   class="btn btn-sm btn-outline-warning" title="Edit">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <a th:href="@{/user/delete/{id}(id=${user.id})}"
+                                   class="btn btn-sm btn-outline-danger"
+                                   title="Delete"
+                                   onclick="return confirm('Delete this user?')">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script th:src="@{/js/user.js}"></script>
 </section>
-</body>
+
 </html>

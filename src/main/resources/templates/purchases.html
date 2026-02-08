@@ -3,61 +3,76 @@
       xmlns:th="http://www.thymeleaf.org"
       th:replace="~{base::layout(~{::section})}">
 
-<section class="container mt-4">
+<section class="container-fluid px-4 mt-3">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
 
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h4>Purchases</h4>
-        <button class="btn btn-primary" onclick="openPurchaseModal()">
-            + New Purchase
+    <div class="page-header">
+        <h4 class="mb-0">Purchase Management</h4>
+        <button class="btn btn-primary btn-action" onclick="openPurchaseModal()">
+            <i class="fas fa-plus"></i> New Purchase
         </button>
     </div>
 
-    <!-- Purchase list table (simple) -->
-    <table class="table table-bordered table-hover">
-        <thead class="table-light">
-        <tr>
-            <th>ID</th>
-            <th>Date</th>
-            <th>Supplier</th>
-            <th>Total Items</th>
-            <th>Total Amount</th>
-            <th>Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="purchase : ${purchases}">
-            <td th:text="${purchase.id}"></td>
-            <td th:text="${#temporals.format(purchase.timestamp, 'dd/MM/yyyy')}"></td>
-            <td th:text="${purchase.supplierName}"></td>
-            <td th:text="${purchase.calculateTotalQuantity()}"></td>
-            <td th:text="${#numbers.formatDecimal(purchase.totalAmount, 1, 2)}"></td>
-            <td>
-                <button class="btn btn-sm btn-outline-info"
-                        th:if="${purchase != null}"
-                        th:data-id="${purchase.id}"
-                        onclick="openViewModal(this.dataset.id)">
-                    <i class="fa fa-eye"></i>
-                </button>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+    <div class="row mb-4">
+        <div class="col-md-4 ms-auto">
+            <div class="input-group search-input-group">
+                <span class="input-group-text bg-white">
+                    <i class="fas fa-search text-muted"></i>
+                </span>
+                <input type="text" id="purchaseSearch" class="form-control"
+                       placeholder="Search Purchases..">
+            </div>
+        </div>
+    </div>
 
-    <!-- Modal include -->
+    <div class="card custom-card">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover table-custom mb-0">
+                    <thead>
+                    <tr>
+                        <th class="text-center">ID</th>
+                        <th>Date</th>
+                        <th>Supplier</th>
+                        <th class="text-center">Total Items</th>
+                        <th>Total Amount</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="purchase : ${purchases}">
+                        <td class="td-id text-center" th:text="${purchase.id}"></td>
+                        <td th:text="${#temporals.format(purchase.timestamp, 'dd/MM/yyyy')}"></td>
+                        <td class="td-name" th:text="${purchase.supplierName}"></td>
+                        <td class="text-center" th:text="${purchase.calculateTotalQuantity()}"></td>
+                        <td class="td-price" th:text="${#numbers.formatDecimal(purchase.totalAmount, 1, 2)}"></td>
+                        <td class="text-center">
+                            <button type="button"
+                                    class="btn btn-sm btn-outline-info"
+                                    th:if="${purchase != null}"
+                                    th:data-id="${purchase.id}"
+                                    title="View Details"
+                                    onclick="openViewModal(this.dataset.id)">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
     <div th:replace="~{modal/purchase-modal :: modal}"></div>
     <div th:replace="~{modal/add-medicine-modal :: modal}"></div>
     <div th:replace="~{modal/view-purchase-modal :: modal}"></div>
 
-    <script th:src="@{/js/toast.js}"></script>
-
-    <script th:if="${toastMessage != null}">
+    <script th:if="${toastMessage != null}" th:inline="javascript">
         showToast(
-                '[[${toastMessage}]]',
-                '[[${toastType}]]',
+                [[${toastMessage}]],
+                [[${toastType}]],
                 7000
         );
     </script>
-
 </section>
-
 </html>

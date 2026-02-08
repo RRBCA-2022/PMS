@@ -12,33 +12,31 @@
 
 <body>
 
-<div class="login-card">
+<div class="login-card animate__animated animate__fadeIn">
 	<h3>PMS Login</h3>
 	<form th:action="@{/login}" method="post">
 
-		<div class="mb-3">
-			<label class="form-label">Username</label>
-			<input type="text"
-			       name="username"
-			       class="form-control"
-			       placeholder="Enter username"
-			       required>
-		</div>
+	<div class="mb-3">
+		<label class="form-label text-muted small text-uppercase">Username</label>
+		<input type="text"
+		       name="username"
+		       class="form-control"
+		       placeholder="Enter your username"
+		       required>
+	</div>
 
-		<div class="mb-3">
-			<label class="form-label">Password</label>
-			<input type="password"
-			       name="password"
-			       class="form-control"
-			       placeholder="Enter password"
-			       required>
-		</div>
+	<div class="mb-4"> <label class="form-label text-muted small text-uppercase">Password</label>
+		<input type="password"
+		       name="password"
+		       class="form-control"
+		       placeholder="••••••••"
+		       required>
+	</div>
 
-		<button type="submit" class="btn btnbg w-100">
-			Login
-		</button>
+	<button type="submit" class="btn btnbg w-100 rounded-pill"> Sign In
+	</button>
 
-	</form>
+</form>
 </div>
 
 <!-- Bootstrap JS -->
