@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{base::layout(~{::section})}">
+<head>
+  <meta charset="UTF-8">
+  <title>Pharmacy Operations Report</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<section>
+  <div class="container mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <div>
+        <h2 class="fw-bold text-dark mb-0">Daily Operations Report</h2>
+        <span class="badge bg-light text-dark border mt-1">
+                    <i class="far fa-calendar-alt me-1"></i>
+                    <span th:text="${#temporals.format(#temporals.createNow(), 'dd MMM yyyy, HH:mm')}"></span>
+                </span>
+      </div>
+      <button onclick="window.print()" class="btn btn-outline-secondary d-print-none shadow-sm">
+        <i class="fas fa-print me-2"></i>Print PDF
+      </button>
+    </div>
+
+    <div class="row g-3 mb-4">
+      <div class="col-md-3">
+        <div class="card bg-primary text-white shadow-sm border-0 h-100">
+          <div class="card-body">
+            <div class="d-flex justify-content-between">
+              <h6 class="text-uppercase small opacity-75">Daily Revenue</h6>
+              <i class="fas fa-coins opacity-50"></i>
+            </div>
+            <h3 class="mb-0 fw-bold" th:text="'Rs. ' + ${#numbers.formatDecimal(report.totalDailyRevenue, 1, 2)}"></h3>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card bg-danger text-white shadow-sm border-0 h-100">
+          <div class="card-body">
+            <div class="d-flex justify-content-between">
+              <h6 class="text-uppercase small opacity-75">Expired</h6>
+              <i class="fas fa-exclamation-circle opacity-50"></i>
+            </div>
+            <h3 class="mb-0 fw-bold" th:text="${#lists.size(report.expiredItems)}"></h3>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card bg-dark text-white shadow-sm border-0 h-100">
+          <div class="card-body">
+            <div class="d-flex justify-content-between">
+              <h6 class="text-uppercase small opacity-75">Out of Stock</h6>
+              <i class="fas fa-boxes opacity-50"></i>
+            </div>
+            <h3 class="mb-0 fw-bold" th:text="${#lists.size(report.outOfStockItems)}"></h3>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card bg-warning text-dark shadow-sm border-0 h-100">
+          <div class="card-body">
+            <div class="d-flex justify-content-between">
+              <h6 class="text-uppercase small opacity-75">Expiring Soon</h6>
+              <i class="fas fa-clock opacity-50"></i>
+            </div>
+            <h3 class="mb-0 fw-bold" th:text="${#lists.size(report.expiringSoonItems)}"></h3>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card shadow-sm border-0 mb-4">
+      <div class="card-header bg-white py-3 border-bottom-0">
+        <h5 class="mb-0 fw-bold text-primary"><i class="fas fa-chart-line me-2"></i>Weekly Sales Trend</h5>
+      </div>
+      <div class="card-body">
+        <div style="height: 280px; position: relative;">
+          <canvas id="weeklySalesChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="card shadow-sm border-0 mb-5">
+      <div class="card-header bg-light">
+        <ul class="nav nav-pills card-header-pills" id="reportTab" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link active fw-bold" data-bs-toggle="tab" href="#sales">Today's Sales</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-danger fw-bold" data-bs-toggle="tab" href="#expired">Expired</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-dark fw-bold" data-bs-toggle="tab" href="#risk">Stock Alerts</a>
+          </li>
+        </ul>
+      </div>
+      <div class="card-body tab-content">
+
+        <div class="tab-pane fade show active" id="sales">
+          <div class="table-responsive">
+            <table class="table table-hover align-middle">
+              <thead class="table-light">
+              <tr><th>Medicine</th><th class="text-center">Qty</th><th>Price</th><th class="text-end">Total</th></tr>
+              </thead>
+              <tbody>
+              <tr th:each="s : ${report.dailySales}">
+                <td th:text="${s.medicineName}" class="fw-bold"></td>
+                <td th:text="${s.quantity}" class="text-center"></td>
+                <td th:text="'Rs. ' + ${s.price}"></td>
+                <td th:text="'Rs. ' + ${s.price * s.quantity}" class="text-end fw-bold"></td>
+              </tr>
+              <tr th:if="${#lists.isEmpty(report.dailySales)}">
+                <td colspan="4" class="text-center text-muted py-5">No transactions found for today.</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="tab-pane fade" id="expired">
+          <div class="table-responsive">
+            <table class="table align-middle">
+              <thead class="table-light text-danger">
+              <tr><th>Medicine</th><th>Batch No</th><th>Expiry Date</th><th>Stock</th></tr>
+              </thead>
+              <tbody>
+              <tr th:each="b : ${report.expiredItems}" class="table-danger">
+                <td th:text="${b.medicine.name}" class="fw-bold"></td>
+                <td th:text="${b.batchNumber}"></td>
+                <td th:text="${b.expiryDate}"></td>
+                <td th:text="${b.stockQuantity}"></td>
+              </tr>
+              <tr th:if="${#lists.isEmpty(report.expiredItems)}">
+                <td colspan="4" class="text-center text-success py-5">No expired stock detected.</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="tab-pane fade" id="risk">
+          <div class="table-responsive">
+            <table class="table align-middle">
+              <thead class="table-light">
+              <tr><th>Medicine</th><th>Condition</th><th>Current Qty</th></tr>
+              </thead>
+              <tbody>
+              <tr th:each="m : ${report.outOfStockItems}">
+                <td th:text="${m.name}" class="fw-bold"></td>
+                <td><span class="badge bg-dark">OUT OF STOCK</span></td>
+                <td class="text-danger">0</td>
+              </tr>
+              <tr th:each="b : ${report.expiredItems}">
+                <td th:text="${b.medicine.name}" class="fw-bold"></td>
+                <td><span class="badge bg-dark">EXPIRED</span></td>
+                <td th:text="${b.stockQuantity}"></td>
+
+              </tr>
+              <tr th:each="eb : ${report.expiringSoonItems}">
+                <td th:text="${eb.medicine.name}" class="fw-bold"></td>
+                <td><span class="badge bg-warning text-dark">EXPIRING SOON</span></td>
+                <td th:text="${eb.stockQuantity}"></td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script th:inline="javascript">
+    /* Thymeleaf comment-based injection for safety */
+    const labels = /*[[${chartData.labels}]]*/ [];
+    const dataValues = /*[[${chartData.values}]]*/ [];
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const ctx = document.getElementById('weeklySalesChart').getContext('2d');
+
+      // Create gradient for the line chart
+      let gradient = ctx.createLinearGradient(0, 0, 0, 400);
+      gradient.addColorStop(0, 'rgba(13, 110, 253, 0.4)');
+      gradient.addColorStop(1, 'rgba(13, 110, 253, 0)');
+
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Sales Revenue (Rs.)',
+            data: dataValues,
+            borderColor: '#0d6efd',
+            backgroundColor: gradient,
+            fill: true,
+            tension: 0.4,
+            pointBackgroundColor: '#0d6efd',
+            pointBorderColor: '#fff',
+            pointHoverRadius: 6,
+            pointRadius: 4
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              grid: { drawBorder: false, color: '#f0f0f0' },
+              ticks: { callback: value => 'Rs.' + value }
+            },
+            x: { grid: { display: false } }
+          }
+        }
+      });
+    });
+  </script>
+
+  <style>
+    @media print {
+      .nav-pills, .d-print-none, .card-header { display: none !important; }
+      .card { border: 1px solid #ddd !important; box-shadow: none !important; }
+      .tab-content > .tab-pane { display: block !important; opacity: 1 !important; }
+      body { background: white !important; }
+    }
+  </style>
+</section>
+</body>
+</html>

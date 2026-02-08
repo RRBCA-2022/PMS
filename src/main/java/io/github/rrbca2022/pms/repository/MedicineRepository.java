@@ -11,6 +11,9 @@ import java.util.Optional;
 @Repository
 public interface MedicineRepository extends JpaRepository<Medicine, String> {
 
+
+    // Find items where total quantity is 0
+    List<Medicine> findByQtyLessThanEqual(int threshold);
 	/* =========================
 	   BASIC LOOKUPS
 	   ========================= */
