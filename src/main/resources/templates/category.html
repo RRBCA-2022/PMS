@@ -28,18 +28,24 @@
                 <table class="table table-hover table-custom mb-0" id="categorytable">
                     <thead>
                     <tr>
-                        <th class="text-center">ID</th>
-                        <th>Name</th>
+                        <th class="text-center ps-4" style="width: 100px;">ID</th>
+
+                        <th style="width: 180px;">Category Name</th>
+
                         <th>Description</th>
-                        <th class="text-center">Actions</th>
+
+                        <th class="text-center pe-4" style="width: 180px;">Actions</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr th:each="category : ${categories}">
-                        <td class="td-id text-center" th:text="${category.id}"></td>
-                        <td class="td-name" th:text="${category.name}"></td>
+                        <td class="td-id text-center ps-4" th:text="${category.id}"></td>
+
+                        <td class="td-name text-truncate" style="max-width: 180px;" th:text="${category.name}"></td>
+
                         <td class="text-muted" th:text="${category.description}"></td>
-                        <td class="text-center text-nowrap">
+
+                        <td class="text-center pe-4">
                             <div class="btn-group" role="group">
                                 <a th:href="@{/category/edit/{id}(id=${category.id})}"
                                    class="btn btn-sm btn-outline-warning" title="Edit">
