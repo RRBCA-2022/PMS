@@ -88,7 +88,7 @@ public class Medicine {
 	@Transient
 	public String getInventoryStatus() {
 		if (this.qty <= 0) return "OUT_OF_STOCK";
-
+		if (this.qty < 10) return "LOW_STOCK";
 		// Re-use the safe method above
 		LocalDate soonestDate = getSoonestExpiryDate();
 
@@ -99,9 +99,6 @@ public class Medicine {
 			if (daysToExpiry <= 0) return "EXPIRED";
 			if (daysToExpiry <= 30) return "EXPIRY_SOON";
 		}
-
-		if (this.qty < 10) return "LOW_STOCK";
-
 		return "NORMAL";
 	}
 }
