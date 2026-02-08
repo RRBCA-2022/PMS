@@ -43,7 +43,7 @@
                         <td class="td-id text-center" th:text="${sale.id}"></td>
                         <td th:text="${#temporals.format(sale.timestamp, 'dd/MM/yyyy')}"></td>
                         <td class="text-center" th:text="${sale.calculateTotalQuantity()}"></td>
-                        <td class="td-price" th:text="${#numbers.formatDecimal(sale.totalAmount, 1, 2)}"></td>
+                        <td class="td-price" th:text="${currencySymbol + ' ' + #numbers.formatDecimal(sale.totalAmount, 1, 2)}"></td>
                         <td class="td-name">
                             <i class="fas fa-user-tag me-2 text-muted"></i>
                             <span th:text="${sale.sellerName}"></span>
@@ -64,6 +64,9 @@
                 7000
         );
     </script>
+
+    <script th:src="@{/js/sales.js}"></script>
+
 </section>
 
 </html>

@@ -11,11 +11,15 @@ document.addEventListener('DOMContentLoaded', () => {
             const filter = this.value.toLowerCase();
 
             tableRows.forEach(row => {
+                const idCell = row.cells[0];
                 const nameCell = row.cells[1];
-                const usernameCell = row.cells[3];
+                const usernameCell = row.cells[2];
+                const roleCell = row.cells[3];
 
-                const matches = nameCell.textContent.toLowerCase().includes(filter) ||
-                    usernameCell.textContent.toLowerCase().includes(filter);
+                const matches = idCell.textContent.toLowerCase().includes(filter) ||
+                    nameCell.textContent.toLowerCase().includes(filter) ||
+                    usernameCell.textContent.toLowerCase().includes(filter) ||
+                    roleCell.textContent.toLowerCase().includes(filter);
 
                 row.style.display = matches ? "" : "none";
             });

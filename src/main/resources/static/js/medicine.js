@@ -330,9 +330,10 @@ document.addEventListener('DOMContentLoaded', () => {
             tableRows.forEach(row => {
                 const idCell = row.cells[0];   // ID Column
                 const nameCell = row.cells[1]; // Name & Manufacturer Column
+                const categoryCell = row.cells[2]; // Category Column
 
                 const matches = idCell.textContent.toLowerCase().includes(filter) ||
-                    nameCell.textContent.toLowerCase().includes(filter);
+                    nameCell.textContent.toLowerCase().includes(filter) || categoryCell.textContent.toLowerCase().includes(filter);
 
                 row.style.display = matches ? "" : "none";
             });

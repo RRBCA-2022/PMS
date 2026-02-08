@@ -44,7 +44,7 @@
 							<small class="td-manufacturer text-muted" th:text="${medicine.manufacturer}"></small>
 						</td>
 						<td class="td-category" th:text="${medicine.category.name}"></td>
-						<td class="td-price" th:text="${#numbers.formatDecimal(medicine.price, 1, 2)}"></td>
+						<td class="td-price" th:text="${currencySymbol + ' ' + #numbers.formatDecimal(medicine.price, 1, 2)}"></td>
 						<td class="td-qty text-center">
 							<span class="fw-bold" th:text="${medicine.qty}"></span>
 							<small class="text-muted" th:text="${medicine.qtyUnit}"></small>

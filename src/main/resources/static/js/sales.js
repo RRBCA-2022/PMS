@@ -6,9 +6,11 @@ document.addEventListener('DOMContentLoaded', () => {
         searchInput.addEventListener("keyup", function () {
             const filter = this.value.toLowerCase();
             tableRows.forEach(row => {
-                // Filters by ID (col 0) or Seller Name (col 4)
-                const matches = row.cells[0].textContent.toLowerCase().includes(filter) ||
-                    row.cells[4].textContent.toLowerCase().includes(filter);
+                const idCell = row.cells[0];   // ID Column
+                const sellerCell = row.cells[4];   // Seller Column
+
+                const matches = idCell.textContent.toLowerCase().includes(filter) ||
+                    sellerCell.textContent.toLowerCase().includes(filter);
                 row.style.display = matches ? "" : "none";
             });
         });
