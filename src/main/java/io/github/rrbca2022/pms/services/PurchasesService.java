@@ -8,7 +8,9 @@ import io.github.rrbca2022.pms.repository.PurchasesRepository;
 import io.github.rrbca2022.pms.utils.PMSLogger;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -81,6 +83,42 @@ public class PurchasesService {
         purchasesRepository.save(purchase);
 
         return totalAmount;
+    }
+
+    @Transactional
+    public void approvePurchase(String id) {
+        Purchase po = purchasesRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Purchase Order not found"));
+
+        // Fix for Enum comparison
+        if (!"PENDING".equals(po.getOrderStatus().name())) {
+            throw new IllegalStateException("only pending orders can be approved");
+        }
+
+        po.setOrderStatus(PurchaseOrderStatus.APPROVED);
+        po.setReviewTimestamp(LocalDateTime.now());
+
+        for(PurchaseItem item: po.getItems()) {
+            Medicine med=item.getMedicine();
+
+            //increment stock
+            med.setQty(med.getQty() + item.getQty());
+            medicineRepository.save(med);
+        }
+        purchasesRepository.save(po);
+    }
+
+    @Transactional
+    public void rejectPurchase(String id){
+        Purchase po = purchasesRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Purchase Order not found"));
+
+        //only status update med not
+        po.setOrderStatus(PurchaseOrderStatus.REJECTED);
+        po.setReviewTimestamp(LocalDateTime.now());
+
+        purchasesRepository.save(po);
+
     }
 
 

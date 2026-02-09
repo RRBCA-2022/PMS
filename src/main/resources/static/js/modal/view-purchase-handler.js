@@ -30,6 +30,28 @@ function openViewModal(purchaseId) {
             document.getElementById('view-total-items').innerText = data.items.length.toString();
             const currencySymbol = document.getElementById('global-currency-symbol').value;
             document.getElementById('view-total-amount').innerText = currencySymbol +" "+ data.totalAmount.toFixed(2);
+
+            //Handle Approve/Reject Form Logic
+            // ==========================================
+            const approveForm = document.getElementById('approveForm');
+            const rejectForm = document.getElementById('rejectForm');
+
+            if (approveForm && rejectForm) {
+                // Update the form action URLs to match your backend endpoints
+                // Add the leading slash before 'purchase'
+                approveForm.action = `/purchases/approve/${purchaseId}`;
+                rejectForm.action = `/purchases/reject/${purchaseId}`;
+
+                // Only show buttons if the status is PENDING
+                // Note: Check if your backend uses 'PENDING' or 'pending'
+                if (data.orderStatus === 'PENDING') {
+                    approveForm.style.display = 'inline-block';
+                    rejectForm.style.display = 'inline-block';
+                } else {
+                    approveForm.style.display = 'none';
+                    rejectForm.style.display = 'none';
+                }
+            }
             // Medicine Names (Text format)
             const medList = document.getElementById('view-medicine-list');
             medList.innerHTML = '';
@@ -62,25 +84,3 @@ function closeViewModal() {
     closeModal("viewPurchaseModal", "viewPurchaseBackdrop");
 }
 
-/**
- * Processes the approval or denial of a purchase record.
- * @param {string} action - 'APPROVE' or 'REJECT'
- */
-async function handlePurchaseAction(action) {
-    const purchaseId = document.getElementById('view-purchase-id').innerText;
-
-    // const actionContainer = document.getElementById('review-actions-container');
-    // const buttons = actionContainer.querySelectorAll('button');
-
-    try {
-        alert(`Purchase = ${action.toLowerCase()}`);
-        if (action === 'REJECT' && !confirm("Are you certain you wish to reject this purchase?")) {
-            console.log("Rejected purchase")
-        }
-        closeViewModal();
-    } catch (error) {
-        console.error("Workflow Error:", error);
-        alert("Error processing that request.");
-        buttons.forEach(btn => btn.disabled = false);
-    }
-}

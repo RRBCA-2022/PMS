@@ -71,14 +71,18 @@
         </div>
 
         <div class="modal-footer">
-            <div id="review-actions-container" class="me-auto">
-                <button type="button" class="btn btn-success px-4" onclick="handlePurchaseAction('APPROVE')">
-                    <i class="fas fa-check me-1"></i> Approve
-                </button>
-                <button type="button" class="btn btn-danger px-4" onclick="handlePurchaseAction('REJECT')">
-                    <i class="fas fa-times me-1"></i> Reject
-                </button>
-            </div>
+            <div class="modal-footer">
+                <form id="approveForm" method="post" style="display:inline;">
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-check me-1"></i> Approve
+                    </button>
+                </form>
+
+                <form id="rejectForm" method="post" style="display:inline;">
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fas fa-times me-1"></i> Reject
+                    </button>
+                </form>
 
             <button type="button" class="btn btn-secondary" onclick="closeViewModal()">
                 Close

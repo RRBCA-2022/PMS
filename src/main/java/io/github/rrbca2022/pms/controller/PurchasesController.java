@@ -69,6 +69,21 @@ public class PurchasesController {
         return "redirect:/purchases";
     }
 
+    @PostMapping("/approve/{id}")
+    public String approvePurchase(@PathVariable String id,RedirectAttributes re){
+        purchasesService.approvePurchase(id);
+        re.addFlashAttribute("message","purchase approved & stock updated");
+        return "redirect:/purchases";
+    }
+
+    @PostMapping("/reject/{id}")
+    public String rejectPurchase(@PathVariable String id, RedirectAttributes re){
+        purchasesService.rejectPurchase(id);
+        re.addFlashAttribute("message","purchase order has been rejected");
+        return "redirect:/purchases";
+
+    }
+
 
 }
 
