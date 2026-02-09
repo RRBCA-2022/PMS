@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
@@ -90,6 +91,23 @@ public class SalesService {
 
         return total;
 
+    }
+
+
+    public Double calculateAverageDailySales(String medicineId) {
+        LocalDate thirtyDaysAgo = LocalDate.now().minusDays(30);
+
+        // Sum of all units sold for this specific medicine in the last 30 days
+        Integer totalSold = salesRepository.sumQuantityByMedicineAndDateAfter(
+                Long.valueOf(medicineId),
+                thirtyDaysAgo.atStartOfDay()
+        );
+
+        if (totalSold == null || totalSold == 0) {
+            return 0.0;
+        }
+
+        return totalSold / 30.0;
     }
 
 

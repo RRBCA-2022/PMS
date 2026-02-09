@@ -5,6 +5,7 @@ import io.github.rrbca2022.pms.entity.Medicine;
 import io.github.rrbca2022.pms.entity.MedicineBatch;
 import io.github.rrbca2022.pms.repository.MedicineBatchRepository;
 import io.github.rrbca2022.pms.repository.MedicineRepository;
+import io.github.rrbca2022.pms.repository.PurchasesRepository;
 import io.github.rrbca2022.pms.utils.PMSLogger;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

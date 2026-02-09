@@ -82,7 +82,34 @@
 
     <div class="d-flex align-items-center gap-3">
       <span class="text-muted" th:text="${todayDate}">Wednesday, Dec 31, 2025</span>
-      <i class="bi bi-bell"></i>
+
+
+
+      <div class="dropdown">
+        <button class="btn position-relative p-2" type="button" data-bs-toggle="dropdown"
+                style="background-color: white; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
+          <i class="bi bi-bell" style="color: #333; font-size: 1.2rem;"></i>
+          <span th:if="${alertCount > 0}"
+                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                th:text="${alertCount}">
+            0
+        </span>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end" style="width: 300px;">
+          <li th:if="${#lists.isEmpty(alerts)}">
+            <a class="dropdown-item text-center text-muted">No new alerts</a>
+          </li>
+
+          <li th:each="item : ${alerts}">
+            <a class="dropdown-item">
+              <strong th:text="${item.name}">Medicine Name</strong><br>
+              <small class="text-danger" th:text="${item.notification}">The message</small>
+            </a>
+            <hr class="dropdown-divider">
+          </li>
+        </ul>
+      </div>
+
       <div class="admin-dropdown">
         <button class="admin-btn" onclick="toggleDropdown()" aria-haspopup="true">
           <i class="fas fa-user-circle"></i><span th:text="${session.LOGGED_USER.name + ' (' + session.LOGGED_USER.accountType + ')'}">

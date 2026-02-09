@@ -13,4 +13,13 @@ import java.util.List;
 public interface SalesRepository extends JpaRepository<Sale, String> {
     List<Sale> findByTimestampAfter(LocalDateTime timestamp);
 
+    @Query("SELECT SUM(s.quantity) FROM SaleItem s " +
+            "WHERE s.medicine.id = :medicineId " +
+            "AND s.sale.timestamp >= :startDate")
+    Integer sumQuantityByMedicineAndDateAfter(
+            @Param("medicineId") Long medicineId,
+            @Param("startDate") LocalDateTime startDate
+    );
+
+
 }

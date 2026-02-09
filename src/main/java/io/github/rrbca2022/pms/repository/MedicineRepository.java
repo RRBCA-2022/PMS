@@ -12,6 +12,10 @@ import java.util.Optional;
 public interface MedicineRepository extends JpaRepository<Medicine, String> {
 
 
+    List<Medicine> findByNotificationIsNotNull();
+
+    // Counts how many medicines are low (for the red bubble on the bell icon)
+    long countByNotificationIsNotNull();
     // Find items where total quantity is 0
     List<Medicine> findByQtyLessThanEqual(int threshold);
 	/* =========================

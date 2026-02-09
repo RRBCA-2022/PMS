@@ -70,6 +70,9 @@ public class Medicine {
 	@OnDelete(action = OnDeleteAction.SET_NULL)
 	private Category category;
 
+	@Column(name = "notification_status")
+	private String notification;
+
 
 	@Transient
 	public LocalDate getSoonestExpiryDate() {
