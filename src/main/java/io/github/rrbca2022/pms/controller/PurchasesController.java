@@ -6,6 +6,7 @@ import io.github.rrbca2022.pms.services.CategoryService;
 import io.github.rrbca2022.pms.services.MedicineService;
 import io.github.rrbca2022.pms.services.PurchasesService;
 import io.github.rrbca2022.pms.services.SuppliersService;
+import io.github.rrbca2022.pms.entity.User;
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -58,27 +59,16 @@ public class PurchasesController {
             return "redirect:/purchases";
     }
 
-    @PostMapping("/review/{id}")
-    public String review(
-            @PathVariable String id,
-            @RequestParam String status,
-            RedirectAttributes redirectAttributes
-    ) {
-        //purchaseService.updateStatus(id, status);
-        redirectAttributes.addFlashAttribute("message", "Status updated to " + status);
-        return "redirect:/purchases";
-    }
-
     @PostMapping("/approve/{id}")
-    public String approvePurchase(@PathVariable String id,RedirectAttributes re){
-        purchasesService.approvePurchase(id);
+    public String approvePurchase(@PathVariable String id,RedirectAttributes re, HttpSession session){
+        purchasesService.approvePurchase(id, (User) session.getAttribute("LOGGED_USER"));
         re.addFlashAttribute("message","purchase approved & stock updated");
         return "redirect:/purchases";
     }
 
     @PostMapping("/reject/{id}")
-    public String rejectPurchase(@PathVariable String id, RedirectAttributes re){
-        purchasesService.rejectPurchase(id);
+    public String rejectPurchase(@PathVariable String id, RedirectAttributes re, HttpSession session){
+        purchasesService.rejectPurchase(id, (User) session.getAttribute("LOGGED_USER"));
         re.addFlashAttribute("message","purchase order has been rejected");
         return "redirect:/purchases";
 

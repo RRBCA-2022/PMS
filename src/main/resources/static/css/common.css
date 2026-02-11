@@ -33,19 +33,91 @@
 /* --- Table & Card Containers --- */
 .custom-card {
     border-top: 4px solid var(--primary-blue);
-    border-radius: 12px; /* Smooth modern corners */
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); /* Deep, professional depth */
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
     overflow: hidden;
     background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+}
+
+.card-body.p-0 {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.card-table-container {
+    height: 67vh;
+}
+
+.table-responsive {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 1rem;
+    background-color: #ffffff !important;
+    overflow-y: auto;
+    position: relative;
+}
+
+.table-responsive::after {
+    content: "";
+    display: block;
+    height: 100px;
+}
+
+.table tbody tr.no-hover,
+.table tbody tr.no-hover td,
+.table tbody tr.no-hover:hover,
+.table tbody tr.no-hover:hover td {
+    background-color: transparent !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    cursor: default;
+    border: none !important;
+}
+
+.table tbody tr.no-hover td > div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    min-height: 300px;
+    color: #a0a0a0;
 }
 
 .table-custom {
     margin-bottom: 0;
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: separate; /* Changed to allow padding control */
+    border-spacing: 0;
 }
 
 .table-custom thead {
     background-color: var(--primary-dark) !important;
     color: var(--white);
+}
+
+/* --- Sticky Header --- */
+.table-custom thead th {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: var(--primary-dark) !important;
+    color: var(--white) !important;
+    border-bottom: 2px solid #dee2e6 !important;
+    box-shadow: none !important;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+    /* Prevents header height jumps */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .table-custom th {
@@ -57,11 +129,36 @@
     border: none;
 }
 
+.table-custom th:first-child,
+.table-custom td:first-child {
+    width: 180px !important; /* Fixed 'min space' as requested */
+    white-space: nowrap !important;
+    padding-left: 1.5rem !important; /* Adds space from the left edge */
+}
+
+.table-custom th,
+.table-custom td {
+    text-align: left !important;
+    vertical-align: middle;
+    padding: 1rem 0.75rem;
+}
+
+.table-custom th:last-child,
+.table-custom td:last-child {
+    width: 140px !important; /* Wider to prevent button crowding */
+    text-align: center !important; /* Buttons look best centered */
+    padding-right: 1.5rem !important; /* Pushes buttons away from the very edge */
+}
+
 .table-custom td {
     vertical-align: middle;
     padding: 1rem; /* Balanced spacing */
     color: #495057;
     border-bottom: 1px solid #f1f3f5;
+}
+
+.table-custom tbody tr:last-child td {
+    border-bottom: none;
 }
 
 .table-custom td:last-child {
@@ -122,3 +219,102 @@
 .td-id { font-family: 'Monaco', 'Consolas', monospace; font-weight: bold; }
 .td-name { font-weight: 600; }
 .td-price { font-weight: 500; color: #2c3e50; }
+
+
+/* --- Profile Page Aesthetics --- */
+/* --- Profile Avatar Restoration --- */
+.profile-avatar-circle {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, var(--primary-blue), var(--primary-dark)) !important;
+    border-radius: 50%;
+    display: flex !important; /* Ensure it's not hidden */
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem auto;
+    box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+    border: 4px solid #fff;
+}
+
+/* Force the icon inside to be visible and white */
+.profile-avatar-circle i {
+    color: #ffffff !important;
+    display: block !important;
+}
+
+/* --- Edit Profile Button Fix --- */
+.profile-page .row {
+    display: flex;
+    align-items: stretch;
+}
+
+.profile-page .col-xl-4,
+.profile-page .col-xl-8 {
+    display: flex;
+    flex-direction: column;
+}
+
+/* 2. Card consistency */
+.profile-page .custom-card {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1.5rem;
+}
+
+/* 3. Avatar Restoration */
+.profile-avatar-circle {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, var(--primary-blue), var(--primary-dark)) !important;
+    border-radius: 50%;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem auto;
+    box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+    border: 4px solid #fff;
+}
+
+.profile-avatar-circle i {
+    color: #ffffff !important;
+    font-size: 4rem;
+}
+
+/* 4. Edit Profile Button - Fixed Visibility */
+.profile-page .btn-action {
+    background-color: var(--primary-blue) !important;
+    color: #ffffff !important;
+    border: none !important;
+    padding: 0.6rem 1rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    margin-top: auto; /* Pushes button to bottom */
+}
+
+.profile-page .btn-action:hover {
+    background-color: var(--hover-blue) !important;
+    color: #ffffff !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.profile-page .btn-action i {
+    color: #ffffff !important;
+}
+
+/* 5. Typography */
+.profile-page label {
+    display: block;
+    margin-bottom: 0.25rem;
+    color: #6c757d;
+}
+
+.profile-page .fs-5 {
+    font-weight: 700;
+    color: #2c3e50;
+}

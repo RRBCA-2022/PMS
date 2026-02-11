@@ -1,5 +1,6 @@
 package io.github.rrbca2022.pms.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.github.rrbca2022.pms.utils.id.AlphaNumericIdGenerator;
 import io.github.rrbca2022.pms.utils.id.IdPrefix;
 import jakarta.persistence.*;
@@ -41,6 +42,15 @@ public class User {
 	private AccountType accountType;
 
 	@OneToMany(mappedBy = "seller")
+	@JsonIgnore
 	private List<Sale> sales = new ArrayList<>();
+
+	public boolean isAdmin() {
+		return this.accountType == AccountType.ADMIN;
+	}
+
+	public String getAccountTypeString() {
+		return this.accountType.toString();
+	}
 
 }

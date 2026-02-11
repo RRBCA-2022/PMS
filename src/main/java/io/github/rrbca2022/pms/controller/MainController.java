@@ -1,9 +1,11 @@
 package io.github.rrbca2022.pms.controller;
 
 import io.github.rrbca2022.pms.entity.Medicine;
+import io.github.rrbca2022.pms.entity.User;
 import io.github.rrbca2022.pms.repository.MedicineRepository;
 import io.github.rrbca2022.pms.services.CategoryService;
 import io.github.rrbca2022.pms.services.MedicineService;
+import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,6 +31,13 @@ public class MainController {
 		model.addAttribute("alerts", lowStockAlerts);
 		model.addAttribute("alertCount", alertCount);
 		return "dashboard";
+	}
+
+	@GetMapping("/profile")
+	public String profile(Model model, HttpSession session) {
+		User user = (User) session.getAttribute("LOGGED_USER");
+		model.addAttribute("user", user);
+		return "profile";
 	}
 
 

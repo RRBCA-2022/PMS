@@ -61,11 +61,6 @@ public class PurchasesService {
 
             Medicine medicine = medicineRepository.findById(item.getId()).orElseThrow(()->new RuntimeException("Medicine not found"));
 
-            /*
-            medicine.setQty(medicine.getQty() + item.getQty());
-            medicineRepository.save(medicine);
-             */
-
             PurchaseItem items=new PurchaseItem();
             items.setMedicineName(medicine.getName());
             items.setMedicine(medicine);
@@ -86,21 +81,26 @@ public class PurchasesService {
     }
 
     @Transactional
-    public void approvePurchase(String id) {
+    public void approvePurchase(String id, User user) {
         Purchase po = purchasesRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Purchase Order not found"));
 
         // Fix for Enum comparison
         if (!"PENDING".equals(po.getOrderStatus().name())) {
-            throw new IllegalStateException("only pending orders can be approved");
+            throw new IllegalStateException("Only pending orders can be approved");
         }
 
         po.setOrderStatus(PurchaseOrderStatus.APPROVED);
         po.setReviewTimestamp(LocalDateTime.now());
+        po.setReviewer(user);
+        po.setReviewerName(user.getName());
 
         for(PurchaseItem item: po.getItems()) {
-            Medicine med=item.getMedicine();
+            Medicine med = item.getMedicine();
 
+            if (med == null) {
+                throw new RuntimeException("Medicine not found for item: " + item.getId());
+            }
             //increment stock
             med.setQty(med.getQty() + item.getQty());
             medicineRepository.save(med);
@@ -109,13 +109,15 @@ public class PurchasesService {
     }
 
     @Transactional
-    public void rejectPurchase(String id){
+    public void rejectPurchase(String id, User user){
         Purchase po = purchasesRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Purchase Order not found"));
 
         //only status update med not
         po.setOrderStatus(PurchaseOrderStatus.REJECTED);
         po.setReviewTimestamp(LocalDateTime.now());
+        po.setReviewer(user);
+        po.setReviewerName(user.getName());
 
         purchasesRepository.save(po);
 

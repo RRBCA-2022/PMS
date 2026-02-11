@@ -25,7 +25,7 @@
         </div>
     </div>
 
-    <div class="card custom-card">
+    <div class="card custom-card card-table-container">
         <div class="card-body p-0">
             <div class="table-responsive">
                 <table class="table table-hover table-custom mb-0" id="suppliertable">
@@ -39,7 +39,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="supplier : ${suppliers}">
+                        <tr th:each="supplier : ${suppliers}">
                         <td class="td-id text-center" th:text="${supplier.id}"></td>
                         <td class="td-name" th:text="${supplier.name}"></td>
                         <td class="text-muted" th:text="${supplier.address}"></td>
@@ -64,6 +64,14 @@
                             </div>
                         </td>
                     </tr>
+                        <tr th:if="${#lists.isEmpty(suppliers)}" class="no-hover">
+                            <td colspan="5">
+                                <div>
+                                    <i class="fas fa-truck-loading fa-3x mb-3 opacity-25"></i>
+                                    <p class="mb-0">No supplier records found.</p>
+                                </div>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>

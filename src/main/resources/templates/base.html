@@ -17,56 +17,56 @@
   </h5>
 
   <div class="sidebar-nav-wrapper">
-      <th:block th:with="role=${session.LOGGED_USER.accountType.name()}">
-    <a th:href="@{/dashboard}"
-       th:classappend="${active == 'dashboard'} ? 'active'">
-      <i class="bi bi-grid"></i> Dashboard
-    </a>
+      <th:block th:with="isAdmin=${session.LOGGED_USER.isAdmin()}">
+        <a th:href="@{/dashboard}"
+           th:classappend="${active == 'dashboard'} ? 'active'">
+          <i class="bi bi-grid"></i> Dashboard
+        </a>
 
-    <a th:href="@{/medicine}"
-       th:classappend="${active == 'medicine'} ? 'active'">
-      <i class="bi bi-capsule"></i> Medicine
-    </a>
+        <a th:href="@{/medicine}"
+           th:classappend="${active == 'medicine'} ? 'active'">
+          <i class="bi bi-capsule"></i> Medicine
+        </a>
 
-    <a th:href="@{/category}"
-       th:classappend="${active == 'category'} ? 'active'">
-      <i class="bi bi-tags"></i> Category
-    </a>
+        <a th:href="@{/category}"
+           th:classappend="${active == 'category'} ? 'active'">
+          <i class="bi bi-tags"></i> Category
+        </a>
 
-    <a th:href="@{/sales}"
-       th:classappend="${active == 'sales'} ? 'active'">
-      <i class="bi bi-cart"></i> Sales
-    </a>
+        <a th:href="@{/sales}"
+           th:classappend="${active == 'sales'} ? 'active'">
+          <i class="bi bi-cart"></i> Sales
+        </a>
 
-    <a th:if="${role == 'ADMIN'}"
-       th:href="@{/purchases}"
-       th:classappend="${active == 'purchase'} ? 'active'">
-      <i class="bi bi-arrow-down-up"></i> Purchases
-    </a>
+        <a th:if="${isAdmin}"
+           th:href="@{/purchases}"
+           th:classappend="${active == 'purchases'} ? 'active'">
+          <i class="bi bi-arrow-down-up"></i> Purchases
+        </a>
 
-    <a th:if="${role == 'ADMIN'}"
-       th:href="@{/suppliers}"
-       th:classappend="${active == 'supplier'} ? 'active'">
-      <i class="bi bi-truck"></i> Suppliers
-    </a>
+        <a th:if="${isAdmin}"
+           th:href="@{/suppliers}"
+           th:classappend="${active == 'suppliers'} ? 'active'">
+          <i class="bi bi-truck"></i> Suppliers
+        </a>
 
-    <a th:if="${role == 'ADMIN'}"
-       th:href="@{/user}"
-       th:classappend="${active == 'user'} ? 'active'">
-      <i class="bi bi-people"></i> User Management
-    </a>
+        <a th:if="${isAdmin}"
+           th:href="@{/user}"
+           th:classappend="${active == 'users'} ? 'active'">
+          <i class="bi bi-people"></i> User Management
+        </a>
 
-    <a th:href="@{/report}"
-       th:classappend="${active == 'report'} ? 'active'">
-      <i class="bi bi-file-earmark-text"></i> Reports
-    </a>
+        <a th:href="@{/report}"
+           th:classappend="${active == 'report'} ? 'active'">
+          <i class="bi bi-file-earmark-text"></i> Reports
+        </a>
 
-    <a th:if="${role == 'ADMIN'}"
-       th:href="@{/settings}"
-       th:classappend="${active == 'settings'} ? 'active'">
-      <i class="bi bi-gear"></i> Settings
-    </a>
-  </th:block>
+        <a
+           th:href="@{/settings}"
+           th:classappend="${active == 'settings'} ? 'active'">
+          <i class="bi bi-gear"></i> Settings
+        </a>
+      </th:block>
   </div>
   <div class="footer-text">
     &copy; 2026 PMS | Version 1.0.0
