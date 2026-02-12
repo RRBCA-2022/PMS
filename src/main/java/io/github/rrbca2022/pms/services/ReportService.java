@@ -67,13 +67,27 @@ public class ReportService {
         return report;
     }
 
-    public Map<String, Object> getWeeklySalesData() {
-        // 1. Fetching data for the last 7 days (including today)
-        LocalDateTime startPoint = LocalDate.now().minusDays(6).atStartOfDay();
+    public Map<String, Object> getTrendData(String period) {
+        LocalDateTime startPoint;
+
+        // 1. Determine the start date based on the chosen period
+        switch (period.toLowerCase()) {
+            case "daily":
+                startPoint = LocalDate.now().minusDays(1).atStartOfDay(); // Last 24-48 hours
+                break;
+            case "monthly":
+                startPoint = LocalDate.now().minusMonths(1).atStartOfDay(); // Last 30 days
+                break;
+            case "weekly":
+            default:
+                startPoint = LocalDate.now().minusDays(6).atStartOfDay(); // Default last 7 days
+                break;
+        }
+
         List<Sale> sales = salesRepository.findByTimestampAfter(startPoint);
 
         // 2. Grouping logic
-        Map<LocalDate, Double> dailyTotals = sales.stream()
+        Map<LocalDate, Double> totals = sales.stream()
                 .collect(Collectors.groupingBy(
                         sale -> sale.getTimestamp().toLocalDate(),
                         Collectors.summingDouble(sale -> sale.getItems().stream()
@@ -83,20 +97,18 @@ public class ReportService {
         List<String> labels = new ArrayList<>();
         List<Double> values = new ArrayList<>();
 
-        // 3. Loop through the last 7 days including TODAY
-        for (int i = 6; i >= 0; i--) {
+        // 3. Generate the range of dates to ensure we show 0 for days with no sales
+        int daysToLookBack = period.equalsIgnoreCase("monthly") ? 30 : (period.equalsIgnoreCase("daily") ? 1 : 6);
+
+        for (int i = daysToLookBack; i >= 0; i--) {
             LocalDate d = LocalDate.now().minusDays(i);
-
-            // ADD THIS LINE - The chart cannot draw without labels
             labels.add(d.toString());
-
-            values.add(dailyTotals.getOrDefault(d, 0.0));
+            values.add(totals.getOrDefault(d, 0.0));
         }
 
         Map<String, Object> chartData = new HashMap<>();
         chartData.put("labels", labels);
         chartData.put("values", values);
-
         return chartData;
     }
 }

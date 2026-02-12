@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Pharmacy Operations Report</title>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 </head>
 <body>
 <section>
@@ -11,7 +11,7 @@
 
     <div class="d-flex justify-content-between align-items-center mb-4">
       <div>
-        <h2 class="fw-bold text-dark mb-0">Daily Operations Report</h2>
+        <h2 class="fw-bold text-dark mb-0">Operations Report</h2>
         <span class="badge bg-light text-dark border mt-1">
                     <i class="far fa-calendar-alt me-1"></i>
                     <span th:text="${#temporals.format(#temporals.createNow(), 'dd MMM yyyy, HH:mm')}"></span>
@@ -69,16 +69,26 @@
       </div>
     </div>
 
-    <div class="card shadow-sm border-0 mb-4">
-      <div class="card-header bg-white py-3 border-bottom-0">
-        <h5 class="mb-0 fw-bold text-primary"><i class="fas fa-chart-line me-2"></i>Weekly Sales Trend</h5>
-      </div>
-      <div class="card-body">
-        <div style="height: 280px; position: relative;">
-          <canvas id="weeklySalesChart"></canvas>
+    <div class="card shadow-sm">
+      <div class="card-header bg-white d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center">
+          <div class="dropdown me-3">
+            <button class="btn btn-sm btn-white border dropdown-toggle" type="button" data-bs-toggle="dropdown">
+              <i class="bi bi-filter"></i> <span id="periodLabel">Daily Sales</span>
+            </button>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#" onclick="updateChart('daily')">Daily Sales</a></li>
+              <li><a class="dropdown-item" href="#" onclick="updateChart('weekly')">Weekly Sales</a></li>
+              <li><a class="dropdown-item" href="#" onclick="updateChart('monthly')">Monthly Sales</a></li>
+            </ul>
+          </div>
         </div>
       </div>
+      <div class="card-body">
+        <canvas id="salesTrendChart" height="100"></canvas>
+      </div>
     </div>
+
 
     <div class="card shadow-sm border-0 mb-5">
       <div class="card-header bg-light">
@@ -169,63 +179,17 @@
     </div>
   </div>
 
+
   <script th:inline="javascript">
-    /* Thymeleaf comment-based injection for safety */
-    const labels = /*[[${chartData.labels}]]*/ [];
-    const dataValues = /*[[${chartData.values}]]*/ [];
-
+    // 2. Pass the Thymeleaf data to the external script once the page loads
     document.addEventListener('DOMContentLoaded', function() {
-      const ctx = document.getElementById('weeklySalesChart').getContext('2d');
-
-      // Create gradient for the line chart
-      let gradient = ctx.createLinearGradient(0, 0, 0, 400);
-      gradient.addColorStop(0, 'rgba(13, 110, 253, 0.4)');
-      gradient.addColorStop(1, 'rgba(13, 110, 253, 0)');
-
-      new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels: labels,
-          datasets: [{
-            label: 'Sales Revenue (Rs.)',
-            data: dataValues,
-            borderColor: '#0d6efd',
-            backgroundColor: gradient,
-            fill: true,
-            tension: 0.4,
-            pointBackgroundColor: '#0d6efd',
-            pointBorderColor: '#fff',
-            pointHoverRadius: 6,
-            pointRadius: 4
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: { display: false }
-          },
-          scales: {
-            y: {
-              beginAtZero: true,
-              grid: { drawBorder: false, color: '#f0f0f0' },
-              ticks: { callback: value => 'Rs.' + value }
-            },
-            x: { grid: { display: false } }
-          }
-        }
-      });
+      const dataFromBackend = /*[[${chartData}]]*/ {labels: [], values: []};
+      initSalesChart(dataFromBackend);
     });
   </script>
+  <script th:src="@{/js/modal/report.js}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-  <style>
-    @media print {
-      .nav-pills, .d-print-none, .card-header { display: none !important; }
-      .card { border: 1px solid #ddd !important; box-shadow: none !important; }
-      .tab-content > .tab-pane { display: block !important; opacity: 1 !important; }
-      body { background: white !important; }
-    }
-  </style>
 </section>
 </body>
 </html>
