@@ -3,6 +3,7 @@ package io.github.rrbca2022.pms.controller;
 import io.github.rrbca2022.pms.dto.ReportDTO;
 import io.github.rrbca2022.pms.services.ReportService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,17 +20,27 @@ public class ReportController {
 
     private final ReportService reportService;
 
+
     @GetMapping
     public String report(Model model){
+
         ReportDTO summary = reportService.generateDailyReport();
         model.addAttribute("report", summary);
-        model.addAttribute("chartData", reportService.getTrendData("daily"));// This name "report" must match the HTML
-        return "report";
 
+        return "report";
     }
+
+
     @GetMapping("/trend")
-    @ResponseBody
-    public Map<String, Object> getTrend(@RequestParam(defaultValue = "daily")  String period){
-        return reportService.getTrendData(period);
+    @ResponseBody // This tells Spring to return JSON
+    public ResponseEntity<Map<String, Object>> getTrend(@RequestParam(defaultValue = "daily") String period){
+        Map<String, Object> trendData = reportService.getTrendData(period);
+
+        // Using ResponseEntity is better practice for error handling
+        if (trendData == null || trendData.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(trendData);
     }
 }

@@ -69,23 +69,25 @@
       </div>
     </div>
 
-    <div class="card shadow-sm">
+    <div class="card shadow-sm chart-component"
+         id="salesTrendComponent"
+         data-url="/report/trend">
       <div class="card-header bg-white d-flex justify-content-between align-items-center">
-        <div class="d-flex align-items-center">
-          <div class="dropdown me-3">
-            <button class="btn btn-sm btn-white border dropdown-toggle" type="button" data-bs-toggle="dropdown">
-              <i class="bi bi-filter"></i> <span id="periodLabel">Daily Sales</span>
-            </button>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#" onclick="updateChart('daily')">Daily Sales</a></li>
-              <li><a class="dropdown-item" href="#" onclick="updateChart('weekly')">Weekly Sales</a></li>
-              <li><a class="dropdown-item" href="#" onclick="updateChart('monthly')">Monthly Sales</a></li>
-            </ul>
-          </div>
+        <div class="dropdown">
+          <button class="btn btn-sm btn-white border dropdown-toggle" type="button" data-bs-toggle="dropdown">
+            <i class="bi bi-filter"></i> <span class="period-label">Daily Sales</span>
+          </button>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#" data-period="daily">Daily Sales</a></li>
+            <li><a class="dropdown-item" href="#" data-period="weekly">Weekly Sales</a></li>
+            <li><a class="dropdown-item" href="#" data-period="monthly">Monthly Sales</a></li>
+          </ul>
         </div>
       </div>
       <div class="card-body">
-        <canvas id="salesTrendChart" height="100"></canvas>
+        <div style="height:20vh; width:100%">
+          <canvas class="chart-canvas"></canvas>
+        </div>
       </div>
     </div>
 
@@ -179,14 +181,6 @@
     </div>
   </div>
 
-
-  <script th:inline="javascript">
-    // 2. Pass the Thymeleaf data to the external script once the page loads
-    document.addEventListener('DOMContentLoaded', function() {
-      const dataFromBackend = /*[[${chartData}]]*/ {labels: [], values: []};
-      initSalesChart(dataFromBackend);
-    });
-  </script>
   <script th:src="@{/js/modal/report.js}"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
