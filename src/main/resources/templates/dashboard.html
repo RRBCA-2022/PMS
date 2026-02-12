@@ -33,59 +33,125 @@
 		</div>
 	</div>
 
-	<div class="row g-4">
-		<div class="col-lg-4">
-			<div class="card custom-card h-100">
-				<div class="card-header bg-transparent border-0 pt-3">
-					<h6 class="fw-bold mb-0 text-danger"><i class="fas fa-exclamation-circle me-2"></i>Low Stock Alert</h6>
+	<div class="row g-4 mb-4">
+		<div class="col-xl-3 col-md-6">
+			<div class="card custom-card h-100 shadow-sm border-0" style="border-top: 3px solid #0d6efd !important;">
+				<div class="card-header bg-transparent border-0 pt-3 d-flex justify-content-between align-items-center">
+					<h6 class="fw-bold mb-0 text-muted small text-uppercase">Total Revenue</h6>
+					<i class="fas fa-hand-holding-usd text-success"></i>
 				</div>
-				<div class="card-body">
-					<div class="alert alert-light border-0 mb-2 py-2 d-flex justify-content-between align-items-center"
-					     th:each="item : ${lowStock}"
-					     style="background: #fff5f5;">
-						<div>
-							<strong class="d-block text-dark" th:text="${item.name}"></strong>
-							<small class="text-muted" th:text="${item.qty + ' units remaining'}"></small>
-						</div>
-						<span class="badge bg-danger rounded-pill">Critical</span>
-					</div>
+				<div class="card-body pt-0">
+					<h3 class="fw-bold mb-1" th:text="${currencySymbol + ' ' + #numbers.formatDecimal(totalRevenue, 1, 2)}"></h3>
+					<span class="badge bg-soft-success text-success" style="font-size: 0.7rem;">Lifetime Earnings</span>
 				</div>
 			</div>
 		</div>
 
-		<div class="col-lg-4">
-			<div class="card custom-card h-100">
-				<div class="card-header bg-transparent border-0 pt-3">
-					<h6 class="fw-bold mb-0 text-warning"><i class="fas fa-hourglass-half me-2"></i>Expiring Soon</h6>
+		<div class="col-xl-3 col-md-6">
+			<div class="card custom-card h-100 shadow-sm border-0" style="border-top: 3px solid #0d6efd !important;">
+				<div class="card-header bg-transparent border-0 pt-3 d-flex justify-content-between align-items-center">
+					<h6 class="fw-bold mb-0 text-muted small text-uppercase">Total Cost</h6>
+					<i class="fas fa-shopping-cart text-danger"></i>
 				</div>
-				<div class="card-body">
-					<div class="alert alert-light border-0 mb-2 py-2"
-					     th:each="item : ${expiring}"
-					     style="background: #fff9eb;">
-						<strong class="d-block text-dark" th:text="${item.name}"></strong>
-						<small class="text-muted"><i class="far fa-calendar-times me-1"></i>Expires: <span th:text="${item.date}"></span></small>
-					</div>
+				<div class="card-body pt-0">
+					<h3 class="fw-bold mb-1" th:text="${currencySymbol + ' ' + #numbers.formatDecimal(totalCost, 1, 2)}"></h3>
+					<span class="badge bg-soft-danger text-danger" style="font-size: 0.7rem;">Approved Orders</span>
 				</div>
 			</div>
 		</div>
 
-		<div class="col-lg-4">
-			<div class="card custom-card h-100">
-				<div class="card-header bg-transparent border-0 pt-3">
-					<h6 class="fw-bold mb-0 text-primary"><i class="fas fa-history me-2"></i>Recent Activity</h6>
+		<div class="col-xl-3 col-md-6">
+			<div class="card custom-card h-100 shadow-sm border-0" style="border-top: 3px solid #0d6efd !important;">
+				<div class="card-header bg-transparent border-0 pt-3 d-flex justify-content-between align-items-center">
+					<h6 class="fw-bold mb-0 text-muted small text-uppercase">Total Meds</h6>
+					<i class="fas fa-pills text-info"></i>
 				</div>
-				<div class="card-body p-0">
-					<div class="list-group list-group-flush">
-						<div class="list-group-item border-0 py-3 bg-transparent" th:each="log : ${activities}">
-							<div class="d-flex justify-content-between align-items-center">
-								<div>
-									<strong class="d-block mb-1 text-dark" th:text="${log.title}"></strong>
-									<small class="text-muted" th:text="${log.time}"></small>
-								</div>
-								<span class="fw-bold text-success" th:text="${log.amount}"></span>
-							</div>
-						</div>
-					</div>
+				<div class="card-body pt-0">
+					<h3 class="fw-bold mb-1" th:text="${totalMeds}"></h3>
+					<span class="badge bg-soft-info text-info" style="font-size: 0.7rem;">Inventory Count</span>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-xl-3 col-md-6">
+			<div class="card custom-card h-100 shadow-sm border-0" style="border-top: 3px solid #0d6efd !important;">
+				<div class="card-header bg-transparent border-0 pt-3 d-flex justify-content-between align-items-center">
+					<h6 class="fw-bold mb-0 text-muted small text-uppercase">Categories</h6>
+					<i class="fas fa-tags text-warning"></i>
+				</div>
+				<div class="card-body pt-0">
+					<h3 class="fw-bold mb-1" th:text="${totalCategories}"></h3>
+					<span class="badge bg-soft-warning text-warning" style="font-size: 0.7rem;">Stock Groups</span>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="row mt-4">
+		<div class="col-12">
+			<div class="card custom-card">
+				<div class="card-header bg-transparent border-0 pt-3 d-flex justify-content-between align-items-center">
+					<h6 class="fw-bold mb-0 text-primary">
+						<i class="fas fa-microchip me-2"></i>Inventory Reorder Point (ROP)
+					</h6>
+					<small class="text-muted">Algorithm: (Daily Demand × Lead Time) + Safety Stock</small>
+				</div>
+				<div class="card-body p-0"> <div class="table-responsive">
+					<table class="table table-hover align-middle mb-0">
+						<thead class="table-light">
+						<tr class="small text-uppercase text-muted">
+							<th class="ps-4">Medicine</th> <th>Current Stock</th>
+							<th title="Demand forecast for the next 30 days">Monthly Forecast</th>
+							<th>Lead Time</th>
+							<th>Target ROP</th>
+							<th>Stock Cover</th> <th>Status</th>
+							<th class="pe-4 text-end">Soonest Expiry</th>
+						</tr>
+						</thead>
+						<tbody>
+						<tr th:each="med : ${reorderAdvice}">
+							<td class="ps-4">
+								<div class="fw-bold" th:text="${med.name}"></div>
+								<span class="badge bg-light text-dark fw-normal" style="font-size: 0.7rem;" th:text="${med.manufacturer}"></span>
+							</td>
+							<td>
+								<span class="fs-6 fw-bold" th:text="${med.qty}"></span>
+								<small class="text-muted" th:text="${med.qtyUnit}"></small>
+							</td>
+							<td th:text="${#numbers.formatDecimal(med.lastForecast, 1, 1)}"></td>
+							<td>
+								<span th:text="${med.leadTime}"></span> <small>days</small>
+							</td>
+							<td>
+                           <span class="badge bg-soft-info text-info"
+                                 th:text="${#numbers.formatDecimal(med.getCalculatedROP(), 1, 0)}"></span>
+							</td>
+							<td>
+                           <span class="small fw-bold"
+                                 th:classappend="${(med.qty / (med.getDailyDemand() ?: 1)) < 7 ? 'text-danger' : 'text-success'}"
+                                 th:text="${#numbers.formatDecimal(med.qty / (med.getDailyDemand() ?: 1), 1, 0) + ' Days'}">
+                           </span>
+							</td>
+							<td>
+                           <span th:if="${med.qty <= med.getCalculatedROP()}" class="badge bg-danger">
+                               <i class="fas fa-exclamation-triangle me-1"></i> REORDER
+                           </span>
+								<span th:if="${med.qty > med.getCalculatedROP()}" class="badge bg-success">STABLE</span>
+							</td>
+							<td class="pe-4 text-end" th:classappend="${med.getInventoryStatus() == 'EXPIRY_SOON' ? 'text-warning' : ''}">
+								<i class="far fa-calendar-alt me-1 text-muted"></i>
+								<small th:text="${med.getSoonestExpiryDate() != null ? #temporals.format(med.getSoonestExpiryDate(), 'dd MMM yyyy') : 'No Batches'}"></small>
+							</td>
+						</tr>
+						<tr th:if="${#lists.isEmpty(reorderAdvice)}">
+							<td colspan="8" class="text-center py-5">
+								<i class="fas fa-check-circle text-success fa-3x mb-3"></i>
+								<p class="text-muted">All inventory levels are optimal.</p>
+							</td>
+						</tr>
+						</tbody>
+					</table>
+				</div>
 				</div>
 			</div>
 		</div>

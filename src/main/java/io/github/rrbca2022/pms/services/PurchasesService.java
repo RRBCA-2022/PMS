@@ -123,6 +123,12 @@ public class PurchasesService {
 
     }
 
-
+    /**
+     * Calculates the total value of approved purchase (Qty * Price).
+     */
+    public double getTotalInventoryValue() {
+        Double inventoryValue = purchasesRepository.calculateTotalApprovedCost();
+        return (inventoryValue != null) ? inventoryValue : 0.0;
+    }
 
 }

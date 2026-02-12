@@ -5,9 +5,6 @@ public enum MedicineUnitType {
 	CAPSULE,
 	ML,
 	MG,
-	mgg,
-	mlg,
-	mgl,
 	BOTTLE,
 	UNIT
 }

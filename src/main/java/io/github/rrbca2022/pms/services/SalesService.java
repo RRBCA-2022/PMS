@@ -110,5 +110,13 @@ public class SalesService {
         return totalSold / 30.0;
     }
 
+    /**
+     * Calculates the total revenue from all completed sales.
+     */
+    public double getTotalRevenue() {
+        Double revenue = salesRepository.calculateTotalRevenue();
+        return (revenue != null) ? revenue : 0.0;
+    }
+
 
 }

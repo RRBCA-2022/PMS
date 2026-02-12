@@ -46,7 +46,7 @@
 						</div>
 						<div class="col-md-6">
 							<label class="text-muted small text-uppercase fw-bold">Username</label>
-							<p class="fs-5 mb-0" th:text="${user.username}">master_seven</p>
+							<p class="fs-5 mb-0" th:text="${user.username}">username</p>
 						</div>
 						<div class="col-md-6">
 							<label class="text-muted small text-uppercase fw-bold">Account Type</label>
@@ -61,6 +61,27 @@
 								<i class="fas fa-chart-line me-2 text-success"></i>
 								<span th:text="${user.sales.size()}">0</span> Records
 							</p>
+						</div>
+					</div>
+
+					<div th:if="${user.isAdmin() or config.logLevel.name() == 'DEBUG'}" class="mt-4 pt-3 border-top">
+						<label class="text-muted small text-uppercase fw-bold d-block mb-3">
+							<i class="fas fa-tools me-1"></i> Developer Tools
+							<span th:if="${config.logLevel.name() == 'DEBUG'}" class="badge bg-warning text-dark ms-2">DEBUG MODE</span>
+						</label>
+
+						<div class="p-3 bg-light rounded border d-flex align-items-center justify-content-between">
+							<div>
+								<h6 class="mb-1 fw-bold text-dark">Manual Inventory Update</h6>
+								<p class="text-muted small mb-0">Manually trigger the inventory forecasting and ROP logic.</p>
+							</div>
+
+							<form th:action="@{/dev/trigger-forecast}" method="post"
+							      onsubmit="return confirm('Trigger the manual update?')">
+								<button type="submit" class="btn btn-outline-primary shadow-sm">
+									<i class="fas fa-play me-2"></i> Trigger Now
+								</button>
+							</form>
 						</div>
 					</div>
 

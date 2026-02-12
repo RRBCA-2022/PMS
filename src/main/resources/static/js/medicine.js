@@ -189,16 +189,8 @@ function updateMedicineRow(med) {
         return;
     }
 
-    // Update using querySelector with class names
-    row.querySelector(".td-name span").textContent = med.name;
-    row.querySelector(".td-manufacturer").textContent = med.manufacturer;
-    row.querySelector(".td-desc").textContent = med.description;
-    row.querySelector(".td-category").textContent = med.category.name;
-    row.querySelector(".td-price").textContent = med.price;
-    row.querySelector(".td-qty").textContent = med.qty;
-    row.querySelector(".td-qtyUnit").textContent = med.qtyUnit.toUpperCase();
-    row.querySelector(".td-location").textContent = med.location;
-    row.querySelector(".td-expDate").textContent = med.expDate;
+    // Update using refresh page
+    window.location.href = "/medicine";
 }
 
 /**

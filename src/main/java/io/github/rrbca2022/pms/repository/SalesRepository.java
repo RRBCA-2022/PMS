@@ -21,5 +21,8 @@ public interface SalesRepository extends JpaRepository<Sale, String> {
             @Param("startDate") LocalDateTime startDate
     );
 
+    @Query("SELECT SUM(s.totalAmount) FROM Sale s")
+    Double calculateTotalRevenue();
+
 
 }

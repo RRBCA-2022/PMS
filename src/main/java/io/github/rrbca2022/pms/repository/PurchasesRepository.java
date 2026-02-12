@@ -14,4 +14,7 @@ public interface PurchasesRepository extends JpaRepository<Purchase, String> {
             "WHERE i.medicine.id = :medId AND p.orderStatus = 'APPROVED'")
     Double getAverageLeadTimeForMedicine(@Param("medId") String medId);
 
+    @Query("SELECT SUM(p.totalAmount) FROM Purchase p WHERE p.orderStatus = 'APPROVED'")
+    Double calculateTotalApprovedCost();
+
 }

@@ -70,9 +70,32 @@ public class Medicine {
 	@OnDelete(action = OnDeleteAction.SET_NULL)
 	private Category category;
 
-	@Column(name = "notification_status")
 	private String notification;
 
+	// Fields for forecasting and ROP calculation
+	@Column(name = "last_forecast", nullable = false)
+	private double lastForecast = 0.0;
+
+	@Column(name = "alpha", nullable = false)
+	private double alpha = 0.3;
+
+	@Column(name = "lead_time", nullable = false)
+	private int leadTime = 7;
+
+	@Column(name = "safety_stock", nullable = false)
+	private double safetyStock = 10.0;
+
+	@Transient
+	public double getDailyDemand() {
+		return this.lastForecast / 30.0;
+	}
+
+	@Transient
+	public double getCalculatedROP() {
+		// Prevent Division by Zero and ensure a base ROP if forecast is empty
+		double daily = (this.lastForecast > 0) ? getDailyDemand() : 0.5;
+		return (daily * this.leadTime) + this.safetyStock;
+	}
 
 	@Transient
 	public LocalDate getSoonestExpiryDate() {

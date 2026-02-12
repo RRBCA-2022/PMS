@@ -33,7 +33,7 @@ public class LoginController {
         User user = loginService.authenticate(username, password);
 
         if (user == null) {
-            redirectAttributes.addFlashAttribute("loginStatusFail", "Invalid username or password");
+            redirectAttributes.addFlashAttribute("errorMessage", "Invalid username or password");
             return "redirect:/"; // back to login
         }
         System.out.println("Logged In : " + user);
@@ -41,7 +41,7 @@ public class LoginController {
         session.setAttribute("LOGGED_USER", user);
 
         redirectAttributes.addFlashAttribute(
-                "loginStatusSuccess",
+                "successMessage",
                 "Successfully logged in as '" + user.getName() + "'"
         );
 

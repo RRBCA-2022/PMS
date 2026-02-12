@@ -49,7 +49,8 @@ public class SessionInterceptor implements HandlerInterceptor {
 		if (
 				path.startsWith("/purchases") ||
 						path.startsWith("/suppliers") ||
-						path.startsWith("/user")
+						path.startsWith("/user") ||
+						path.startsWith("/dev")
 		) {
 			if (user.getAccountType() != AccountType.ADMIN) {
 				response.sendRedirect("/dashboard");
